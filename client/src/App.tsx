@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Pricing from "./pages/Pricing";
+import VehicleServicePage from "./pages/VehicleServicePage";
 
 const services = [
   ["Car History Report", "/services/car-history-report"],
@@ -49,8 +50,7 @@ function Header() {
             <button onClick={() => setServicesOpen(!servicesOpen)} aria-expanded={servicesOpen}>Services <span className="chevron">⌄</span></button>
             {servicesOpen && <div className="dropdown-panel">{services.map(([label, href]) => <button key={href} onClick={() => { navigate(href); setServicesOpen(false); }}>{label}</button>)}</div>}
           </div>
-          <button onClick={() => navigate("/contact")}>Contact Us</button>
-          <div className="nav-dropdown">
+          <button onClick={() => navigate("/contact")}>Contact Us</button><button onClick={() => navigate("/pricing")}>Pricing</button><div className="nav-dropdown">
             <button onClick={() => setServicesOpen(!servicesOpen)} aria-expanded={servicesOpen}>Company Policies <span className="chevron">⌄</span></button>
             {servicesOpen && <div className="dropdown-panel policy-dropdown"><button onClick={() => navigate("/terms")}>Terms & Conditions</button><button onClick={() => navigate("/refund-policy")}>Refund Policy</button><button onClick={() => navigate("/privacy-policy")}>Privacy Policy</button></div>}
           </div>
@@ -62,7 +62,7 @@ function Header() {
         <button onClick={() => { navigate("/"); setOpen(false); }}>Home</button><button onClick={() => { navigate("/about"); setOpen(false); }}>About Us</button>
         <button className="mobile-service-toggle" onClick={() => setServicesOpen(!servicesOpen)}>Services <span>{servicesOpen ? "−" : "+"}</span></button>
         {servicesOpen && <div className="mobile-service-list">{services.map(([label, href]) => <button key={href} onClick={() => { navigate(href); setOpen(false); }}>{label}</button>)}</div>}
-        <button onClick={() => { navigate("/contact"); setOpen(false); }}>Contact Us</button><button onClick={() => { navigate("/terms"); setOpen(false); }}>Company Policies</button>
+        <button onClick={() => { navigate("/contact"); setOpen(false); }}>Contact Us</button><button onClick={() => { navigate("/pricing"); setOpen(false); }}>Pricing</button><button onClick={() => { navigate("/terms"); setOpen(false); }}>Company Policies</button>
         <a className="button" href="mailto:support@inspauto.com">Email support</a>
       </div>
     </header>
@@ -96,7 +96,7 @@ export default function App() {
   else if (path === "/pricing") page = <Pricing />;
   else if (path === "/services") page = <Home initialSection="services" />;
   else if (["/terms", "/refund-policy", "/privacy-policy"].includes(path)) page = <PolicyPage kind={path.slice(1) as "terms" | "refund-policy" | "privacy-policy"} />;
-  else if (path.startsWith("/services/")) page = <ServicePage label={services.find(([, href]) => href === path)?.[0] || "Vehicle History Report"} />;
+  else if (path.startsWith("/services/")) page = <VehicleServicePage label={services.find(([, href]) => href === path)?.[0] || "Vehicle History Report"} />;
   else page = <SimplePage path={path} />;
   return <TooltipProvider><Toaster /><Header />{page}<Footer /></TooltipProvider>;
 }

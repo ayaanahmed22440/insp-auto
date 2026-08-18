@@ -98,3 +98,10 @@
 - [x] Add trust, comparison, process, FAQ, final CTA, responsive layout, and pricing SEO metadata.
 - [x] Run TypeScript, npm build, npm start, route, bundle-content, and payment-link checks.
 - [ ] Save and deliver the updated checkpoint.
+
+## ATV reference flow and Pricing navigation
+
+- [x] Recreate the supplied ATV service-page hero, sidebar, company block, pricing cards, and final CTA flow.
+- [x] Add the existing `/pricing` route to desktop and mobile navigation without duplicating the pricing page.
+- [x] Run npm run build and verify existing routes, payment links, and deployment configuration remain unchanged.
+- [ ] Save and deliver the focused UI update checkpoint.

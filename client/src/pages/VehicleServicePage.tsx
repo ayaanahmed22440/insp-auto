@@ -1,0 +1,37 @@
+// INSP AUTO — reference-matched vehicle service flow; compact report navigation, vehicle context, three report options, and a dark care CTA.
+import { ArrowUpRight, CarFront, Check, CircleHelp, Mail, ShieldCheck, Waves } from "lucide-react";
+import { PAYMENT_LINKS } from "@/lib/paymentLinks";
+
+const services = [
+  ["Car History Report", "/services/car-history-report"],
+  ["Motorbike History Report", "/services/motorbike-history-report"],
+  ["ATV History Report", "/services/atv-history-report"],
+  ["Truck History Report", "/services/truck-history-report"],
+  ["Boat History Report", "/services/boat-history-report"],
+  ["RV History Report", "/services/rv-history-report"],
+] as const;
+
+const atvPlans = [
+  { name: "Essential ATV Report", price: "39.99", delivery: "Delivery Duration: 2 Hours", features: ["Vehicle Overview", "Market Value", "Vehicle Specifications", "Sales Listing", "Accident Record", "Theft Record", "No ATV Images", "Open Recalls", "Exports"], href: PAYMENT_LINKS.basic },
+  { name: "Delight ATV Report", price: "42.99", delivery: "Delivery Duration: 1 Hour", features: ["HQ ATV Images", "Vehicle Overview", "Accident Record", "Impounds", "Exports", "Market Value", "Open Recalls", "Sales Listing", "Vehicle Specifications"], href: PAYMENT_LINKS.standard },
+  { name: "Superior ATV Report", price: "52.99", delivery: "Delivery Duration: 30 minutes", features: ["2 Buyers Numbers from our Directory", "Buy one get another Report Free", "Vehicle Specifications", "Theft Record", "Exports", "Salvage", "Open Recalls", "HQ ATV Images", "Vehicle Overview"], href: PAYMENT_LINKS.premium },
+] as const;
+
+function navigate(path: string) {
+  window.history.pushState({}, "", path);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+export default function VehicleServicePage({ label }: { label: string }) {
+  const isAtv = label.toLowerCase().includes("atv");
+  const title = isAtv ? "ATV History Report" : label;
+  const image = isAtv ? "/assets/insp-auto-service-atv.jpg" : "/assets/insp-auto-service-car.jpg";
+  const plans = isAtv ? atvPlans : atvPlans.map((plan) => ({ ...plan, name: plan.name.replace("ATV", label.replace(" History Report", "")), features: plan.features.map((feature) => feature.replaceAll("ATV", label.replace(" History Report", ""))) }));
+  return <main className="vehicle-service-page">
+    <section className="vehicle-service-hero" style={{ backgroundImage: `linear-gradient(90deg,rgba(8,15,26,.94),rgba(8,15,26,.46)),url(${image})` }}><div className="container vehicle-service-hero-inner"><span className="eyebrow amber">INSP AUTO / VEHICLE REPORT</span><h1>{title}</h1><p>Find Peace of Mind With Comprehensive {isAtv ? "ATV" : title.replace(" History Report", "")} Inspection.</p><button className="line-button vehicle-hero-link" onClick={() => document.getElementById("vehicle-pricing")?.scrollIntoView({ behavior: "smooth" })}>View report options <ArrowUpRight size={16} /></button></div></section>
+    <section className="vehicle-company-section section-pad"><div className="container vehicle-company-grid"><aside className="vehicle-service-sidebar"><span className="vehicle-sidebar-title">Our Services</span>{services.map(([service, href]) => <button className={service === title ? "is-selected" : ""} key={href} onClick={() => navigate(href)}><span>{service}</span><ArrowUpRight size={11} /></button>)}<a className="vehicle-email-card" href="mailto:support@inspauto.com"><Mail size={17} /><span><strong>Email</strong><small>support@inspauto.com</small></span></a></aside><div className="vehicle-company-copy"><span className="eyebrow">INSP AUTO / COMPANY</span><h2>We are a big team obsessed with <em>productivity.</em></h2><p>A family run business since 1995. Quality is not only our standard. It's also an attitude instilled in our company.</p><p>We offer a full line of automotive parts and supplies. We also specialize in custom colors, refinishing, powder coating, and all types of aluminum and stainless steel welding for cars and bikes.</p><img src={image} alt={`${title} vehicle`} loading="lazy" /></div></div></section>
+    <section id="vehicle-pricing" className="vehicle-pricing-section section-pad"><div className="container"><div className="vehicle-pricing-heading"><span className="eyebrow">REPORT OPTIONS / {isAtv ? "ATV" : "VEHICLE"}</span><h2>Choose your report level.</h2></div><div className="vehicle-plan-grid">{plans.map((plan) => <article className="vehicle-plan-card" key={plan.name}><h3>{plan.name}</h3><div className="vehicle-plan-price"><span>£</span>{plan.price}</div><small>{plan.delivery}</small><ul>{plan.features.map((feature) => <li key={feature}><Check size={11} />{feature}</li>)}</ul><a className="vehicle-buy-button" href={plan.href}>Buy Now <ArrowUpRight size={12} /></a></article>)}</div></div></section>
+    <section className="vehicle-care-cta"><div className="container"><div className="vehicle-care-inner"><div><span className="eyebrow amber">INSP AUTO / NEXT STEP</span><h2>Ready to care for your vehicle?</h2></div><button onClick={() => navigate("/contact")}>Request a quote <ArrowUpRight size={14} /></button></div></div></section>
+  </main>;
+}
