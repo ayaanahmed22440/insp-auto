@@ -12,7 +12,7 @@ const serviceCards = [
   ["RV History Report", "Make a larger vehicle purchase with context.", CarFront, "/services/rv-history-report"],
 ];
 const reportItems = ["Vehicle specifications", "Accident information", "Title information", "Safety recalls", "Ownership information", "Lien / finance information", "Vehicle history", "Other available records"];
-const serviceVisuals = ["/manus-storage/insp-auto-car_62d2ab2c.jpg", "/manus-storage/insp-auto-motorbike_43abd73d.jpg", "/manus-storage/insp-auto-car_62d2ab2c.jpg", "/manus-storage/insp-auto-truck_76935243.jpg", "/manus-storage/insp-auto-services_5ec5ed5c.jpg", "/manus-storage/insp-auto-services_5ec5ed5c.jpg"];
+const serviceVisuals = ["/manus-storage/insp-auto-service-car_9d71960d.jpg", "/manus-storage/insp-auto-service-motorbike_1174afd3.jpg", "/manus-storage/insp-auto-service-atv_6e66841b.jpg", "/manus-storage/insp-auto-service-truck_5e474f5b.jpg", "/manus-storage/insp-auto-service-boat_3cdc0d99.jpg", "/manus-storage/insp-auto-service-rv_d2eb31c0.jpg"];
 const compactPricing = [
   ["Essential Car Report", "Car History Report", "/services/car-history-report"], ["Essential Motorbike Report", "Motorbike History Report", "/services/motorbike-history-report"], ["Essential ATV Report", "ATV History Report", "/services/atv-history-report"], ["Essential Truck Report", "Truck History Report", "/services/truck-history-report"], ["Essential Boat Report", "Boat History Report", "/services/boat-history-report"], ["Essential RV Report", "RV History Report", "/services/rv-history-report"],
 ] as const;

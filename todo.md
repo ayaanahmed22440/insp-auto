@@ -22,3 +22,10 @@
 - [ ] Add six compact pricing cards with the supplied UK pricing presentation and working checkout links.
 - [ ] Verify desktop/mobile layout and all pricing-button destinations.
 - [ ] Save and deliver the updated checkpoint.
+
+## Distinct service imagery update
+
+- [ ] Generate distinct visible images for Car, Motorbike, ATV, Truck, Boat, and RV service cards.
+- [ ] Replace repeated image URLs in the service-card data.
+- [ ] Verify image crops, contrast, and card visibility on desktop and mobile.
+- [ ] Save and deliver the updated checkpoint.
