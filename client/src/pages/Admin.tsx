@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Switch, useLocation } from "wouter";
 import {
+  Activity,
   BarChart3,
   ClipboardList,
   Inbox,
@@ -209,6 +210,7 @@ function AdminShell({
     { href: "/admin", label: "Overview", icon: BarChart3 },
     { href: "/admin/contacts", label: "Contacts", icon: Inbox },
     { href: "/admin/orders", label: "Orders", icon: ClipboardList },
+    { href: "/admin/audit-logs", label: "Audit log", icon: Activity },
   ];
   return (
     <div className="admin-shell">
@@ -271,6 +273,9 @@ function AdminShell({
             </Route>
             <Route path="/admin/orders">
               <OrdersPage />
+            </Route>
+            <Route path="/admin/audit-logs">
+              <AuditLogsPage />
             </Route>
             <Route path="/admin">
               <OverviewPage />
@@ -431,6 +436,72 @@ function ContactsPage() {
                       Delete
                     </button>
                   </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </PageFrame>
+  );
+}
+
+function AuditLogsPage() {
+  const [logs, setLogs] = useState<Array<{
+    id: number;
+    action: string;
+    actorEmail?: string | null;
+    entityType?: string | null;
+    entityId?: string | null;
+    metadata?: string | null;
+    createdAt: string;
+  }> | null>(null);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    api<{ data: typeof logs }>("/api/admin/audit-logs")
+      .then(result => setLogs(result.data || []))
+      .catch(err => setError(err.message));
+  }, []);
+  return (
+    <PageFrame
+      eyebrow="AUDIT LOG"
+      title="Administrative activity"
+      intro="Recorded security and operational actions. Sensitive credentials and visitor passwords are never shown."
+    >
+      {error ? (
+        <div className="admin-alert" role="alert">
+          {error}
+        </div>
+      ) : logs === null ? (
+        <div className="admin-skeleton" aria-label="Loading audit log" />
+      ) : logs.length === 0 ? (
+        <div className="admin-empty">
+          No administrative activity has been recorded.
+        </div>
+      ) : (
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Actor</th>
+                <th>Entity</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {logs.map(log => (
+                <tr key={log.id}>
+                  <td>
+                    <strong>{log.action}</strong>
+                    <small>{log.metadata || "No additional metadata"}</small>
+                  </td>
+                  <td>{log.actorEmail || "System"}</td>
+                  <td>
+                    {log.entityType || "—"}
+                    {log.entityId ? ` / ${log.entityId}` : ""}
+                  </td>
+                  <td>{new Date(log.createdAt).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>

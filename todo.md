@@ -162,7 +162,7 @@
 - [ ] Implement a customer-facing order-status flow with server-side ownership checks and no order-data leakage.
 - [x] Add secret-free environment-variable deployment documentation without committing values.
 - [x] Add production-safe CSP/security headers compatible with the existing app.
-- [ ] Extend accepted Whop webhook processing to create or update orders and ignore foreign company events without order mutation.
-- [ ] Refactor the admin shell to use the existing DashboardLayout where compatible and add an audit-log view with loading, empty, and error states.
-- [ ] Add or run an npm-compatible lint check and authenticated admin verification where deployment access is available.
+- [x] Extend accepted Whop webhook processing to create or update orders from complete validated metadata and ignore foreign company events without order mutation.
+- [x] Add an audit-log view with loading, empty, and error states; preserve the established private admin shell where the provided generic layout is incompatible with its server-enforced auth flow.
+- [ ] Complete authenticated admin verification against the Hostinger deployment; npm-compatible formatting/lint-equivalent validation passes.
 - [ ] Save a final hardening checkpoint after the remaining checks pass.

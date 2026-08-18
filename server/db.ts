@@ -335,6 +335,61 @@ export async function getDashboardCounts() {
   };
 }
 
+export async function syncOrderFromWebhook(input: {
+  orderId?: number;
+  customerName?: string;
+  deliveryEmail?: string;
+  selectedPlan?: string;
+  amountPence?: number;
+  vin?: string;
+  paymentReference?: string;
+  paymentStatus: "paid" | "failed";
+}) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const now = new Date();
+  if (Number.isInteger(input.orderId) && (input.orderId ?? 0) > 0) {
+    const updateSet = {
+      paymentStatus: input.paymentStatus,
+      paymentReference: input.paymentReference,
+      paidAt: input.paymentStatus === "paid" ? now : undefined,
+    } as const;
+    await db.update(orders).set(updateSet).where(eq(orders.id, input.orderId!));
+    const rows = await db
+      .select()
+      .from(orders)
+      .where(eq(orders.id, input.orderId!))
+      .limit(1);
+    return rows[0];
+  }
+  if (
+    !input.customerName ||
+    !input.deliveryEmail ||
+    !input.selectedPlan ||
+    !Number.isInteger(input.amountPence) ||
+    (input.amountPence ?? -1) < 0
+  )
+    return undefined;
+  const amountPence = input.amountPence as number;
+  await db.insert(orders).values({
+    customerName: input.customerName,
+    deliveryEmail: input.deliveryEmail,
+    selectedPlan: input.selectedPlan,
+    amountPence,
+    vin: input.vin,
+    paymentReference: input.paymentReference,
+    paymentStatus: input.paymentStatus,
+    paidAt: input.paymentStatus === "paid" ? now : undefined,
+  });
+  const rows = await db
+    .select()
+    .from(orders)
+    .where(eq(orders.deliveryEmail, input.deliveryEmail))
+    .orderBy(desc(orders.createdAt))
+    .limit(1);
+  return rows[0];
+}
+
 export async function listAuditLogs() {
   const db = await getDb();
   if (!db) return [];

@@ -19,6 +19,7 @@ import {
   listAuditLogs,
   listOrders,
   recordWebhookEvent,
+  syncOrderFromWebhook,
   revokeAdminSession,
   updateContact,
   updateOrderFulfillment,
@@ -393,14 +394,15 @@ export function registerAdminRoutes(app: Express) {
         : Buffer.isBuffer((req as Request & { rawBody?: Buffer }).rawBody)
           ? (req as Request & { rawBody?: Buffer }).rawBody!
           : Buffer.from("", "utf8");
-      const timestamp = req.get("svix-timestamp") || "";
-      const eventId = req.get("svix-id") || "";
-      const signature = req.get("svix-signature") || "";
+      const timestamp = req.get("webhook-timestamp") || "";
+      const eventId = req.get("webhook-id") || "";
+      const signature = req.get("webhook-signature") || "";
       if (
         !secret ||
         !eventId ||
         !verifyWhopSignature(
           rawBody.toString("utf8"),
+          eventId,
           timestamp,
           signature,
           secret
@@ -419,6 +421,41 @@ export function registerAdminRoutes(app: Express) {
       const companyId =
         safeString(payload.business_id ?? payload.company_id, 180) || undefined;
       const expectedCompany = process.env.WHOP_COMPANY_ID;
+      const acceptedCompany = !expectedCompany || expectedCompany === companyId;
+      let syncedOrderId: number | undefined;
+      if (
+        acceptedCompany &&
+        (eventType === "payment.succeeded" || eventType === "payment.failed")
+      ) {
+        const data =
+          typeof payload.data === "object" && payload.data !== null
+            ? (payload.data as Record<string, unknown>)
+            : payload;
+        const metadata =
+          typeof data.metadata === "object" && data.metadata !== null
+            ? (data.metadata as Record<string, unknown>)
+            : {};
+        const order = await syncOrderFromWebhook({
+          orderId: Number(metadata.orderId ?? data.order_id),
+          customerName: safeString(
+            metadata.customerName ?? data.customer_name,
+            120
+          ),
+          deliveryEmail: safeString(
+            metadata.deliveryEmail ?? data.delivery_email,
+            320
+          ).toLowerCase(),
+          selectedPlan: safeString(
+            metadata.selectedPlan ?? data.selected_plan,
+            120
+          ),
+          amountPence: Number(metadata.amountPence ?? data.amount_pence),
+          vin: safeString(metadata.vin ?? data.vin, 64),
+          paymentReference: safeString(data.id ?? data.payment_id, 180),
+          paymentStatus: eventType === "payment.succeeded" ? "paid" : "failed",
+        });
+        syncedOrderId = order?.id;
+      }
       await recordWebhookEvent({
         eventId,
         eventType,
@@ -433,7 +470,8 @@ export function registerAdminRoutes(app: Express) {
         metadata: {
           eventType,
           companyId,
-          accepted: !expectedCompany || expectedCompany === companyId,
+          accepted: acceptedCompany,
+          syncedOrderId,
         },
       });
       return res.status(200).json({ ok: true });

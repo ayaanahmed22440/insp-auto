@@ -115,6 +115,7 @@ export function readCookie(header: string | undefined, name: string) {
 
 export function verifyWhopSignature(
   rawBody: string,
+  webhookId: string,
   timestamp: string,
   signatureHeader: string,
   secret: string
@@ -122,13 +123,14 @@ export function verifyWhopSignature(
   const timestampNumber = Number(timestamp);
   if (
     !secret ||
+    !webhookId ||
     !timestamp ||
     !Number.isFinite(timestampNumber) ||
     Math.abs(Date.now() / 1000 - timestampNumber) > 300
   )
     return false;
-  const expected = createHmac("sha256", Buffer.from(secret, "base64"))
-    .update(`${timestamp}.${rawBody}`)
+  const expected = createHmac("sha256", Buffer.from(secret, "utf8"))
+    .update(`${webhookId}.${timestamp}.${rawBody}`)
     .digest("base64");
   return signatureHeader
     .split(" ")
