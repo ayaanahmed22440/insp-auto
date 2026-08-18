@@ -105,3 +105,11 @@
 - [x] Add the existing `/pricing` route to desktop and mobile navigation without duplicating the pricing page.
 - [x] Run npm run build and verify existing routes, payment links, and deployment configuration remain unchanged.
 - [ ] Save and deliver the focused UI update checkpoint.
+
+## Secure Hostinger SMTP contact form
+
+- [x] Add a server-side form endpoint that reads SMTP settings only from environment variables.
+- [x] Update the contact form to submit to the endpoint and show success/error states.
+- [x] Add the required mail dependency without changing the npm/Node deployment architecture.
+- [x] Verify build, runtime endpoint behavior, and absence of secrets in source.
+- [ ] Save and deliver the secure email integration checkpoint.
