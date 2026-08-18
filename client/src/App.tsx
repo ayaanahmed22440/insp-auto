@@ -21,11 +21,10 @@ function navigate(path: string) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function Logo({ compact = false }: { compact?: boolean }) {
+function Logo() {
   return (
-    <button className="brand" onClick={() => navigate("/")} aria-label="INSP AUTO home">
-      <span className="brand-mark" aria-hidden="true"><span /></span>
-      {!compact && <span className="brand-copy"><strong>INSP AUTO</strong><small>UK VEHICLE REPORTS</small></span>}
+    <button className="brand" onClick={() => navigate("/")} aria-label="Home">
+      <img className="brand-logo" src="/manus-storage/insp-auto-logo-clean_4e78d572.png" alt="" />
     </button>
   );
 }
@@ -70,7 +69,7 @@ function Header() {
 }
 
 function Footer() {
-  return <footer className="footer"><div className="footer-main"><div className="footer-brand"><Logo /><p>Vehicle history reports designed to help UK buyers make informed decisions.</p><a href="mailto:support@inspauto.com">support@inspauto.com</a></div><div><h3>Company</h3><button onClick={() => navigate("/about")}>About Us</button><button onClick={() => navigate("/services")}>Services</button><button onClick={() => navigate("/contact")}>Contact Us</button></div><div><h3>Services</h3>{services.slice(0, 3).map(([label, href]) => <button key={href} onClick={() => navigate(href)}>{label}</button>)}</div><div><h3>Policies</h3><button onClick={() => navigate("/terms")}>Terms & Conditions</button><button onClick={() => navigate("/refund-policy")}>Refund Policy</button><button onClick={() => navigate("/privacy-policy")}>Privacy Policy</button></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} INSP AUTO. All rights reserved.</span><span>Built for clearer vehicle decisions.</span></div></footer>;
+  return <footer className="footer"><div className="footer-main"><div className="footer-brand"><Logo /><p>Vehicle history reports designed to help UK buyers make informed decisions.</p><a href="mailto:support@inspauto.com">support@inspauto.com</a></div><div><h3>Company</h3><button onClick={() => navigate("/about")}>About Us</button><button onClick={() => navigate("/services")}>Services</button><button onClick={() => navigate("/contact")}>Contact Us</button></div><div><h3>Services</h3>{services.slice(0, 3).map(([label, href]) => <button key={href} onClick={() => navigate(href)}>{label}</button>)}</div><div><h3>Policies</h3><button onClick={() => navigate("/terms")}>Terms & Conditions</button><button onClick={() => navigate("/refund-policy")}>Refund Policy</button><button onClick={() => navigate("/privacy-policy")}>Privacy Policy</button></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} All rights reserved.</span><span>Built for clearer vehicle decisions.</span></div></footer>;
 }
 
 function PolicyPage({ kind }: { kind: "terms" | "refund-policy" | "privacy-policy" }) {

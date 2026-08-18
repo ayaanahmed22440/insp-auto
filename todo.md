@@ -29,3 +29,11 @@
 - [ ] Replace repeated image URLs in the service-card data.
 - [ ] Verify image crops, contrast, and card visibility on desktop and mobile.
 - [ ] Save and deliver the updated checkpoint.
+
+## Supplied logo rebrand
+
+- [ ] Add the supplied logo as the primary header and footer mark without a text wordmark.
+- [ ] Replace amber-focused global colors with electric blue and deep navy brand colors.
+- [ ] Update buttons, links, dividers, badges, icons, and policy accents to the new palette.
+- [ ] Verify logo visibility and contrast on desktop and mobile.
+- [ ] Save and deliver the updated checkpoint.
