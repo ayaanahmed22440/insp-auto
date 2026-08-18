@@ -1,25 +1,44 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+// INSP AUTO — reference-led automotive editorial minimalism; Inspection Amber, Carbon/Midnight Navy, evidence-first copy, quiet motion.
+import { useEffect, type ReactNode } from "react";
+import { ArrowUpRight, BadgeCheck, CarFront, FileCheck2, Gauge, LifeBuoy, LockKeyhole, ScanSearch, ShieldCheck, Truck, Waves } from "lucide-react";
+import { PAYMENT_LINKS } from "@/lib/paymentLinks";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
- */
-export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
+const serviceCards = [
+  ["Car History Report", "A clearer view of the car's recorded past.", CarFront, "/services/car-history-report"],
+  ["Motorbike History Report", "Key checks for two-wheel decisions.", Gauge, "/services/motorbike-history-report"],
+  ["ATV History Report", "Supporting information for off-road vehicles.", ScanSearch, "/services/atv-history-report"],
+  ["Truck History Report", "Keep commercial vehicle history in view.", Truck, "/services/truck-history-report"],
+  ["Boat History Report", "Useful records for your next vessel purchase.", Waves, "/services/boat-history-report"],
+  ["RV History Report", "Make a larger vehicle purchase with context.", CarFront, "/services/rv-history-report"],
+];
+const reportItems = ["Vehicle specifications", "Accident information", "Title information", "Safety recalls", "Ownership information", "Lien / finance information", "Vehicle history", "Other available records"];
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
-    </div>
-  );
+function go(path: string, id?: string) { window.history.pushState({}, "", path); window.dispatchEvent(new PopStateEvent("popstate")); setTimeout(() => document.getElementById(id || "top")?.scrollIntoView({ behavior: "smooth" }), 10); }
+function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) { return <div className={`reveal ${className}`}>{children}</div>; }
+
+function PricingCard({ name, price, children, href, popular }: { name: string; price: string; children: ReactNode; href: string; popular?: boolean }) {
+  return <article className={`pricing-card ${popular ? "popular" : ""}`}>{popular && <span className="popular-badge">Most popular</span>}<div className="pricing-top"><span className="eyebrow">{name}</span><div className="price"><span>£</span>{price}<small> / report</small></div><p>Vehicle History Report</p></div><ul>{children}</ul><a className="button full-button" href={href}>Buy Now <ArrowUpRight size={17} /></a></article>;
+}
+
+export default function Home({ initialSection = "home" }: { initialSection?: string }) {
+  useEffect(() => { if (initialSection === "pricing") setTimeout(() => document.getElementById("pricing")?.scrollIntoView(), 30); if (initialSection === "services") setTimeout(() => document.getElementById("services")?.scrollIntoView(), 30); const items = document.querySelectorAll(".reveal"); const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("visible")), { threshold: 0.12 }); items.forEach((item) => observer.observe(item)); return () => observer.disconnect(); }, [initialSection]);
+  return <main id="top">
+    <section className="hero"><div className="hero-image" /><div className="hero-overlay" /><div className="container hero-content"><Reveal><span className="eyebrow amber">INSP AUTO / UK VEHICLE REPORTS</span><h1>Vehicle history reports <em>you can trust.</em></h1><p>Get detailed vehicle history information before you buy, helping you make a more confident decision.</p><div className="hero-actions"><button className="button" onClick={() => go("/pricing", "pricing")}>Get a Report <ArrowUpRight size={18} /></button><button className="text-button" onClick={() => go("/services", "services")}>Explore Services <span>↓</span></button></div></Reveal><div className="hero-stamp"><span className="stamp">INSP</span><span>Evidence<br />before action</span></div></div><div className="hero-bottom"><div className="container hero-meta"><span>REPORTS FOR BUYERS</span><span>UK FOCUSED</span><span>SUPPORT WHEN YOU NEED IT</span></div></div></section>
+
+    <section className="policy-strip"><div className="container policy-grid"><Reveal className="policy-card"><FileCheck2 /><div><h3>Report information</h3><p>Reports are based on data available from selected third-party sources.</p><button onClick={() => go("/terms")}>Read terms <ArrowUpRight size={14} /></button></div></Reveal><Reveal className="policy-card"><ShieldCheck /><div><h3>Clear limitations</h3><p>Use report information as guidance alongside your own checks.</p><button onClick={() => go("/refund-policy")}>Refund policy <ArrowUpRight size={14} /></button></div></Reveal></div></section>
+
+    <section className="about-section section-pad"><div className="container about-grid"><Reveal><span className="eyebrow">01 / ABOUT OUR COMPANY</span><h2>Information that helps you ask <em>better questions.</em></h2></Reveal><Reveal className="about-copy"><p>INSP AUTO gives UK vehicle buyers a clearer way to explore a vehicle's recorded past before they commit. Our reports bring useful data together in plain language, so you can decide what to ask, what to verify, and when to take a closer look.</p><button className="line-button" onClick={() => go("/about")}>Discover more <ArrowUpRight size={16} /></button><div className="honest-note"><BadgeCheck size={18} /><span>No invented customer counts. Just useful information and honest limits.</span></div></Reveal></div></section>
+
+    <section id="services" className="services-section section-pad"><div className="container"><Reveal className="section-heading"><div><span className="eyebrow">02 / OUR SERVICES</span><h2>Choose your <em>vehicle type.</em></h2></div><p>Start with the report that matches the vehicle you are considering. Each service opens with clear expectations and practical next steps.</p></Reveal><div className="service-grid">{serviceCards.map(([title, description, Icon, href], index) => { const ServiceIcon = Icon as typeof CarFront; return <Reveal key={title as string} className="service-card" ><span className="card-number">0{index + 1}</span><ServiceIcon className="service-icon" /><h3>{title as string}</h3><p>{description as string}</p><button onClick={() => go(href as string)}>Read more <ArrowUpRight size={14} /></button></Reveal>; })}</div></div></section>
+
+    <section id="pricing" className="pricing-section section-pad"><div className="container"><Reveal className="section-heading pricing-heading"><div><span className="eyebrow amber">03 / REPORT OPTIONS</span><h2>Simple pricing. <em>Useful detail.</em></h2></div><p>Select the depth of information that fits the vehicle and the decision in front of you.</p></Reveal><div className="pricing-grid"><Reveal><PricingCard name="Basic" price="56.99" href={PAYMENT_LINKS.basic}><li><FileCheck2 /> Vehicle History Report</li><li><FileCheck2 /> Title Verification</li><li><FileCheck2 /> Safety Recall Status</li><li><FileCheck2 /> Vehicle Specifications</li><li><FileCheck2 /> Accident Information</li><li><LifeBuoy /> 24/7 Support</li></PricingCard></Reveal><Reveal><PricingCard name="Standard" price="66.99" href={PAYMENT_LINKS.standard} popular><li><FileCheck2 /> Everything in Basic</li><li><FileCheck2 /> Lien & Ownership Check</li><li><FileCheck2 /> Expanded report detail</li><li><LifeBuoy /> 24/7 Support</li></PricingCard></Reveal><Reveal><PricingCard name="Premium" price="79.99" href={PAYMENT_LINKS.premium}><li><FileCheck2 /> Everything in Standard</li><li><FileCheck2 /> Premium report offering</li><li><FileCheck2 /> Expanded available records</li><li><LifeBuoy /> 24/7 Support</li></PricingCard></Reveal></div></div></section>
+
+    <section className="why-section section-pad"><div className="container why-grid"><Reveal className="why-visual"><img src="/manus-storage/insp-auto-report_eff63a73.jpg" alt="Vehicle report folder, clipboard and inspection stamp" loading="lazy" /><span className="visual-caption">A report should make the next question easier.</span></Reveal><Reveal className="why-copy"><span className="eyebrow">04 / WHY CHOOSE INSP AUTO</span><h2>Read the detail without <em>the noise.</em></h2><p>We keep the experience focused on what a buyer can understand and act on: useful records, clear language, and support when a detail needs explaining.</p><div className="feature-list"><div><LockKeyhole /><span><strong>Secure checkout</strong> Payments handled through a trusted payment provider.</span></div><div><ScanSearch /><span><strong>Comprehensive history</strong> Access important information available for your selected report.</span></div><div><LifeBuoy /><span><strong>Customer support</strong> Contact us when you need help understanding the next step.</span></div></div></Reveal></div></section>
+
+    <section className="report-section section-pad"><div className="container report-grid"><Reveal><span className="eyebrow amber">05 / WHAT YOU MAY LEARN</span><h2>Information available in your selected report <em>may include…</em></h2><p>Coverage varies by product and by the records available to the report provider. A report is one part of a careful vehicle purchase.</p></Reveal><Reveal className="report-list">{reportItems.map((item, index) => <div key={item}><span>0{index + 1}</span><strong>{item}</strong><ArrowUpRight size={16} /></div>)}</Reveal></div></section>
+
+    <section className="process-section section-pad"><div className="container"><Reveal className="section-heading"><div><span className="eyebrow">06 / HOW IT WORKS</span><h2>Three steps to <em>more context.</em></h2></div></Reveal><div className="process-grid"><Reveal><span>01</span><h3>Choose your report</h3><p>Select the report package you need for the vehicle in front of you.</p></Reveal><Reveal><span>02</span><h3>Complete checkout</h3><p>Pay securely through the selected checkout option.</p></Reveal><Reveal><span>03</span><h3>Receive your report</h3><p>Your report is processed and delivered according to the fulfilment process.</p></Reveal></div></div></section>
+
+    <section className="cta-section"><div className="container cta-inner"><span className="stamp">INSP</span><Reveal><span className="eyebrow amber">READY WHEN YOU ARE</span><h2>Ready to check <em>your vehicle?</em></h2><p>Get the information you need before making your next vehicle purchase.</p><button className="button light-button" onClick={() => go("/pricing", "pricing")}>Get Your Report <ArrowUpRight size={18} /></button></Reveal></div></section>
+  </main>;
 }
