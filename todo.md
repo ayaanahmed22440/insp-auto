@@ -70,3 +70,10 @@
 - [x] Record exact Hostinger settings and the managed-preview limitation.
 - [x] Reconfirm production commands and routes.
 - [ ] Save and deliver the final deployment checkpoint.
+
+## Analytics build compatibility
+
+- [x] Inspect the analytics script references in client/index.html.
+- [x] Remove or safely gate undefined analytics variables without changing the website UI.
+- [x] Run npm install, npm run build, npm start, and production-load verification.
+- [ ] Save and deliver the updated checkpoint.
