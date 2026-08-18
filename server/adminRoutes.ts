@@ -11,7 +11,7 @@ import {
   getActiveAdminSession,
   getAdminCredential,
   getDashboardCounts,
-  getLatestOtpChallenge,
+  getActiveOtpChallenges,
   getOrderStatusByOwner,
   hasWebhookEvent,
   summarizeDatabaseError,
@@ -326,14 +326,20 @@ export function registerAdminRoutes(app: Express) {
       return res
         .status(401)
         .json({ ok: false, message: "Invalid verification code" });
-    const challenge = await getLatestOtpChallenge(email);
-    if (!challenge || challenge.attempts >= MAX_OTP_ATTEMPTS)
+    const challenges = await getActiveOtpChallenges(email);
+    const usableChallenges = (challenges ?? []).filter(
+      challenge => challenge.attempts < MAX_OTP_ATTEMPTS
+    );
+    if (!usableChallenges.length) {
       return res
         .status(401)
         .json({ ok: false, message: "Invalid verification code" });
-    await incrementOtpAttempts(challenge.id);
-    const valid = safeEqualHex(hashOtp(email, code), challenge.codeHash);
-    if (!valid) {
+    }
+    const matchingChallenge = usableChallenges.find(challenge =>
+      safeEqualHex(hashOtp(email, code), challenge.codeHash)
+    );
+    await incrementOtpAttempts(matchingChallenge?.id ?? usableChallenges[0].id);
+    if (!matchingChallenge) {
       await createAuditLog({ actorEmail: email, action: "admin.otp.failure" });
       return res
         .status(401)

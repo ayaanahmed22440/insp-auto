@@ -139,10 +139,10 @@ export async function createOtpChallenge(
   return true;
 }
 
-export async function getLatestOtpChallenge(email: string) {
+export async function getActiveOtpChallenges(email: string) {
   const db = await getDb();
   if (!db) return undefined;
-  const result = await db
+  return db
     .select()
     .from(otpChallenges)
     .where(
@@ -153,8 +153,7 @@ export async function getLatestOtpChallenge(email: string) {
       )
     )
     .orderBy(desc(otpChallenges.createdAt))
-    .limit(1);
-  return result[0];
+    .limit(3);
 }
 
 export async function incrementOtpAttempts(id: number) {
