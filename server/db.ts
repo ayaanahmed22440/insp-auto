@@ -19,11 +19,24 @@ let _db: ReturnType<typeof drizzle> | null = null;
 export function summarizeDatabaseError(error: unknown) {
   if (!error || typeof error !== "object") return { name: "unknown" };
   const value = error as Record<string, unknown>;
+  const cause =
+    value.cause && typeof value.cause === "object"
+      ? (value.cause as Record<string, unknown>)
+      : undefined;
   return {
     name: typeof value.name === "string" ? value.name : "Error",
     code: typeof value.code === "string" ? value.code : undefined,
     errno: typeof value.errno === "number" ? value.errno : undefined,
     sqlState: typeof value.sqlState === "string" ? value.sqlState : undefined,
+    cause: cause
+      ? {
+          name: typeof cause.name === "string" ? cause.name : undefined,
+          code: typeof cause.code === "string" ? cause.code : undefined,
+          errno: typeof cause.errno === "number" ? cause.errno : undefined,
+          sqlState:
+            typeof cause.sqlState === "string" ? cause.sqlState : undefined,
+        }
+      : undefined,
   };
 }
 

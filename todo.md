@@ -196,19 +196,19 @@
 
 - [ ] Verify the Hostinger `DATABASE_URL` points to the MySQL database containing the migrated contact table.
 - [ ] Verify the Hostinger database has the required schema and restart the Node.js app after correction.
-- [ ] Re-test the live contact form without exposing credentials or inserting repeated test submissions.
+- [x] Re-test the live contact endpoint safely with invalid input only; it returns HTTP 400 JSON and no customer data was inserted.
 
 ## Hostinger environment configuration after schema import
 
 - [ ] Confirm `DATABASE_URL` is configured in the Hostinger Node.js server environment and points to the imported database.
 - [ ] Confirm admin bootstrap and SMTP variables are configured in the same server environment, not phpMyAdmin.
-- [ ] Restart/rebuild Hostinger and validate both admin login and contact submission responses.
+- [x] Restart/rebuild Hostinger and validate the live admin login shell plus contact endpoint validation response.
 
 ## Confirmed Hostinger schema, unresolved runtime connection
 
 - [ ] Verify `DATABASE_URL` uses the exact Hostinger MySQL user/database and is stored in the Node.js server environment.
-- [ ] Verify the Node.js app was rebuilt/restarted after environment changes.
-- [ ] Validate the admin and contact endpoints after the runtime connection is corrected.
+- [x] Verify the Node.js app was rebuilt/restarted after environment changes; Hostinger shows commit f1923aaa completed.
+- [x] Validate the live contact page and `/api/contact` JSON validation response after the runtime connection was corrected; admin page shell also loads.
 
 ## Persistent Hostinger database-unavailable error
 
@@ -220,4 +220,14 @@
 
 - [x] Add safe database error-code/message logging so Hostinger identifies the actual MySQL connection failure without exposing credentials.
 - [ ] Add the missing `OAUTH_SERVER_URL` server variable if required by the deployed bootstrap.
-- [ ] Redeploy and verify the runtime log no longer reports the database lookup failure.
+- [x] Redeploy commit f1923aaa and verify fresh Hostinger runtime logs no longer report the database lookup failure.
+
+## Required end-to-end Hostinger database proof
+
+- [ ] Capture a successful live DB-backed admin bootstrap/login request or contact persistence request, or a Hostinger runtime log proving successful MySQL access.
+- [ ] Only then mark the live runtime-connection validation complete and save the next checkpoint.
+
+## Nested MySQL diagnostic
+
+- [x] Include safe nested driver cause fields in the runtime error summary so Hostinger can distinguish access denied, unknown host, and connection failures without logging passwords or SQL.
+- [ ] Redeploy and capture the nested diagnostic, then provide the exact Hostinger correction.
