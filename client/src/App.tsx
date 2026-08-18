@@ -24,7 +24,7 @@ function navigate(path: string) {
 function Logo() {
   return (
     <button className="brand" onClick={() => navigate("/")} aria-label="Home">
-      <img className="brand-logo" src="/manus-storage/insp-auto-logo-clean_4e78d572.png" alt="" />
+      <img className="brand-logo" src="/assets/insp-auto-logo-clean.png" alt="" />
     </button>
   );
 }

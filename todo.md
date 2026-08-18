@@ -77,3 +77,17 @@
 - [x] Remove or safely gate undefined analytics variables without changing the website UI.
 - [x] Run npm install, npm run build, npm start, and production-load verification.
 - [ ] Save and deliver the updated checkpoint.
+
+## Local production assets
+
+- [x] Find every `/manus-storage/` reference and identify the source asset.
+- [x] Copy each required production asset into repository-owned public assets.
+- [x] Update all production references to `/assets/...` paths.
+- [x] Run npm install, npm run build, npm start, and verify the hero asset loads.
+- [ ] Save and deliver the updated checkpoint.
+
+## Checkpoint-safe asset optimization
+
+- [x] Optimize oversized local production images below 1 MB each while preserving their filenames and visual role.
+- [x] Re-run npm install, npm run build, npm start, and local asset-load checks.
+- [ ] Retry and save the optimized asset checkpoint.
