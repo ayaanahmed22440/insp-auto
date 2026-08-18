@@ -37,3 +37,9 @@
 - [ ] Update buttons, links, dividers, badges, icons, and policy accents to the new palette.
 - [ ] Verify logo visibility and contrast on desktop and mobile.
 - [ ] Save and deliver the updated checkpoint.
+
+## Footer logo visibility fix
+
+- [ ] Apply a visible footer-safe logo treatment on the dark background.
+- [ ] Verify footer logo contrast, size, spacing, and mobile behavior.
+- [ ] Save and deliver the updated checkpoint.
