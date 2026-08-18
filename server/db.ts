@@ -400,6 +400,32 @@ export async function listAuditLogs() {
     .limit(200);
 }
 
+export async function getOrderStatusByOwner(
+  email: string,
+  paymentReference: string
+) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const rows = await db
+    .select({
+      id: orders.id,
+      selectedPlan: orders.selectedPlan,
+      paymentStatus: orders.paymentStatus,
+      fulfillmentStatus: orders.fulfillmentStatus,
+      paidAt: orders.paidAt,
+      createdAt: orders.createdAt,
+    })
+    .from(orders)
+    .where(
+      and(
+        eq(orders.deliveryEmail, email),
+        eq(orders.paymentReference, paymentReference)
+      )
+    )
+    .limit(1);
+  return rows[0];
+}
+
 export async function listOrders() {
   const db = await getDb();
   if (!db) return [];

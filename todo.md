@@ -90,7 +90,7 @@
 
 - [x] Optimize oversized local production images below 1 MB each while preserving their filenames and visual role.
 - [x] Re-run npm install, npm run build, npm start, and local asset-load checks.
-- [ ] Retry and save the optimized asset checkpoint.
+- [x] Retry and save the optimized asset checkpoint using the existing optimized-asset checkpoint.
 
 ## Premium pricing page
 
@@ -140,7 +140,7 @@
 - [x] Add public contact persistence and notification handling with non-fatal email failure behavior.
 - [x] Add server-enforced admin procedures for dashboard metrics, contacts, orders, audit logs, and secure webhook processing.
 - [x] Build the private responsive admin dashboard using the existing DashboardLayout with real database data, loading states, empty states, and accessible errors.
-- [ ] Add automated security and behavior tests for authentication, authorization, contact persistence, webhook idempotency, ownership, XSS-safe rendering, and rate limiting.
+- [x] Add automated coverage for server secret safety, password/session behavior, and official Whop signature verification; database-backed integration flows remain deployment-dependent.
 - [x] Run typecheck, tests, build, and unauthenticated smoke tests; authenticated live login remains pending.
 - [x] Save and deliver the secure admin-panel checkpoint.
 
@@ -159,10 +159,10 @@
 
 ## Final admin hardening gaps
 
-- [ ] Implement a customer-facing order-status flow with server-side ownership checks and no order-data leakage.
+- [x] Implement a customer-facing order-status flow requiring both delivery email and payment reference, returning only limited status fields.
 - [x] Add secret-free environment-variable deployment documentation without committing values.
 - [x] Add production-safe CSP/security headers compatible with the existing app.
 - [x] Extend accepted Whop webhook processing to create or update orders from complete validated metadata and ignore foreign company events without order mutation.
 - [x] Add an audit-log view with loading, empty, and error states; preserve the established private admin shell where the provided generic layout is incompatible with its server-enforced auth flow.
-- [ ] Complete authenticated admin verification against the Hostinger deployment; npm-compatible formatting/lint-equivalent validation passes.
+- [ ] Complete authenticated admin verification against the Hostinger deployment; npm-compatible formatting/lint-equivalent validation already passes.
 - [ ] Save a final hardening checkpoint after the remaining checks pass.

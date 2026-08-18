@@ -12,6 +12,7 @@ import {
   getAdminCredential,
   getDashboardCounts,
   getLatestOtpChallenge,
+  getOrderStatusByOwner,
   hasWebhookEvent,
   incrementOtpAttempts,
   invalidateOtpChallenges,
@@ -134,6 +135,25 @@ function isValidContact(body: unknown) {
 }
 
 export function registerAdminRoutes(app: Express) {
+  app.post("/api/order-status", requireSameOrigin, async (req, res) => {
+    const email = safeString(req.body?.email, 320).toLowerCase();
+    const paymentReference = safeString(req.body?.paymentReference, 180);
+    if (!isValidEmail(email) || !paymentReference)
+      return res
+        .status(400)
+        .json({
+          ok: false,
+          message:
+            "Enter the email used at checkout and your payment reference.",
+        });
+    const order = await getOrderStatusByOwner(email, paymentReference);
+    if (!order)
+      return res
+        .status(404)
+        .json({ ok: false, message: "No matching order was found." });
+    return res.json({ ok: true, data: order });
+  });
+
   app.post("/api/contact", requireSameOrigin, async (req, res) => {
     if (!isValidContact(req.body))
       return res
