@@ -191,3 +191,9 @@
 - [x] Diagnose why the production `/api/contact` request returned an HTML document instead of JSON: database persistence errors were escaping the Express route.
 - [x] Restore the existing contact submission response by containing persistence failures, without changing the form design, SMTP settings, or public wording.
 - [x] Preserve the previously verified contact success path and validation-error JSON behavior; revalidate the new database-failure path as JSON without submitting test customer data to production.
+
+## Live contact database failure
+
+- [ ] Verify the Hostinger `DATABASE_URL` points to the MySQL database containing the migrated contact table.
+- [ ] Verify the Hostinger database has the required schema and restart the Node.js app after correction.
+- [ ] Re-test the live contact form without exposing credentials or inserting repeated test submissions.
