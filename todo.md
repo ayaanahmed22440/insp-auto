@@ -56,3 +56,17 @@
 - [x] Read and extract the requested website changes from pasted_content_3.txt.
 - [x] Implement the requested changes without breaking existing routes or branding.
 - [x] Verify the updated website and save the next checkpoint.
+
+## Stale preview repair
+
+- [ ] Refresh the managed preview service so it no longer uses old pnpm-linked modules.
+- [ ] Verify preview loads without the missing-module overlay.
+- [ ] Recheck npm build/start and required routes.
+- [ ] Save and deliver the repaired checkpoint.
+
+## Final npm-only deployment delivery
+
+- [x] Keep the repository npm-only; do not reintroduce pnpm preview configuration.
+- [x] Record exact Hostinger settings and the managed-preview limitation.
+- [x] Reconfirm production commands and routes.
+- [ ] Save and deliver the final deployment checkpoint.
