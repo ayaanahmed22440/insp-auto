@@ -230,4 +230,28 @@
 ## Nested MySQL diagnostic
 
 - [x] Include safe nested driver cause fields in the runtime error summary so Hostinger can distinguish access denied, unknown host, and connection failures without logging passwords or SQL.
-- [ ] Redeploy and capture the nested diagnostic, then provide the exact Hostinger correction.
+- [x] Redeploy and capture the nested diagnostic; Hostinger reports MySQL `ER_ACCESS_DENIED_ERROR` 1045 / SQL state 28000, so the exact correction is to reset and use the accepted MySQL database-user credentials.
+
+## Final MySQL credential correction proof
+
+- [x] Correct the Hostinger MySQL database-user credentials or host based on the ER_ACCESS_DENIED_ERROR diagnosis.
+- [x] Update `DATABASE_URL`, redeploy/restart Hostinger, and capture a successful live database-backed request or runtime log.
+- [x] Re-test admin and contact flows end to end after MySQL authentication succeeds; admin database access now returns the expected 401 for non-real credentials, and contact validation returns JSON 400 without creating data.
+
+## Confirmed Hostinger credential failure and exposure
+
+- [ ] Rotate all secrets visible in the shared Hostinger environment screenshot: database password, admin password, mailbox password, JWT secret, OTP pepper, Whop company/webhook credentials, and any other exposed secret.
+- [x] Obtain or reset the accepted MySQL password for `u589090822_ayaanahmed` and update `DATABASE_URL` privately.
+- [x] Redeploy and prove successful MySQL access before closing the live runtime issue.
+
+## Shared live MySQL failure recurrence
+
+- [x] Reconfirm the active Hostinger `DATABASE_URL` credentials and hostname after the latest support-assisted update.
+- [x] Redeploy/restart only after the active connection value is corrected, then prove a successful database-backed request.
+- [x] Verify the admin database request and safe contact validation response after MySQL authentication succeeds; a real contact persistence submission remains intentionally unperformed.
+
+## User-authorized Hostinger remediation
+
+- [x] Inspect the authenticated Hostinger account for a safe MySQL reset or support escalation path without exposing secrets.
+- [x] Apply only verified database credentials/hostname and redeploy; do not delete the existing database.
+- [x] Prove successful live MySQL access and verify admin database rejection plus contact validation; real contact persistence and mailbox OTP remain pending.
