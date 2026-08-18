@@ -173,3 +173,9 @@
 - [ ] Verify the complete Hostinger environment-variable list, database bootstrap, and secure session-cookie requirements.
 - [x] Apply and validate the Hostinger reverse-proxy origin fix; matching forwarded origins now reach authentication and mismatched origins remain blocked.
 - [x] Provide exact Hostinger configuration steps and identify the required user-side environment and restart action.
+
+## Hostinger Invalid credentials diagnosis
+
+- [x] Confirm the production database currently has zero admin credential rows; the failure is bootstrap configuration, not an old password hash.
+- [x] Add and end-to-end verify a safe non-secret bootstrap diagnostic: an empty admin table with missing server bootstrap variables returns HTTP 503 with a clear message instead of misleading Invalid credentials.
+- [x] Validate the bootstrap diagnostic with TypeScript, five Vitest tests, production build, and a local production HTTP 503 smoke test; preserve OTP/session security and document the required Hostinger restart action.

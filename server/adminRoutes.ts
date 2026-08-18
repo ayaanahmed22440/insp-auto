@@ -222,6 +222,21 @@ export function registerAdminRoutes(app: Express) {
     let credential = await getAdminCredential(email);
     if (
       !credential &&
+      (!process.env.ADMIN_EMAIL || !process.env.ADMIN_INITIAL_PASSWORD)
+    ) {
+      await createAuditLog({
+        actorEmail: email,
+        action: "admin.bootstrap.missing",
+      });
+      return res
+        .status(503)
+        .json({
+          ok: false,
+          message: "Admin bootstrap is not configured on the server.",
+        });
+    }
+    if (
+      !credential &&
       process.env.ADMIN_EMAIL &&
       process.env.ADMIN_INITIAL_PASSWORD &&
       email === normalizeAdminEmail(process.env.ADMIN_EMAIL)
