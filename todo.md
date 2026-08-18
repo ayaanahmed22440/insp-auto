@@ -14,3 +14,11 @@
 - [x] Add complete INSP AUTO terms and refund bullet content with working links.
 - [x] Verify desktop and mobile card spacing, contrast, and button behavior.
 - [ ] Save and deliver the updated checkpoint.
+
+## Services and Pricing reference update
+
+- [ ] Restyle the six Services cards to match the supplied compact reference layout.
+- [ ] Add a dark affordability banner between Services and Pricing.
+- [ ] Add six compact pricing cards with the supplied UK pricing presentation and working checkout links.
+- [ ] Verify desktop/mobile layout and all pricing-button destinations.
+- [ ] Save and deliver the updated checkpoint.
