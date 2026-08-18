@@ -16,7 +16,18 @@ import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
-export async function getDb() {
+export function summarizeDatabaseError(error: unknown) {
+  if (!error || typeof error !== "object") return { name: "unknown" };
+  const value = error as Record<string, unknown>;
+  return {
+    name: typeof value.name === "string" ? value.name : "Error",
+    code: typeof value.code === "string" ? value.code : undefined,
+    errno: typeof value.errno === "number" ? value.errno : undefined,
+    sqlState: typeof value.sqlState === "string" ? value.sqlState : undefined,
+  };
+}
+
+async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       _db = drizzle(process.env.DATABASE_URL);
@@ -231,7 +242,7 @@ export async function createContact(input: {
   } catch (error) {
     console.error(
       "[Contact] database persistence failed",
-      error instanceof Error ? error.message : "unknown"
+      summarizeDatabaseError(error)
     );
     return undefined;
   }

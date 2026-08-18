@@ -197,3 +197,27 @@
 - [ ] Verify the Hostinger `DATABASE_URL` points to the MySQL database containing the migrated contact table.
 - [ ] Verify the Hostinger database has the required schema and restart the Node.js app after correction.
 - [ ] Re-test the live contact form without exposing credentials or inserting repeated test submissions.
+
+## Hostinger environment configuration after schema import
+
+- [ ] Confirm `DATABASE_URL` is configured in the Hostinger Node.js server environment and points to the imported database.
+- [ ] Confirm admin bootstrap and SMTP variables are configured in the same server environment, not phpMyAdmin.
+- [ ] Restart/rebuild Hostinger and validate both admin login and contact submission responses.
+
+## Confirmed Hostinger schema, unresolved runtime connection
+
+- [ ] Verify `DATABASE_URL` uses the exact Hostinger MySQL user/database and is stored in the Node.js server environment.
+- [ ] Verify the Node.js app was rebuilt/restarted after environment changes.
+- [ ] Validate the admin and contact endpoints after the runtime connection is corrected.
+
+## Persistent Hostinger database-unavailable error
+
+- [ ] Determine whether Hostinger requires a database hostname other than `localhost` for this application.
+- [ ] Confirm the MySQL password belongs to `u589090822_ayaanahmed` and that `DATABASE_URL` is in the active Node.js environment.
+- [ ] Confirm a real rebuild/restart occurred after the variable was changed, then re-test admin and contact flows.
+
+## Hostinger runtime-log findings
+
+- [x] Add safe database error-code/message logging so Hostinger identifies the actual MySQL connection failure without exposing credentials.
+- [ ] Add the missing `OAUTH_SERVER_URL` server variable if required by the deployed bootstrap.
+- [ ] Redeploy and verify the runtime log no longer reports the database lookup failure.

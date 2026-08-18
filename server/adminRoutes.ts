@@ -14,6 +14,7 @@ import {
   getLatestOtpChallenge,
   getOrderStatusByOwner,
   hasWebhookEvent,
+  summarizeDatabaseError,
   incrementOtpAttempts,
   invalidateOtpChallenges,
   listContacts,
@@ -225,7 +226,7 @@ export function registerAdminRoutes(app: Express) {
     } catch (error) {
       console.error(
         "[Admin] database lookup failed",
-        error instanceof Error ? error.message : "unknown"
+        summarizeDatabaseError(error)
       );
       return res.status(503).json({
         ok: false,
@@ -261,7 +262,7 @@ export function registerAdminRoutes(app: Express) {
       } catch (error) {
         console.error(
           "[Admin] bootstrap failed",
-          error instanceof Error ? error.message : "unknown"
+          summarizeDatabaseError(error)
         );
         return res.status(503).json({
           ok: false,
