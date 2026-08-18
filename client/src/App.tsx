@@ -62,7 +62,7 @@ function Header() {
         <button onClick={() => { navigate("/"); setOpen(false); }}>Home</button><button onClick={() => { navigate("/about"); setOpen(false); }}>About Us</button>
         <button className="mobile-service-toggle" onClick={() => setServicesOpen(!servicesOpen)}>Services <span>{servicesOpen ? "−" : "+"}</span></button>
         {servicesOpen && <div className="mobile-service-list">{services.map(([label, href]) => <button key={href} onClick={() => { navigate(href); setOpen(false); }}>{label}</button>)}</div>}
-        <button onClick={() => { navigate("/contact"); setOpen(false); }}>Contact Us</button><button onClick={() => { navigate("/pricing"); setOpen(false); }}>Pricing</button><button onClick={() => { navigate("/terms"); setOpen(false); }}>Company Policies</button>
+        <button onClick={() => { navigate("/contact"); setOpen(false); }}>Contact Us</button><button onClick={() => { navigate("/pricing"); setOpen(false); }}>Pricing</button><button onClick={() => { navigate("/terms"); setOpen(false); }}>Terms &amp; Conditions</button><button onClick={() => { navigate("/refund-policy"); setOpen(false); }}>Refund Policy</button><button onClick={() => { navigate("/privacy-policy"); setOpen(false); }}>Privacy Policy</button>
         <a className="button" href="mailto:support@inspauto.com">Email support</a>
       </div>
     </header>

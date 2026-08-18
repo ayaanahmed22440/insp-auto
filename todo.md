@@ -119,3 +119,9 @@
 - [x] Capture the form element before the async request and reset it safely after success.
 - [x] Run typecheck, build, runtime endpoint, and form behavior checks.
 - [ ] Save and deliver the bug-fix checkpoint.
+
+## Mobile policy navigation fix
+
+- [x] Show Terms & Conditions, Refund Policy, and Privacy Policy as separate mobile navigation items.
+- [x] Verify each item routes to the existing policy page and remains visible on mobile.
+- [ ] Save and deliver the navigation fix checkpoint.
