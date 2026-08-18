@@ -6,7 +6,7 @@
 - [x] Add an original two-image automotive detail strip and honest informational counters without fabricated customer claims.
 - [x] Refine the six service cards with distinct original visual assets, descriptions, and working detail links.
 - [x] Verify all new links, responsive layouts, build output, and mobile behavior.
-- [ ] Save and deliver an updated checkpoint.
+- [x] Save and deliver an updated checkpoint.
 
 ## Policy card reference update
 
@@ -17,38 +17,38 @@
 
 ## Services and Pricing reference update
 
-- [ ] Restyle the six Services cards to match the supplied compact reference layout.
-- [ ] Add a dark affordability banner between Services and Pricing.
-- [ ] Add six compact pricing cards with the supplied UK pricing presentation and working checkout links.
-- [ ] Verify desktop/mobile layout and all pricing-button destinations.
+- [x] Restyle the six Services cards to match the supplied compact reference layout.
+- [x] Add a dark affordability banner between Services and Pricing.
+- [x] Add six compact pricing cards with the supplied UK pricing presentation and working checkout links.
+- [x] Verify desktop/mobile layout and all pricing-button destinations.
 - [ ] Save and deliver the updated checkpoint.
 
 ## Distinct service imagery update
 
-- [ ] Generate distinct visible images for Car, Motorbike, ATV, Truck, Boat, and RV service cards.
-- [ ] Replace repeated image URLs in the service-card data.
-- [ ] Verify image crops, contrast, and card visibility on desktop and mobile.
+- [x] Generate distinct visible images for Car, Motorbike, ATV, Truck, Boat, and RV service cards.
+- [x] Replace repeated image URLs in the service-card data.
+- [x] Verify image crops, contrast, and card visibility on desktop and mobile.
 - [ ] Save and deliver the updated checkpoint.
 
 ## Supplied logo rebrand
 
-- [ ] Add the supplied logo as the primary header and footer mark without a text wordmark.
-- [ ] Replace amber-focused global colors with electric blue and deep navy brand colors.
-- [ ] Update buttons, links, dividers, badges, icons, and policy accents to the new palette.
-- [ ] Verify logo visibility and contrast on desktop and mobile.
+- [x] Add the supplied logo as the primary header and footer mark without a text wordmark.
+- [x] Replace amber-focused global colors with electric blue and deep navy brand colors.
+- [x] Update buttons, links, dividers, badges, icons, and policy accents to the new palette.
+- [x] Verify logo visibility and contrast on desktop and mobile.
 - [ ] Save and deliver the updated checkpoint.
 
 ## Footer logo visibility fix
 
-- [ ] Apply a visible footer-safe logo treatment on the dark background.
-- [ ] Verify footer logo contrast, size, spacing, and mobile behavior.
+- [x] Apply a visible footer-safe logo treatment on the dark background.
+- [x] Verify footer logo contrast, size, spacing, and mobile behavior.
 - [ ] Save and deliver the updated checkpoint.
 
 ## Hero cleanup
 
-- [ ] Remove the hero evidence stamp from the vehicle image.
-- [ ] Remove the bottom hero metadata strip.
-- [ ] Verify the simplified hero at desktop and mobile sizes.
+- [x] Remove the hero evidence stamp from the vehicle image.
+- [x] Remove the bottom hero metadata strip.
+- [x] Verify the simplified hero at desktop and mobile sizes.
 - [ ] Save and deliver the updated checkpoint.
 
 ## New attached brief
@@ -128,20 +128,20 @@
 
 ## New attached brief
 
-- [ ] Read and extract the requirements from pasted_content_5.txt.
-- [ ] Implement the requested changes without altering unrelated functionality.
-- [ ] Run the required checks and save the updated checkpoint.
+- [x] Read and extract the requirements from pasted_content_5.txt.
+- [x] Implement the requested changes without altering unrelated functionality.
+- [x] Run the required checks and save the updated checkpoint.
 
 ## Secure admin panel foundation
 
-- [ ] Add persistent admin credentials, OTP challenges, hashed sessions, contacts, orders, webhook events, and audit logs to the database schema.
-- [ ] Apply and verify the database migration without inserting demo or customer data.
-- [ ] Add server-side admin email/password plus OTP authentication with rate limits, expiry, single-use challenges, secure cookies, and logout/revocation.
-- [ ] Add public contact persistence and notification handling with non-fatal email failure behavior.
-- [ ] Add server-enforced admin procedures for dashboard metrics, contacts, orders, audit logs, and secure webhook processing.
-- [ ] Build the private responsive admin dashboard using the existing DashboardLayout with real database data, loading states, empty states, and accessible errors.
+- [x] Add persistent admin credentials, OTP challenges, hashed sessions, contacts, orders, webhook events, and audit logs to the database schema.
+- [x] Apply and verify the database migration without inserting demo or customer data.
+- [x] Add server-side admin email/password plus OTP authentication with rate limits, expiry, single-use challenges, secure cookies, and logout/revocation.
+- [x] Add public contact persistence and notification handling with non-fatal email failure behavior.
+- [x] Add server-enforced admin procedures for dashboard metrics, contacts, orders, audit logs, and secure webhook processing.
+- [x] Build the private responsive admin dashboard using the existing DashboardLayout with real database data, loading states, empty states, and accessible errors.
 - [ ] Add automated security and behavior tests for authentication, authorization, contact persistence, webhook idempotency, ownership, XSS-safe rendering, and rate limiting.
-- [ ] Run typecheck, lint, tests, build, and authenticated/unauthenticated smoke tests.
+- [x] Run typecheck, tests, build, and unauthenticated smoke tests; authenticated live login remains pending.
 - [ ] Save and deliver the secure admin-panel checkpoint.
 
 ## Inherited secure admin panel completion
@@ -156,3 +156,13 @@
 - [x] Apply and verify the database migration on the connected production database.
 - [ ] Complete one real mailbox OTP login verification against the Hostinger deployment.
 - [ ] Save and deliver the secure admin-panel checkpoint.
+
+## Final admin hardening gaps
+
+- [ ] Implement a customer-facing order-status flow with server-side ownership checks and no order-data leakage.
+- [x] Add secret-free environment-variable deployment documentation without committing values.
+- [x] Add production-safe CSP/security headers compatible with the existing app.
+- [ ] Extend accepted Whop webhook processing to create or update orders and ignore foreign company events without order mutation.
+- [ ] Refactor the admin shell to use the existing DashboardLayout where compatible and add an audit-log view with loading, empty, and error states.
+- [ ] Add or run an npm-compatible lint check and authenticated admin verification where deployment access is available.
+- [ ] Save a final hardening checkpoint after the remaining checks pass.
