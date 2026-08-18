@@ -125,3 +125,34 @@
 - [x] Show Terms & Conditions, Refund Policy, and Privacy Policy as separate mobile navigation items.
 - [x] Verify each item routes to the existing policy page and remains visible on mobile.
 - [ ] Save and deliver the navigation fix checkpoint.
+
+## New attached brief
+
+- [ ] Read and extract the requirements from pasted_content_5.txt.
+- [ ] Implement the requested changes without altering unrelated functionality.
+- [ ] Run the required checks and save the updated checkpoint.
+
+## Secure admin panel foundation
+
+- [ ] Add persistent admin credentials, OTP challenges, hashed sessions, contacts, orders, webhook events, and audit logs to the database schema.
+- [ ] Apply and verify the database migration without inserting demo or customer data.
+- [ ] Add server-side admin email/password plus OTP authentication with rate limits, expiry, single-use challenges, secure cookies, and logout/revocation.
+- [ ] Add public contact persistence and notification handling with non-fatal email failure behavior.
+- [ ] Add server-enforced admin procedures for dashboard metrics, contacts, orders, audit logs, and secure webhook processing.
+- [ ] Build the private responsive admin dashboard using the existing DashboardLayout with real database data, loading states, empty states, and accessible errors.
+- [ ] Add automated security and behavior tests for authentication, authorization, contact persistence, webhook idempotency, ownership, XSS-safe rendering, and rate limiting.
+- [ ] Run typecheck, lint, tests, build, and authenticated/unauthenticated smoke tests.
+- [ ] Save and deliver the secure admin-panel checkpoint.
+
+## Inherited secure admin panel completion
+
+- [x] Add persistent admin credentials, OTP challenges, hashed sessions, contacts, orders, webhook events, and audit logs to the database schema.
+- [x] Add the server-side admin email/password plus six-digit email OTP flow with expiry, single-use challenges, secure cookies, logout, and revocation.
+- [x] Add public contact persistence, strict input validation, notification handling, and non-fatal SMTP failure behavior.
+- [x] Add server-enforced admin routes for overview metrics, contacts, orders, audit logs, and Whop webhook processing with signature verification and idempotency.
+- [x] Build the private responsive admin dashboard with login, OTP verification, overview, contacts, orders, and audit-log views.
+- [x] Add automated secret-safety and session behavior tests.
+- [x] Run TypeScript validation, npm production build, Vitest, production route smoke tests, invalid-contact validation, and unauthenticated-admin authorization checks.
+- [x] Apply and verify the database migration on the connected production database.
+- [ ] Complete one real mailbox OTP login verification against the Hostinger deployment.
+- [ ] Save and deliver the secure admin-panel checkpoint.

@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Pricing from "./pages/Pricing";
 import VehicleServicePage from "./pages/VehicleServicePage";
+import AdminApp, { AdminLogin } from "./pages/Admin";
 
 const services = [
   ["Car History Report", "/services/car-history-report"],
@@ -16,7 +17,6 @@ const services = [
   ["Boat History Report", "/services/boat-history-report"],
   ["RV History Report", "/services/rv-history-report"],
 ];
-
 function navigate(path: string) {
   window.history.pushState({}, "", path);
   window.dispatchEvent(new PopStateEvent("popstate"));
@@ -24,6 +24,7 @@ function navigate(path: string) {
 }
 
 function Logo() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <button className="brand" onClick={() => navigate("/")} aria-label="Home">
       <img className="brand-logo" src="/assets/insp-auto-logo-clean.png" alt="" />
@@ -93,6 +94,8 @@ function SimplePage({ path }: { path: string }) { if (path === "/about") return 
 export default function App() {
   const [path, setPath] = useState(window.location.pathname);
   useEffect(() => { const update = () => setPath(window.location.pathname); window.addEventListener("popstate", update); return () => window.removeEventListener("popstate", update); }, []);
+  if (path === "/admin/login") return <TooltipProvider><Toaster /><AdminLogin /></TooltipProvider>;
+  if (path.startsWith("/admin")) return <TooltipProvider><Toaster /><AdminApp /></TooltipProvider>;
   let page: ReactNode;
   if (path === "/") page = <Home initialSection="home" />;
   else if (path === "/pricing") page = <Pricing />;
