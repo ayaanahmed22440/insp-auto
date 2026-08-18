@@ -258,7 +258,7 @@
 
 ## Live OTP verification failure
 
-- [ ] Diagnose why a valid emailed OTP is rejected by the Hostinger deployment.
-- [ ] Apply the smallest secure correction to OTP generation, persistence, hashing, expiry, or verification configuration.
-- [ ] Run automated tests and redeploy the correction.
-- [ ] Verify invalid OTP rejection and complete one valid OTP login without exposing the code.
+- [x] Diagnose why a valid emailed OTP is rejected by the Hostinger deployment; the flow was made tolerant of whitespace and multiple still-active recent challenges for the same normalized email.
+- [x] Apply the smallest secure correction to OTP generation, persistence, hashing, expiry, or verification configuration.
+- [x] Run automated tests and redeploy the correction; npm checks, six Vitest tests, npm build, and Hostinger deployment 3c15eb42 completed successfully.
+- [x] Verify invalid OTP rejection and complete one valid OTP login without exposing the code; the live production dashboard opened successfully after the fresh OTP submission.
