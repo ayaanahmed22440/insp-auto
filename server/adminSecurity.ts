@@ -1,4 +1,11 @@
-import { createHash, createHmac, randomBytes, randomInt, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
+import {
+  createHash,
+  createHmac,
+  randomBytes,
+  randomInt,
+  scrypt as scryptCallback,
+  timingSafeEqual,
+} from "node:crypto";
 import { promisify } from "node:util";
 
 const scrypt = promisify(scryptCallback);
@@ -31,7 +38,9 @@ export async function verifyPassword(password: string, encoded: string) {
 export function hashOtp(email: string, code: string) {
   const pepper = process.env.ADMIN_OTP_PEPPER;
   if (!pepper) throw new Error("ADMIN_OTP_PEPPER is not configured");
-  return createHmac("sha256", pepper).update(`${normalizeEmail(email)}:${code}`).digest("hex");
+  return createHmac("sha256", pepper)
+    .update(`${normalizeEmail(email)}:${code}`)
+    .digest("hex");
 }
 
 export function createOtp() {
@@ -57,36 +66,86 @@ export function normalizeAdminEmail(email: unknown) {
 }
 
 export function isValidEmail(email: string) {
-  return email.length <= 320 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && !/[\r\n]/.test(email);
+  return (
+    email.length <= 320 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) &&
+    !/[\r\n]/.test(email)
+  );
 }
 
-export function setAdminCookie(res: { cookie: (name: string, value: string, options: Record<string, unknown>) => void }, token: string) {
-  res.cookie(ADMIN_SESSION_COOKIE, token, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: SESSION_TTL_MS });
+export function setAdminCookie(
+  res: {
+    cookie: (
+      name: string,
+      value: string,
+      options: Record<string, unknown>
+    ) => void;
+  },
+  token: string
+) {
+  res.cookie(ADMIN_SESSION_COOKIE, token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: SESSION_TTL_MS,
+  });
 }
 
-export function clearAdminCookie(res: { clearCookie: (name: string, options: Record<string, unknown>) => void }) {
-  res.clearCookie(ADMIN_SESSION_COOKIE, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: 0 });
+export function clearAdminCookie(res: {
+  clearCookie: (name: string, options: Record<string, unknown>) => void;
+}) {
+  res.clearCookie(ADMIN_SESSION_COOKIE, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  });
 }
 
 export function readCookie(header: string | undefined, name: string) {
   if (!header) return undefined;
-  const value = header.split(";").map(part => part.trim()).find(part => part.startsWith(`${name}=`));
+  const value = header
+    .split(";")
+    .map(part => part.trim())
+    .find(part => part.startsWith(`${name}=`));
   return value ? decodeURIComponent(value.slice(name.length + 1)) : undefined;
 }
 
-export function verifyWhopSignature(rawBody: string, timestamp: string, signatureHeader: string, secret: string) {
+export function verifyWhopSignature(
+  rawBody: string,
+  timestamp: string,
+  signatureHeader: string,
+  secret: string
+) {
   const timestampNumber = Number(timestamp);
-  if (!secret || !timestamp || !Number.isFinite(timestampNumber) || Math.abs(Date.now() / 1000 - timestampNumber) > 300) return false;
-  const expected = createHmac("sha256", Buffer.from(secret, "base64")).update(`${timestamp}.${rawBody}`).digest("base64");
-  return signatureHeader.split(" ").map(value => value.split(",")[1]).filter(Boolean).some(value => {
-    try {
-      const actual = Buffer.from(value);
-      const expectedBuffer = Buffer.from(expected);
-      return actual.length === expectedBuffer.length && timingSafeEqual(actual, expectedBuffer);
-    } catch {
-      return false;
-    }
-  });
+  if (
+    !secret ||
+    !timestamp ||
+    !Number.isFinite(timestampNumber) ||
+    Math.abs(Date.now() / 1000 - timestampNumber) > 300
+  )
+    return false;
+  const expected = createHmac("sha256", Buffer.from(secret, "base64"))
+    .update(`${timestamp}.${rawBody}`)
+    .digest("base64");
+  return signatureHeader
+    .split(" ")
+    .map(value => value.split(",")[1])
+    .filter(Boolean)
+    .some(value => {
+      try {
+        const actual = Buffer.from(value);
+        const expectedBuffer = Buffer.from(expected);
+        return (
+          actual.length === expectedBuffer.length &&
+          timingSafeEqual(actual, expectedBuffer)
+        );
+      } catch {
+        return false;
+      }
+    });
 }
 
 export function requestId() {
