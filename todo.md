@@ -50,3 +50,9 @@
 - [ ] Remove the bottom hero metadata strip.
 - [ ] Verify the simplified hero at desktop and mobile sizes.
 - [ ] Save and deliver the updated checkpoint.
+
+## New attached brief
+
+- [x] Read and extract the requested website changes from pasted_content_3.txt.
+- [x] Implement the requested changes without breaking existing routes or branding.
+- [x] Verify the updated website and save the next checkpoint.
