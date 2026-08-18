@@ -43,3 +43,10 @@
 - [ ] Apply a visible footer-safe logo treatment on the dark background.
 - [ ] Verify footer logo contrast, size, spacing, and mobile behavior.
 - [ ] Save and deliver the updated checkpoint.
+
+## Hero cleanup
+
+- [ ] Remove the hero evidence stamp from the vehicle image.
+- [ ] Remove the bottom hero metadata strip.
+- [ ] Verify the simplified hero at desktop and mobile sizes.
+- [ ] Save and deliver the updated checkpoint.
