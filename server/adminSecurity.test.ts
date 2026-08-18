@@ -1,6 +1,14 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { verifyWhopSignature } from "./adminSecurity";
+import { normalizeOtpCode, verifyWhopSignature } from "./adminSecurity";
+
+describe("OTP input normalization", () => {
+  it("removes pasted whitespace and preserves leading zeroes", () => {
+    expect(normalizeOtpCode(" 0 1 2 0 0 3 ")).toBe("012003");
+    expect(normalizeOtpCode("1234567")).toBe("123456");
+    expect(normalizeOtpCode(undefined)).toBe("");
+  });
+});
 
 describe("Whop Standard Webhooks signature verification", () => {
   it("accepts a current correctly signed payload", () => {

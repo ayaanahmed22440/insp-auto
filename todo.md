@@ -255,3 +255,10 @@
 - [x] Inspect the authenticated Hostinger account for a safe MySQL reset or support escalation path without exposing secrets.
 - [x] Apply only verified database credentials/hostname and redeploy; do not delete the existing database.
 - [x] Prove successful live MySQL access and verify admin database rejection plus contact validation; real contact persistence and mailbox OTP remain pending.
+
+## Live OTP verification failure
+
+- [ ] Diagnose why a valid emailed OTP is rejected by the Hostinger deployment.
+- [ ] Apply the smallest secure correction to OTP generation, persistence, hashing, expiry, or verification configuration.
+- [ ] Run automated tests and redeploy the correction.
+- [ ] Verify invalid OTP rejection and complete one valid OTP login without exposing the code.

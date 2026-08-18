@@ -35,6 +35,12 @@ export async function verifyPassword(password: string, encoded: string) {
   }
 }
 
+export function normalizeOtpCode(value: unknown) {
+  return String(value ?? "")
+    .replace(/\s+/g, "")
+    .slice(0, 6);
+}
+
 export function hashOtp(email: string, code: string) {
   const pepper = process.env.ADMIN_OTP_PEPPER;
   if (!pepper) throw new Error("ADMIN_OTP_PEPPER is not configured");

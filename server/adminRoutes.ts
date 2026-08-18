@@ -39,6 +39,7 @@ import {
   hashSessionToken,
   isValidEmail,
   normalizeAdminEmail,
+  normalizeOtpCode,
   readCookie,
   requestId,
   safeEqualHex,
@@ -316,7 +317,7 @@ export function registerAdminRoutes(app: Express) {
 
   app.post("/api/admin/verify-otp", requireSameOrigin, async (req, res) => {
     const email = normalizeAdminEmail(req.body?.email);
-    const code = safeString(req.body?.code, 6);
+    const code = normalizeOtpCode(req.body?.code ?? req.body?.otp);
     if (
       !isValidEmail(email) ||
       !/^\d{6}$/.test(code) ||
