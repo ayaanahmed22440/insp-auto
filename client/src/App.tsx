@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Pricing from "./pages/Pricing";
 
 const services = [
   ["Car History Report", "/services/car-history-report"],
@@ -92,7 +93,7 @@ export default function App() {
   useEffect(() => { const update = () => setPath(window.location.pathname); window.addEventListener("popstate", update); return () => window.removeEventListener("popstate", update); }, []);
   let page: ReactNode;
   if (path === "/") page = <Home initialSection="home" />;
-  else if (path === "/pricing") page = <PricingPage />;
+  else if (path === "/pricing") page = <Pricing />;
   else if (path === "/services") page = <Home initialSection="services" />;
   else if (["/terms", "/refund-policy", "/privacy-policy"].includes(path)) page = <PolicyPage kind={path.slice(1) as "terms" | "refund-policy" | "privacy-policy"} />;
   else if (path.startsWith("/services/")) page = <ServicePage label={services.find(([, href]) => href === path)?.[0] || "Vehicle History Report"} />;

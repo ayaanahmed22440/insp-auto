@@ -91,3 +91,10 @@
 - [x] Optimize oversized local production images below 1 MB each while preserving their filenames and visual role.
 - [x] Re-run npm install, npm run build, npm start, and local asset-load checks.
 - [ ] Retry and save the optimized asset checkpoint.
+
+## Premium pricing page
+
+- [x] Create the dedicated `/pricing` route with exactly three UK pricing plans and exact Whop redirects.
+- [x] Add trust, comparison, process, FAQ, final CTA, responsive layout, and pricing SEO metadata.
+- [x] Run TypeScript, npm build, npm start, route, bundle-content, and payment-link checks.
+- [ ] Save and deliver the updated checkpoint.
