@@ -113,3 +113,9 @@
 - [x] Add the required mail dependency without changing the npm/Node deployment architecture.
 - [x] Verify build, runtime endpoint behavior, and absence of secrets in source.
 - [ ] Save and deliver the secure email integration checkpoint.
+
+## Contact form reset error
+
+- [x] Capture the form element before the async request and reset it safely after success.
+- [x] Run typecheck, build, runtime endpoint, and form behavior checks.
+- [ ] Save and deliver the bug-fix checkpoint.
