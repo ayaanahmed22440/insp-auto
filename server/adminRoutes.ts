@@ -219,7 +219,20 @@ export function registerAdminRoutes(app: Express) {
       return res
         .status(401)
         .json({ ok: false, message: "Invalid credentials" });
-    let credential = await getAdminCredential(email);
+    let credential;
+    try {
+      credential = await getAdminCredential(email);
+    } catch (error) {
+      console.error(
+        "[Admin] database lookup failed",
+        error instanceof Error ? error.message : "unknown"
+      );
+      return res.status(503).json({
+        ok: false,
+        message:
+          "The admin database is unavailable. Check DATABASE_URL and restart the server.",
+      });
+    }
     if (
       !credential &&
       (!process.env.ADMIN_EMAIL || !process.env.ADMIN_INITIAL_PASSWORD)
@@ -228,12 +241,10 @@ export function registerAdminRoutes(app: Express) {
         actorEmail: email,
         action: "admin.bootstrap.missing",
       });
-      return res
-        .status(503)
-        .json({
-          ok: false,
-          message: "Admin bootstrap is not configured on the server.",
-        });
+      return res.status(503).json({
+        ok: false,
+        message: "Admin bootstrap is not configured on the server.",
+      });
     }
     if (
       !credential &&
@@ -244,8 +255,20 @@ export function registerAdminRoutes(app: Express) {
       const passwordHash = await hashPassword(
         process.env.ADMIN_INITIAL_PASSWORD
       );
-      await createAdminCredential(email, passwordHash);
-      credential = await getAdminCredential(email);
+      try {
+        await createAdminCredential(email, passwordHash);
+        credential = await getAdminCredential(email);
+      } catch (error) {
+        console.error(
+          "[Admin] bootstrap failed",
+          error instanceof Error ? error.message : "unknown"
+        );
+        return res.status(503).json({
+          ok: false,
+          message:
+            "The admin database is unavailable. Check DATABASE_URL and restart the server.",
+        });
+      }
     }
     const valid = Boolean(
       credential?.enabled &&

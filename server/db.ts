@@ -219,14 +219,22 @@ export async function createContact(input: {
 }) {
   const db = await getDb();
   if (!db) return undefined;
-  await db.insert(contactSubmissions).values(input);
-  const rows = await db
-    .select()
-    .from(contactSubmissions)
-    .where(eq(contactSubmissions.email, input.email))
-    .orderBy(desc(contactSubmissions.createdAt))
-    .limit(1);
-  return rows[0];
+  try {
+    await db.insert(contactSubmissions).values(input);
+    const rows = await db
+      .select()
+      .from(contactSubmissions)
+      .where(eq(contactSubmissions.email, input.email))
+      .orderBy(desc(contactSubmissions.createdAt))
+      .limit(1);
+    return rows[0];
+  } catch (error) {
+    console.error(
+      "[Contact] database persistence failed",
+      error instanceof Error ? error.message : "unknown"
+    );
+    return undefined;
+  }
 }
 
 export async function listContacts() {

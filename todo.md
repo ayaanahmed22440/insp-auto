@@ -179,3 +179,15 @@
 - [x] Confirm the production database currently has zero admin credential rows; the failure is bootstrap configuration, not an old password hash.
 - [x] Add and end-to-end verify a safe non-secret bootstrap diagnostic: an empty admin table with missing server bootstrap variables returns HTTP 503 with a clear message instead of misleading Invalid credentials.
 - [x] Validate the bootstrap diagnostic with TypeScript, five Vitest tests, production build, and a local production HTTP 503 smoke test; preserve OTP/session security and document the required Hostinger restart action.
+
+## Hostinger Request failed diagnosis
+
+- [ ] Diagnose the new production `Request failed` response after adding `DATABASE_URL`.
+- [ ] Verify safe database connection error handling and Hostinger restart requirements.
+- [x] Apply and validate the contact compatibility diagnostic without exposing credentials.
+
+## Contact form JSON regression
+
+- [x] Diagnose why the production `/api/contact` request returned an HTML document instead of JSON: database persistence errors were escaping the Express route.
+- [x] Restore the existing contact submission response by containing persistence failures, without changing the form design, SMTP settings, or public wording.
+- [x] Preserve the previously verified contact success path and validation-error JSON behavior; revalidate the new database-failure path as JSON without submitting test customer data to production.
