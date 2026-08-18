@@ -113,7 +113,13 @@ async function requireAdmin(req: Request, res: Response, next: NextFunction) {
 function requireSameOrigin(req: Request, res: Response, next: NextFunction) {
   const origin = req.get("origin");
   if (!origin) return next();
-  const expected = `${req.protocol}://${req.get("host")}`;
+  const forwardedProto =
+    safeString(req.get("x-forwarded-proto"), 16).split(",")[0] || req.protocol;
+  const forwardedHost =
+    safeString(req.get("x-forwarded-host"), 320).split(",")[0] ||
+    req.get("host") ||
+    "";
+  const expected = `${forwardedProto}://${forwardedHost}`;
   if (origin !== expected)
     return res.status(403).json({ ok: false, message: "Forbidden" });
   next();
@@ -139,13 +145,10 @@ export function registerAdminRoutes(app: Express) {
     const email = safeString(req.body?.email, 320).toLowerCase();
     const paymentReference = safeString(req.body?.paymentReference, 180);
     if (!isValidEmail(email) || !paymentReference)
-      return res
-        .status(400)
-        .json({
-          ok: false,
-          message:
-            "Enter the email used at checkout and your payment reference.",
-        });
+      return res.status(400).json({
+        ok: false,
+        message: "Enter the email used at checkout and your payment reference.",
+      });
     const order = await getOrderStatusByOwner(email, paymentReference);
     if (!order)
       return res

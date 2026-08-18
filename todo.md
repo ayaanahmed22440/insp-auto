@@ -166,3 +166,10 @@
 - [x] Add an audit-log view with loading, empty, and error states; preserve the established private admin shell where the provided generic layout is incompatible with its server-enforced auth flow.
 - [ ] Complete authenticated admin verification against the Hostinger deployment; npm-compatible formatting/lint-equivalent validation already passes.
 - [ ] Save a final hardening checkpoint after the remaining checks pass.
+
+## Hostinger admin Forbidden diagnosis
+
+- [x] Diagnose the production `Forbidden` response in the Hostinger admin panel without exposing secrets.
+- [ ] Verify the complete Hostinger environment-variable list, database bootstrap, and secure session-cookie requirements.
+- [x] Apply and validate the Hostinger reverse-proxy origin fix; matching forwarded origins now reach authentication and mismatched origins remain blocked.
+- [x] Provide exact Hostinger configuration steps and identify the required user-side environment and restart action.

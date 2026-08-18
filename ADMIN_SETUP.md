@@ -21,3 +21,11 @@ The public contact endpoint persists a validated submission before attempting no
 The project remains npm-compatible for Hostinger. Use `npm install`, `npm run check`, `npm run build`, and `npm start`. The managed Manus preview may still show its separate forced-pnpm dependency-check failure; that is an environment limitation and is not part of the Hostinger deployment path.
 
 No customer, order, review, payment, or analytics data is seeded by this feature.
+
+## Hostinger deployment checklist
+
+In Hostinger’s Node.js application environment, add these variables individually; do not place them in React code or commit them to the repository: `DATABASE_URL`, `ADMIN_EMAIL`, `ADMIN_INITIAL_PASSWORD`, `ADMIN_OTP_PEPPER`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `CONTACT_TO`, `WHOP_WEBHOOK_SECRET`, and `WHOP_COMPANY_ID`. Keep `JWT_SECRET` configured as well because it is part of the existing server template. The admin password is the value for `ADMIN_INITIAL_PASSWORD`; it is not an API password and should be rotated or removed after the first credential bootstrap.
+
+After saving the variables, rebuild and restart the Hostinger Node.js application. The app trusts one reverse proxy and compares the browser `Origin` against the forwarded HTTPS protocol and host. This prevents Hostinger’s internal HTTP-to-HTTPS proxy from incorrectly returning `Forbidden` while still rejecting a genuinely foreign origin. The first login must use the exact `ADMIN_EMAIL` and `ADMIN_INITIAL_PASSWORD`; the server creates the initial credential row only when those values match and the database is reachable. It then sends the OTP through the configured SMTP mailbox and sets the secure admin cookie after successful verification.
+
+If the login page still returns `Forbidden` after restart, check that the public URL, forwarded host, and HTTPS binding are consistent, and that the browser is not opening the site through a different hostname such as a `www` variant. If it returns `Invalid credentials` or `Authentication email is not configured`, the proxy issue is resolved and the remaining problem is the corresponding admin or SMTP environment value.
