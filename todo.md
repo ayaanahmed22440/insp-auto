@@ -13,7 +13,7 @@
 - [x] Restyle the two policy cards to match the supplied reference layout.
 - [x] Add complete INSP AUTO terms and refund bullet content with working links.
 - [x] Verify desktop and mobile card spacing, contrast, and button behavior.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## Services and Pricing reference update
 
@@ -21,14 +21,14 @@
 - [x] Add a dark affordability banner between Services and Pricing.
 - [x] Add six compact pricing cards with the supplied UK pricing presentation and working checkout links.
 - [x] Verify desktop/mobile layout and all pricing-button destinations.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## Distinct service imagery update
 
 - [x] Generate distinct visible images for Car, Motorbike, ATV, Truck, Boat, and RV service cards.
 - [x] Replace repeated image URLs in the service-card data.
 - [x] Verify image crops, contrast, and card visibility on desktop and mobile.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## Supplied logo rebrand
 
@@ -36,20 +36,20 @@
 - [x] Replace amber-focused global colors with electric blue and deep navy brand colors.
 - [x] Update buttons, links, dividers, badges, icons, and policy accents to the new palette.
 - [x] Verify logo visibility and contrast on desktop and mobile.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## Footer logo visibility fix
 
 - [x] Apply a visible footer-safe logo treatment on the dark background.
 - [x] Verify footer logo contrast, size, spacing, and mobile behavior.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## Hero cleanup
 
 - [x] Remove the hero evidence stamp from the vehicle image.
 - [x] Remove the bottom hero metadata strip.
 - [x] Verify the simplified hero at desktop and mobile sizes.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## New attached brief
 
@@ -69,14 +69,14 @@
 - [x] Keep the repository npm-only; do not reintroduce pnpm preview configuration.
 - [x] Record exact Hostinger settings and the managed-preview limitation.
 - [x] Reconfirm production commands and routes.
-- [ ] Save and deliver the final deployment checkpoint.
+- [x] Save and deliver the final deployment checkpoint.
 
 ## Analytics build compatibility
 
 - [x] Inspect the analytics script references in client/index.html.
 - [x] Remove or safely gate undefined analytics variables without changing the website UI.
 - [x] Run npm install, npm run build, npm start, and production-load verification.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## Local production assets
 
@@ -84,7 +84,7 @@
 - [x] Copy each required production asset into repository-owned public assets.
 - [x] Update all production references to `/assets/...` paths.
 - [x] Run npm install, npm run build, npm start, and verify the hero asset loads.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## Checkpoint-safe asset optimization
 
@@ -97,14 +97,14 @@
 - [x] Create the dedicated `/pricing` route with exactly three UK pricing plans and exact Whop redirects.
 - [x] Add trust, comparison, process, FAQ, final CTA, responsive layout, and pricing SEO metadata.
 - [x] Run TypeScript, npm build, npm start, route, bundle-content, and payment-link checks.
-- [ ] Save and deliver the updated checkpoint.
+- [x] Save and deliver the updated checkpoint.
 
 ## ATV reference flow and Pricing navigation
 
 - [x] Recreate the supplied ATV service-page hero, sidebar, company block, pricing cards, and final CTA flow.
 - [x] Add the existing `/pricing` route to desktop and mobile navigation without duplicating the pricing page.
 - [x] Run npm run build and verify existing routes, payment links, and deployment configuration remain unchanged.
-- [ ] Save and deliver the focused UI update checkpoint.
+- [x] Save and deliver the focused UI update checkpoint.
 
 ## Secure Hostinger SMTP contact form
 
@@ -112,19 +112,19 @@
 - [x] Update the contact form to submit to the endpoint and show success/error states.
 - [x] Add the required mail dependency without changing the npm/Node deployment architecture.
 - [x] Verify build, runtime endpoint behavior, and absence of secrets in source.
-- [ ] Save and deliver the secure email integration checkpoint.
+- [x] Save and deliver the secure email integration checkpoint.
 
 ## Contact form reset error
 
 - [x] Capture the form element before the async request and reset it safely after success.
 - [x] Run typecheck, build, runtime endpoint, and form behavior checks.
-- [ ] Save and deliver the bug-fix checkpoint.
+- [x] Save and deliver the bug-fix checkpoint.
 
 ## Mobile policy navigation fix
 
 - [x] Show Terms & Conditions, Refund Policy, and Privacy Policy as separate mobile navigation items.
 - [x] Verify each item routes to the existing policy page and remains visible on mobile.
-- [ ] Save and deliver the navigation fix checkpoint.
+- [x] Save and deliver the navigation fix checkpoint.
 
 ## New attached brief
 
@@ -142,7 +142,7 @@
 - [x] Build the private responsive admin dashboard using the existing DashboardLayout with real database data, loading states, empty states, and accessible errors.
 - [ ] Add automated security and behavior tests for authentication, authorization, contact persistence, webhook idempotency, ownership, XSS-safe rendering, and rate limiting.
 - [x] Run typecheck, tests, build, and unauthenticated smoke tests; authenticated live login remains pending.
-- [ ] Save and deliver the secure admin-panel checkpoint.
+- [x] Save and deliver the secure admin-panel checkpoint.
 
 ## Inherited secure admin panel completion
 
@@ -155,7 +155,7 @@
 - [x] Run TypeScript validation, npm production build, Vitest, production route smoke tests, invalid-contact validation, and unauthenticated-admin authorization checks.
 - [x] Apply and verify the database migration on the connected production database.
 - [ ] Complete one real mailbox OTP login verification against the Hostinger deployment.
-- [ ] Save and deliver the secure admin-panel checkpoint.
+- [x] Save and deliver the secure admin-panel checkpoint.
 
 ## Final admin hardening gaps
 
