@@ -2,6 +2,7 @@
 import { ArrowUpRight, CarFront, Check, CircleHelp, Mail, ShieldCheck, Waves } from "lucide-react";
 import { PAYMENT_LINKS } from "@/lib/paymentLinks";
 import { addCartItem, loadCart, saveCart } from "@/lib/cart";
+import { SERVICE_TIER_PRICES } from "@/lib/servicePricing";
 
 const services = [
   ["Car History Report", "/services/car-history-report"],
@@ -13,9 +14,9 @@ const services = [
 ] as const;
 
 const atvPlans = [
-  { id: "basic-atv", name: "Essential ATV Report", price: "39.99", delivery: "Delivery Duration: 2 Hours", features: ["Vehicle Overview", "Market Value", "Vehicle Specifications", "Sales Listing", "Accident Record", "Theft Record", "No ATV Images", "Open Recalls", "Exports"], href: PAYMENT_LINKS.basic },
-  { id: "standard-atv", name: "Delight ATV Report", price: "42.99", delivery: "Delivery Duration: 1 Hour", features: ["HQ ATV Images", "Vehicle Overview", "Accident Record", "Impounds", "Exports", "Market Value", "Open Recalls", "Sales Listing", "Vehicle Specifications"], href: PAYMENT_LINKS.standard },
-  { id: "premium-atv", name: "Superior ATV Report", price: "52.99", delivery: "Delivery Duration: 30 minutes", features: ["2 Buyers Numbers from our Directory", "Buy one get another Report Free", "Vehicle Specifications", "Theft Record", "Exports", "Salvage", "Open Recalls", "HQ ATV Images", "Vehicle Overview"], href: PAYMENT_LINKS.premium },
+  { id: "basic-atv", name: "Essential ATV Report", price: SERVICE_TIER_PRICES.basic, delivery: "Delivery Duration: 2 Hours", features: ["Vehicle Overview", "Market Value", "Vehicle Specifications", "Sales Listing", "Accident Record", "Theft Record", "No ATV Images", "Open Recalls", "Exports"], href: PAYMENT_LINKS.basic },
+  { id: "standard-atv", name: "Delight ATV Report", price: SERVICE_TIER_PRICES.standard, delivery: "Delivery Duration: 1 Hour", features: ["HQ ATV Images", "Vehicle Overview", "Accident Record", "Impounds", "Exports", "Market Value", "Open Recalls", "Sales Listing", "Vehicle Specifications"], href: PAYMENT_LINKS.standard },
+  { id: "premium-atv", name: "Superior ATV Report", price: SERVICE_TIER_PRICES.premium, delivery: "Delivery Duration: 30 minutes", features: ["2 Buyers Numbers from our Directory", "Buy one get another Report Free", "Vehicle Specifications", "Theft Record", "Exports", "Salvage", "Open Recalls", "HQ ATV Images", "Vehicle Overview"], href: PAYMENT_LINKS.premium },
 ] as const;
 
 function navigate(path: string) {
