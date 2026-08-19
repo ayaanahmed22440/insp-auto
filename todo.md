@@ -291,3 +291,11 @@
 - [x] Leave all API, Whop, mailbox, database, JWT, OTP, and other credential settings unchanged.
 - [x] Verify the managed preview status and preserve npm-only production compatibility; the preview limitation is platform-only and production npm checks pass.
 - [x] Re-run non-secret public routes, checkout behavior, and existing payment-link handoff checks; npm production smoke checks returned HTTP 200 for `/`, `/pricing`, `/checkout`, `/order-status`, both policy pages, and the logo asset.
+
+## Direct payment and side-icon regression
+
+- [x] Find every report CTA that still navigates directly to Whop; Home pricing cards were the remaining direct anchors.
+- [x] Route every report CTA through the existing billing/cart review page first; Home report cards now add the selected report to `/checkout`.
+- [x] Make the supplied INSP AUTO logo visibly replace the side icon in public and admin navigation; the asset was cropped to remove white margins and is visibly rendered in the local production header/footer.
+- [x] Preserve all existing report prices, payment URLs, and checkout behavior after the routing correction; only the pre-payment route changed and the final Whop handoff remains in Checkout.
+- [x] Add or update tests and verify the complete CTA-to-billing flow without submitting payment; npm typecheck, 9 tests, production build, HTTP 200 asset checks, and local checkout smoke tests pass.
