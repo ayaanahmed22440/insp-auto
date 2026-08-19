@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect, useState, type FormEvent, type ReactNode } f
 import { Menu, X } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Home from "./pages/Home";
+const Home = lazy(() => import("./pages/Home"));
 import NotFound from "./pages/NotFound";
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Checkout = lazy(() => import("./pages/Checkout"));

@@ -58,6 +58,12 @@ export function serveStatic(app: Express) {
     );
   }
 
+  app.use("/assets", (_req, res, next) => {
+    // Vite fingerprints assets; immutable caching prevents slow mobile clients
+    // from redownloading the same bundle while new HTML gets max-age=0 below.
+    res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+    next();
+  });
   app.use(express.static(distPath));
 
   // fall through to index.html if the file doesn't exist
