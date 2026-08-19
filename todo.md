@@ -486,3 +486,9 @@
 - [x] Compare current apex and www DNS, TLS, and HTTP behavior again after the inode issue was resolved.
 - [x] Audit Hostinger SSL, domain attachment, redirects, and address-family routing for mobile-specific failures.
 - [x] Apply only an evidence-based DNS correction after confirmation and verify repeated mobile-style delivery; disabled CDN and removed the residual apex AAAA record.
+
+## Mobile blank-page follow-up
+
+- [x] Investigate the affected phone showing a connected but completely blank `inspauto.com` page after the DNS fix.
+- [x] Check production HTML, JavaScript assets, browser/runtime logs, and cache/service-worker behavior for mobile-only failures.
+- [x] Apply only the smallest confirmed production-safe correction and verify the page renders on mobile-style clients; added an `IntersectionObserver` fallback in `client/src/pages/Home.tsx`, with npm build and 9 Vitest tests passing.
