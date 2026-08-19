@@ -1,21 +1,27 @@
-# Domain routing findings
+# Domain and SSL findings
 
-As of the latest authenticated browser check, `https://inspauto.com/` served the INSP AUTO application with title `Vehicle History Report Pricing | INSP AUTO`, the INSP AUTO navigation, pricing, services, and report CTAs. The browser did not serve the WordPress “Blog / Hello world!” page shown in the user screenshot on that exact HTTPS URL.
+## Hostinger website inventory
 
-Next checks: compare HTTP versus HTTPS and the `www` hostname, inspect redirects and DNS targets, and determine whether the screenshot came from a different hostname, stale DNS resolver, or a separate Hostinger document root.
+The authenticated Hostinger Websites inventory lists exactly one `inspauto.com` entry, represented with the Node.js icon and separate `Tools` and `Dashboard` controls. It is the GitHub-connected `insp-auto` app. The visible WordPress entries are separate temporary domains such as `indigo-tapir-135125.hostingersite.com`; no WordPress entry named `inspauto.com` appears in the current inventory.
 
-## Public HTTP/DNS check
+The active `inspauto.com` app dashboard reports GitHub connection, Express framework, Node 20.x, completed deployment `4100b977`, active SSL, and CDN. This means there is no obvious duplicate Hostinger site binding named `inspauto.com` to delete. The remaining stale WordPress/certificate behavior is likely an old CDN/DNS edge or a separate WordPress configuration not surfaced under the current website name.
 
-A fresh public `curl` check on 19 Aug 2026 returned WordPress markers, `x-powered-by: PHP/8.3.30`, `link: <https://inspauto.com/wp-json/>`, and `x-litespeed-cache: hit` for `https://inspauto.com/`. The `www` hostname redirects through WordPress to the root hostname, while the non-redirected response behavior differs by hostname/protocol. Public DNS currently exposes multiple root A/AAAA targets and a Hostinger CDN CNAME for `www`, indicating the root domain is not consistently bound to the Node.js INSP AUTO deployment. This explains why independent browsers can show the default WordPress page even though the connected browser session displayed the INSP AUTO app.
+## Current external checks
 
-## Hostinger panel inspection
+The public certificate for `inspauto.com` and `www.inspauto.com` is a valid Let’s Encrypt certificate with SANs for both hostnames. Hostinger’s SSL panel reports Lifetime SSL active. Qualys SSL Labs has completed IPv4 checks at A+; IPv6 checks are still processing. Independent HTTP requests and the connected browser currently serve the INSP AUTO application.
 
-The authenticated Hostinger account shows `inspauto.com` as a Node.js/Express Web App connected to GitHub, with the latest deployment `4100b977` completed on Node 20.x. The domain DNS panel shows Hostinger nameservers, an apex `ALIAS @ -> inspauto.com.cdn.hstgr.net`, and `CNAME www -> www.inspauto.com.cdn.hstgr.net`, which are the expected Hostinger CDN targets. The panel therefore does not show an obvious missing DNS record. The public root response still carries old WordPress/PHP/LiteSpeed cache markers, suggesting stale CDN/origin content or an unpurged Hostinger cache. The next safe operational step is to clear the Hostinger site/CDN cache and then re-check the root and www hostnames.
+## Hostinger DNS and WordPress inventory confirmation
 
-## Cache purge verification
+Hostinger’s separate WordPress inventory contains no `inspauto.com` entry. It contains unrelated temporary or other domains only. The `inspauto.com` DNS records are also clean for the active app: apex `ALIAS @ -> inspauto.com.cdn.hstgr.net`, `CNAME www -> www.inspauto.com.cdn.hstgr.net`, Hostinger mail MX records, DKIM, SPF, and DMARC. No extra A/AAAA record or redirect to a WordPress origin is listed. There is no safe obsolete `inspauto.com` WordPress site to delete without risking unrelated sites; the remaining mobile warning is not caused by a duplicate Hostinger binding.
 
-After the user-confirmed Hostinger cache purge, both `https://inspauto.com/` and `https://www.inspauto.com/` returned HTTP 200 with the title `Vehicle History Report Pricing | INSP AUTO`. The responses include INSP AUTO markers, no longer include WordPress, `Hello world`, `wp-json`, PHP, or LiteSpeed cache markers, and expose the deployed app security headers. The domain is now serving the Node.js INSP AUTO application publicly on both canonical hostnames.
+## Cloudflare inspection
 
-## Latest domain-only verification
+The connected Cloudflare account is authenticated, but its Domains overview currently shows “No domains or subdomains found.” The recent `inspauto.com / DNS` shortcut in the Cloudflare dashboard resolves to a Cloudflare 404 rather than an active zone. This confirms Cloudflare is not currently the authoritative DNS or active proxy for `inspauto.com`; Hostinger nameservers remain authoritative. There is no active Cloudflare `inspauto.com` zone available to delete or detach.
 
-A fresh independent request from the sandbox and a cache-busting request in the connected browser both served `Vehicle History Report Pricing | INSP AUTO` at `https://inspauto.com/`. The connected browser displayed the INSP AUTO navigation, hero, services, pricing, and checkout CTAs. No WordPress markers appeared in the independent response. The earlier screenshot is therefore stale content from the user’s browser/network path; the current public Hostinger edge and connected browser are serving the correct app.
+## Railway inspection
+
+The authenticated Railway account is `ayaanahmed22440's Projects` and contains one project named `aware-art`, which currently shows “No services.” No `insp-auto` project, deployment, service, or custom domain is visible. Railway therefore is not an active origin for the current `inspauto.com` routing, and there is no Railway resource identified for safe deletion.
+
+## Final provider-routing verification
+
+After inspecting Cloudflare and Railway, fresh independent checks show both `https://inspauto.com/` and `https://www.inspauto.com/` return HTTP 200 from `server: hcdn` / `platform: hostinger`, with title `Vehicle History Report Pricing | INSP AUTO` and no WordPress, Railway, or Cloudflare content markers. The served certificate is issued by Let’s Encrypt for `inspauto.com` and includes both `inspauto.com` and `www.inspauto.com` in its SAN list. No provider-level correction or deletion was necessary because the active route is already Hostinger-only.

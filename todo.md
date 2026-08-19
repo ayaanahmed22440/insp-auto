@@ -325,3 +325,24 @@
 - [x] Recheck the persistent WordPress response from independent public requests and distinguish cache, hostname, and origin behavior.
 - [x] Apply only the smallest authorized domain/cache correction; leave all Whop API/webhook and other credentials unchanged.
 - [x] Verify `inspauto.com` and `www.inspauto.com` after the correction.
+
+## SSL certificate mismatch correction
+
+- [x] Inspect the certificate currently served for `inspauto.com`; it is valid and covers both hostnames, so no hostname mismatch was found from public endpoints.
+- [x] Inspect Hostinger SSL, domain, DNS, and app-binding state without changing Whop or unrelated credentials.
+- [x] No SSL/domain correction was needed: Hostinger Lifetime SSL is active and the served certificate covers both hostnames.
+- [x] Verify HTTPS certificate hostname coverage and normal application delivery from independent requests.
+
+## Remove obsolete Hostinger site binding
+
+- [x] Inspect the current Hostinger website inventory; no old WordPress/site entry associated with `inspauto.com` exists.
+- [x] Determine which site/origin can serve the stale WordPress response without touching the active GitHub-connected `insp-auto` app; no duplicate Hostinger origin was found.
+- [x] No obsolete binding was found, so no site was removed or detached and mailbox, DNS, SSL, and credentials were preserved.
+- [x] Verify `inspauto.com`, `www.inspauto.com`, SSL, and the active GitHub deployment.
+
+## Railway and Cloudflare legacy routing check
+
+- [x] Compare public DNS and TLS results; no Railway or Cloudflare origin is associated with the live Hostinger route.
+- [x] Inspect the connected Cloudflare account and Railway project/domain configuration without deleting resources or changing secrets.
+- [x] No obsolete provider binding was identified, so no destructive removal was performed.
+- [x] Verify the final domain route serves only the active Hostinger GitHub-connected `insp-auto` deployment.
