@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Minus, Plus, Trash2 } from "lucide-react";
 import { cartSubtotal, checkoutReady, formatPounds, loadCart, removeCartItem, saveCart, setCartItemQuantity, type CartItem } from "@/lib/cart";
 
@@ -16,6 +16,13 @@ export default function Checkout() {
   const [email, setEmail] = useState("");
   const [registration, setRegistration] = useState("");
   const [acknowledgements, setAcknowledgements] = useState([false, false, false]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const checkoutAttemptKey = useRef<string>(
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`
+  );
 
   useEffect(() => saveCart(items), [items]);
   const subtotal = useMemo(() => cartSubtotal(items), [items]);
@@ -25,9 +32,35 @@ export default function Checkout() {
     setItems(current => setCartItemQuantity(current, id, quantity));
   }
 
-  function handoff(item: CartItem) {
-    if (!readyForPayment) return;
-    window.location.assign(item.href);
+  async function handoff() {
+    if (!readyForPayment || !items.length || isSubmitting) return;
+    setIsSubmitting(true);
+    setPaymentError("");
+    try {
+      const response = await fetch("/api/checkout/combined", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": checkoutAttemptKey.current,
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          phone,
+          email,
+          registration,
+          items: items.map(item => ({ id: item.id, quantity: item.quantity })),
+        }),
+      });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok || !payload?.ok || !payload.data?.checkoutUrl) {
+        throw new Error(payload?.message || "We could not start checkout. Please try again.");
+      }
+      window.location.assign(payload.data.checkoutUrl);
+    } catch (error) {
+      setPaymentError(error instanceof Error ? error.message : "We could not start checkout. Please try again.");
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -68,7 +101,7 @@ export default function Checkout() {
               <div className="checkout-order-row"><span>Subtotal</span><strong>{formatPounds(subtotal)}</strong></div>
               <div className="checkout-order-row checkout-total"><span>Total</span><strong>{formatPounds(subtotal)}</strong></div>
             </div>
-            <div className="checkout-payment-box"><span>Secure payment</span><p>Payment details are entered only on the selected third-party checkout page. INSP AUTO does not collect card numbers on this website.</p><div className="checkout-payment-actions">{items.map(item => <button className="button checkout-pay-button" key={item.id} disabled={!readyForPayment} onClick={() => handoff(item)}>Pay for {item.name.replace(" Report", "")} <span>↗</span></button>)}</div></div>
+            <div className="checkout-payment-box"><span>Secure payment</span><p>Payment details are entered only on the selected third-party checkout page. INSP AUTO does not collect card numbers on this website.</p>{paymentError && <p role="alert" className="checkout-payment-error">{paymentError}</p>}<div className="checkout-payment-actions"><button className="button checkout-pay-button" disabled={!readyForPayment || isSubmitting} onClick={handoff}>{isSubmitting ? "Preparing checkout…" : `Pay ${formatPounds(subtotal)} once`} <span>↗</span></button></div></div>
           </>}
         </section>
       </div>

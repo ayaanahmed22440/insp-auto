@@ -1,9 +1,11 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import express from "express";
 import nodemailer from "nodemailer";
+import { randomUUID } from "node:crypto";
 import {
   createAdminCredential,
   createAdminSession,
+  createPendingOrder,
   createAuditLog,
   createContact,
   createOtpChallenge,
@@ -48,11 +50,18 @@ import {
   verifyPassword,
   verifyWhopSignature,
 } from "./adminSecurity";
+import {
+  combinedCartSummary,
+  combinedCartTotalPence,
+  createWhopCombinedCheckout,
+  normalizeCombinedCart,
+} from "./combinedCheckout";
 
 const attempts = new Map<string, { count: number; resetAt: number }>();
 const MAX_ATTEMPTS = 8;
 const WINDOW_MS = 15 * 60 * 1000;
 const PUBLIC_MAX_ATTEMPTS = 20;
+const checkoutAttempts = new Map<string, { expiresAt: number; promise: Promise<{ checkoutUrl: string; orderId: number; totalPence: number }> }>();
 
 function rateLimited(key: string, limit = MAX_ATTEMPTS) {
   const now = Date.now();
@@ -178,6 +187,68 @@ export function registerAdminRoutes(app: Express) {
         .status(404)
         .json({ ok: false, message: "No matching order was found." });
     return res.json({ ok: true, data: order });
+  });
+
+  app.post("/api/checkout/combined", requireSameOrigin, async (req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    if (rateLimited(`checkout:${req.ip}`, PUBLIC_MAX_ATTEMPTS))
+      return res.status(429).json({ ok: false, message: "Please try again later." });
+
+    const firstName = safeString(req.body?.firstName, 120);
+    const lastName = safeString(req.body?.lastName, 120);
+    const customerName = `${firstName} ${lastName}`.trim();
+    const deliveryEmail = safeString(req.body?.email, 320).toLowerCase();
+    const phone = safeString(req.body?.phone, 40);
+    const vin = safeString(req.body?.registration, 64);
+    const lines = normalizeCombinedCart(req.body?.items);
+    if (
+      !customerName ||
+      !phone ||
+      !vin ||
+      !isValidEmail(deliveryEmail) ||
+      !lines
+    )
+      return res.status(400).json({ ok: false, message: "Please complete the required checkout details." });
+
+    const totalPence = combinedCartTotalPence(lines);
+    const cartSummary = combinedCartSummary(lines);
+    const requestKey = safeString(req.get("idempotency-key"), 120) || randomUUID();
+    const now = Date.now();
+    const existing = checkoutAttempts.get(requestKey);
+    if (existing && existing.expiresAt > now) {
+      const result = await existing.promise;
+      return res.json({ ok: true, data: result });
+    }
+    checkoutAttempts.delete(requestKey);
+
+    const promise = (async () => {
+      const order = await createPendingOrder({
+        customerName,
+        deliveryEmail,
+        selectedPlan: cartSummary.slice(0, 120),
+        amountPence: totalPence,
+        vin,
+        paymentReference: `checkout_${requestKey}`,
+      });
+      if (!order) throw new Error("Order persistence unavailable");
+      const checkout = await createWhopCombinedCheckout({
+        totalPence,
+        orderId: order.id,
+        customerName,
+        deliveryEmail,
+        vin,
+        cartSummary,
+      });
+      return { checkoutUrl: checkout.checkoutUrl, orderId: order.id, totalPence };
+    })();
+    checkoutAttempts.set(requestKey, { expiresAt: now + 10 * 60 * 1000, promise });
+    if (checkoutAttempts.size > 10_000) {
+      checkoutAttempts.forEach((value, storedKey) => {
+        if (value.expiresAt <= now) checkoutAttempts.delete(storedKey);
+      });
+    }
+    const result = await promise;
+    return res.json({ ok: true, data: result });
   });
 
   app.post("/api/contact", requireSameOrigin, async (req, res) => {

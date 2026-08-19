@@ -548,3 +548,8 @@
 - [x] Perform the requested evidence-based security audit across secrets, admin auth, authorization, database queries, input validation, XSS, CSRF, webhooks, rate limiting, headers, cookies, errors, paths, CORS, and reliability.
 - [x] Fix only confirmed security issues and add regression coverage without changing design, pricing, payment flow, or customer behavior.
 - [x] Run build, tests, runtime smoke checks, unauthorized-access checks, and save a security checkpoint with a findings report.
+- [x] Verify frontend source and generated production assets do not expose private environment variables, API secrets, credentials, database URLs, SMTP values, OTP peppers, JWT secrets, or Whop secrets.
+- [x] Build and scan the frontend without printing sensitive values, then report the result.
+- [x] Inspect the existing cart, checkout, order creation, Whop integration, and webhook flow for the minimum safe unified-cart change.
+- [x] Implement one server-side combined-cart checkout with server-trusted pricing and preserved order/webhook behavior.
+- [x] Test single-item and multi-item totals, browser-price tampering, duplicate-session protection, and regression coverage; save a checkpoint.

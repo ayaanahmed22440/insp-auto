@@ -366,6 +366,35 @@ export async function getDashboardCounts() {
   };
 }
 
+export async function createPendingOrder(input: {
+  customerName: string;
+  deliveryEmail: string;
+  selectedPlan: string;
+  amountPence: number;
+  vin?: string;
+  paymentReference: string;
+}) {
+  const db = await getDb();
+  if (!db) return undefined;
+  await db.insert(orders).values({
+    customerName: input.customerName,
+    deliveryEmail: input.deliveryEmail,
+    selectedPlan: input.selectedPlan,
+    amountPence: input.amountPence,
+    vin: input.vin,
+    paymentReference: input.paymentReference,
+    paymentStatus: "pending",
+    fulfillmentStatus: "pending",
+  });
+  const rows = await db
+    .select()
+    .from(orders)
+    .where(eq(orders.paymentReference, input.paymentReference))
+    .orderBy(desc(orders.createdAt))
+    .limit(1);
+  return rows[0];
+}
+
 export async function syncOrderFromWebhook(input: {
   orderId?: number;
   customerName?: string;

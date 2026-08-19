@@ -13,7 +13,7 @@ describe("admin server secret configuration", () => {
   });
 
   it("has server-only delivery configuration present", () => {
-    for (const key of ["SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_USER", "SMTP_PASS", "SMTP_FROM", "CONTACT_TO", "WHOP_WEBHOOK_SECRET", "WHOP_COMPANY_ID"]) {
+    for (const key of ["SMTP_HOST", "SMTP_PORT", "SMTP_SECURE", "SMTP_USER", "SMTP_PASS", "SMTP_FROM", "CONTACT_TO", "WHOP_API_KEY", "WHOP_WEBHOOK_SECRET", "WHOP_COMPANY_ID"]) {
       expect(process.env[key], key).toBeTruthy();
     }
   });
