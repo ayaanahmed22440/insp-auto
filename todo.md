@@ -240,7 +240,7 @@
 
 ## Confirmed Hostinger credential failure and exposure
 
-- [ ] Rotate all secrets visible in the shared Hostinger environment screenshot: database password, admin password, mailbox password, JWT secret, OTP pepper, Whop company/webhook credentials, and any other exposed secret.
+- [ ] PENDING — deferred by user: rotate database, admin, mailbox, JWT, OTP, Whop, and other exposed secrets in a separate future task.
 - [x] Obtain or reset the accepted MySQL password for `u589090822_ayaanahmed` and update `DATABASE_URL` privately.
 - [x] Redeploy and prove successful MySQL access before closing the live runtime issue.
 
@@ -280,10 +280,10 @@
 
 ## Authorized production credential rotation and preview cleanup
 
-- [ ] Inventory which application secrets can be regenerated safely and which must be changed in their external provider first.
-- [ ] Rotate replaceable application secrets without logging or exposing values.
-- [ ] Coordinate external Whop webhook and Hostinger mailbox credential changes without breaking payment or SMTP flows.
-- [ ] Redeploy and verify database access, admin OTP, contact email handling, webhook verification, and checkout routing.
+- [ ] PENDING — deferred by user: inventory secret rotation requirements in a separate future task.
+- [ ] PENDING — deferred by user: rotate replaceable application secrets in a separate future task.
+- [ ] PENDING — deferred by user: coordinate Whop webhook and Hostinger mailbox credential changes in a separate future task.
+- [ ] PENDING — deferred by user: redeploy and verify after future credential rotation.
 - [x] Recheck the managed preview and document the platform-only pnpm limitation; this does not affect Hostinger Node 20/npm production.
 
 ## Narrowed non-secret verification scope
@@ -317,8 +317,8 @@
 
 - [x] Recheck `inspauto.com` and `www.inspauto.com` from an independent public request; neither currently serves WordPress.
 - [x] Inspect Hostinger’s app/domain/cache state without changing unrelated credentials or application settings.
-- [ ] Obtain replacement Whop API and webhook-secret values through a secure input flow; never guess or log secret values.
-- [ ] Apply only the two Whop credential updates and verify domain delivery, webhook configuration, and checkout behavior without completing a payment.
+- [ ] PENDING — deferred by user: obtain replacement Whop API and webhook-secret values in a separate future task.
+- [ ] PENDING — deferred by user: apply the two Whop credential updates in a separate future task.
 
 ## Domain-only follow-up
 
@@ -398,15 +398,46 @@
 
 - [x] Re-audit mobile-facing DNS, IPv4/IPv6 TLS, HSTS, HTTP/2/HTTP/3, and Hostinger security/CDN behavior after the completed production redeploy.
 - [x] Identify and apply the smallest safe correction for the phone-only failure by removing only the apex IPv6 AAAA record, without changing credentials, payments, or application functionality.
-- [x] Verify the corrected live path and provide a clear phone-specific validation step.
+- [ ] PENDING — verify the corrected live path from an actual phone and provide a clear phone-specific validation step.
 
 ## Delayed mobile route switch
 
 - [x] Record that the INSP AUTO page works on a phone for several minutes, then switches to the certificate/Railway error.
 - [x] Inspect the current Hostinger IPv6 and HTTP/3 edge configuration after the first successful mobile visit.
-- [x] Apply the smallest safe edge-path correction and verify repeated mobile-compatible delivery.
+- [ ] PENDING — verify repeated mobile-compatible delivery from an actual phone after AAAA removal.
 
 ## Confirmed IPv6 route removal
 
 - [x] Delete only the apex `AAAA` record for `inspauto.com` in Hostinger DNS.
 - [x] Verify the domain resolves through the working IPv4 Hostinger route and both hostnames retain valid HTTPS and INSP AUTO content.
+
+## Phone-only DNS/SSL scope
+
+- [ ] Monitor IPv4-only DNS propagation and phone-path certificate behavior without changing API links, credentials, payments, application code, or integrations.
+- [ ] Apply only a necessary DNS/SSL delivery adjustment if the phone issue persists.
+- [ ] Verify repeated phone-compatible delivery from the user’s actual phone before closing this issue.
+
+## Confirmed Railway certificate mismatch
+
+- [ ] Trace every remaining DNS, redirect, certificate, and cached-edge reference that can present `up.railway.app` for `inspauto.com`.
+- [ ] Remove only the confirmed stale Railway route while preserving Hostinger, email, API links, credentials, payments, and application code.
+- [ ] Verify the certificate identity and repeated phone-compatible delivery from the actual phone after propagation.
+
+## Continued phone-only fix authorization
+
+- [ ] Monitor public DNS and certificate propagation after the apex AAAA removal without changing API links, credentials, payments, mailbox settings, or application code.
+- [ ] Apply only a necessary DNS/SSL delivery adjustment if the stale Railway certificate path remains publicly reachable.
+- [ ] Obtain actual-phone confirmation that the warning is gone and verify repeated delivery before closing the issue.
+
+## Repeated phone certificate warning
+
+- [ ] Inspect Hostinger SSL, redirects, DNS history, CDN, and domain binding for any stale Railway reference still presented to mobile clients.
+- [ ] Apply only a confirmed Hostinger DNS/SSL/proxy correction; leave API links, credentials, payments, mailbox settings, and application code unchanged.
+- [ ] Verify the live certificate identity and repeated delivery after the correction from an actual phone.
+
+## Renewed mobile-only TLS mismatch investigation
+
+- [x] Reinvestigate mobile-only `www.inspauto.com` certificate mismatch using the supplied Chrome screenshots as evidence.
+- [x] Trace `www.inspauto.com` DNS, CNAME/AAAA state, certificate hostname coverage, and Hostinger domain attachment without changing application code, credentials, payment settings, or API links.
+- [x] Apply only a narrowly scoped domain/routing correction if a live stale binding is found; changed only `www` CNAME to `www.inspauto.com.cdn.hstgr.net`.
+- [x] Verify HTTPS behavior across independent resolvers/networks and document the exact cause and result; public resolver/CNAME/SNI checks pass, while actual-phone confirmation remains pending.

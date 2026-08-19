@@ -53,3 +53,20 @@ The GitHub source and built output contain no Railway, Cloudflare, WordPress, or
 ## Hostinger mitigation redeploy
 
 Hostinger’s first auto-deployment for commit `9349cfb6` was marked Build failed even though `npm run check` and `npm run build` pass locally. Hostinger’s generated analysis said the project build is correct and the deployment process should not require a code change. Using the unchanged Express / npm / Node 20 / `dist/index.js` settings, a manual Save and redeploy was started at 2026-08-19 07:42 and is currently Building. Live `Alt-Svc` headers should be rechecked only after this deployment reaches Completed.
+
+## Apex IPv6 removal verification
+
+After deleting the Hostinger apex `AAAA` record, the Hostinger DNS table no longer contains that record. Local resolution for both `inspauto.com` and `www.inspauto.com` returns only `194.164.64.154`, and both hosts return HTTP 200 from Hostinger LiteSpeed with the INSP AUTO title. A real phone test after the 1800-second DNS TTL remains necessary to confirm that the delayed mobile failure has disappeared.
+
+
+## Renewed mobile-only TLS investigation — 2026-08-19
+
+The supplied Android Chrome screenshots show `NET::ERR_CERT_COMMON_NAME_INVALID` for `www.inspauto.com`, with HSTS preventing bypass. This confirms a certificate/SNI problem before the application is reached; application code, API routes, credentials, checkout, and payment links are not involved in the failure.
+
+A passive probe from the sandbox currently shows both `inspauto.com` and `www.inspauto.com` resolving to `194.164.64.154`. SNI certificate inspection for both hostnames presents a Let's Encrypt certificate with `CN=inspauto.com` and SANs `DNS:inspauto.com, DNS:www.inspauto.com`, valid from 2026-08-05 through 2026-11-03. HTTPS requests return HTTP 200 from Hostinger LiteSpeed and the INSP AUTO application.
+
+The live response still includes `Alt-Svc: h3=":443"`, even though the Express entrypoint sets `Alt-Svc: clear`. This indicates Hostinger's edge may be adding or overriding the HTTP/3 advertisement after the Node origin response. A stale mobile HTTP/3/QUIC edge association remains a plausible provider-side cause, but it is not yet proven.
+
+Hostinger hPanel inspection found Lifetime SSL marked Active. DNS history shows repeated zone updates, CDN enable/disable events, and hosting addon removals, but no visible Railway binding. The Redirects panel contained no Railway target in the loaded content. The next domain-only action is to inspect the Hostinger website dashboard for duplicate www attachment or a provider-level HTTP/3/CDN control; do not alter application functionality or secrets.
+
+Hostinger's current support documentation says SSL is attached per hosted domain/subdomain and can be uninstalled/reinstalled from Websites → Dashboard → Security → SSL; it also recommends clearing Hostinger/CDN cache and testing from independent networks when stale routing persists. References: https://www.hostinger.com/support/5613445-how-to-fix-a-failed-lifetime-ssl-installation-in-hostinger/ ; https://www.hostinger.com/support/1583501-how-to-clear-cache-at-hostinger/ ; https://www.hostinger.com/support/1583258-how-to-install-lifetime-ssl-at-hostinger/
