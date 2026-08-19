@@ -519,10 +519,10 @@
 
 ## Confirmed Whop package pricing correction
 
-- [ ] Remove the £1 Whop package and preserve the three paid package links.
+- [x] Remove the £1 Whop package and preserve the three paid package links.
 - [ ] Map the remaining tiers to Standard £49, Middle £59, and Premium £79 and update the actual Whop plan prices after confirmation.
-- [ ] Synchronize every visible website price and checkout amount to £49, £59, and £79.
-- [ ] Run npm build, tests, and verify all three paid plan links remain intact.
+- [x] Synchronize every visible website price and checkout amount to £49, £59, and £79.
+- [x] Run npm build, tests, and verify all three paid plan links remain intact.
 
 ## Website-only £49/£59/£79 pricing
 
@@ -553,3 +553,8 @@
 - [x] Inspect the existing cart, checkout, order creation, Whop integration, and webhook flow for the minimum safe unified-cart change.
 - [x] Implement one server-side combined-cart checkout with server-trusted pricing and preserved order/webhook behavior.
 - [x] Test single-item and multi-item totals, browser-price tampering, duplicate-session protection, and regression coverage; save a checkpoint.
+- [x] Reproduce the live combined-checkout button failure and capture the exact browser/network error without creating a real payment.
+- [ ] Fix the confirmed checkout failure, add regression coverage, redeploy if needed, and verify the live button flow; currently blocked by Whop HTTP 403 authorization.
+- [x] Fix the checkout button so failed or completed attempts never leave it stuck on “Preparing checkout…” and users can retry without refreshing.
+- [x] Add an explicit opt-in, privacy-safe faster-checkout details option without storing card or payment data.
+- [x] Evaluate the optional Whop Pixel snippet separately from checkout, then test repeated attempts and save a checkpoint.

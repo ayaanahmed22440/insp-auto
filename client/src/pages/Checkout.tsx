@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Minus, Plus, Trash2 } from "lucide-react";
 import { cartSubtotal, checkoutReady, formatPounds, loadCart, removeCartItem, saveCart, setCartItemQuantity, type CartItem } from "@/lib/cart";
+import { createCheckoutAttemptKey, readSavedCheckoutDetails, writeSavedCheckoutDetails } from "@/lib/checkoutDetails";
 
 function navigate(path: string) {
   window.history.pushState({}, "", path);
@@ -18,13 +19,22 @@ export default function Checkout() {
   const [acknowledgements, setAcknowledgements] = useState([false, false, false]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const checkoutAttemptKey = useRef<string>(
-    typeof crypto !== "undefined" && "randomUUID" in crypto
-      ? crypto.randomUUID()
-      : `${Date.now()}-${Math.random().toString(36).slice(2)}`
-  );
+  const [saveDetails, setSaveDetails] = useState(false);
+  const checkoutAttemptKey = useRef<string>(createCheckoutAttemptKey());
 
   useEffect(() => saveCart(items), [items]);
+  useEffect(() => {
+    const details = readSavedCheckoutDetails();
+    if (!details) return;
+    setFirstName(details.firstName);
+    setLastName(details.lastName);
+    setPhone(details.phone);
+    setEmail(details.email);
+    setSaveDetails(true);
+  }, []);
+  useEffect(() => {
+    if (saveDetails) writeSavedCheckoutDetails({ firstName, lastName, phone, email });
+  }, [saveDetails, firstName, lastName, phone, email]);
   const subtotal = useMemo(() => cartSubtotal(items), [items]);
   const readyForPayment = checkoutReady({ firstName, lastName, phone, email, registration, acknowledgements });
 
@@ -59,6 +69,9 @@ export default function Checkout() {
       window.location.assign(payload.data.checkoutUrl);
     } catch (error) {
       setPaymentError(error instanceof Error ? error.message : "We could not start checkout. Please try again.");
+      // A failed idempotency attempt must receive a fresh key so the next click can retry.
+      checkoutAttemptKey.current = createCheckoutAttemptKey();
+    } finally {
       setIsSubmitting(false);
     }
   }
@@ -84,6 +97,7 @@ export default function Checkout() {
             <label className="checkout-full">Reg/VIN number <b>*</b><input required value={registration} onChange={event => setRegistration(event.target.value)} autoComplete="off" /></label>
           </div>
           <div className="checkout-consents">
+            <label className="checkout-consent checkout-save-details"><input type="checkbox" checked={saveDetails} onChange={event => setSaveDetails(event.target.checked)} /><span>Remember my contact details on this device for faster checkout next time. Card and billing-address details are entered and stored only by Whop. <b>(optional)</b></span></label>
             {[
               "We do not exert any pressure on visitors to purchase the product; all purchasing decisions are made voluntarily.",
               "I acknowledge that all payments are handled by our third-party payment provider, Whop, and agree to request refunds via email instead of initiating a chargeback under any circumstances.",
