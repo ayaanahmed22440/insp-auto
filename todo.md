@@ -533,13 +533,13 @@
 
 ## Renewed end-to-end production accessibility incident
 
-- [ ] Treat the attached text as reference only and do not import its prices, content, configuration, or business information.
-- [ ] Audit complete DNS, A/AAAA/CNAME/TXT/nameservers, resolver divergence, domain attachments, old providers, redirects, TLS, CDN, cache, service workers, and duplicate deployments.
-- [ ] Compare working and failing production delivery paths, including live HTML/build hashes, JS/CSS/chunk/API requests, frontend runtime errors, CORS/CSP/auth/cookies, backend logs, environment configuration, and non-destructive database connectivity.
-- [ ] Apply only verified safe fixes, create/verify a backup before destructive infrastructure/database changes, rebuild/redeploy if necessary, purge appropriate caches, and test repeated delivery across network perspectives.
+- [x] Treat the attached text as reference only and do not import its prices, content, configuration, or business information.
+- [x] Audit complete DNS, A/AAAA/CNAME/TXT/nameservers, resolver divergence, domain attachments, old providers, redirects, TLS, CDN, cache, service workers, and duplicate deployments.
+- [x] Compare working and failing production delivery paths, including live HTML/build hashes, JS/CSS/chunk/API requests, frontend runtime errors, CORS/CSP/auth/cookies, backend logs, environment configuration, and non-destructive database connectivity.
+- [x] Apply only verified safe fixes, create/verify a backup before destructive infrastructure/database changes, rebuild/redeploy if necessary, purge appropriate caches, and test repeated delivery across network perspectives.
 - [x] Add npm-only HTTP compression for production static assets after confirming the live JS bundle is delivered uncompressed and takes 16–45 seconds.
-- [x] Rebuild and test the compression fix locally; local production responses now return Brotli with `Vary: Accept-Encoding` and `Alt-Svc: clear`. Redeployment and live verification remain pending.
+- [x] Rebuild and test the compression fix locally; local production responses now return Brotli with `Vary: Accept-Encoding` and `Alt-Svc: clear`. Hostinger redeployment and live verification are complete.
 - [x] Reduce the initial frontend payload with route-level lazy loading, including the homepage, while preserving routes and UI.
 - [x] Add immutable cache headers for Vite-hashed `/assets` while keeping HTML uncached.
 - [x] Validate the final local production server: Brotli asset response, `Vary: Accept-Encoding`, `Cache-Control: public, max-age=31536000, immutable`, `Alt-Svc: clear`, npm build, and 10 passing tests.
-- [ ] Redeploy the final dca1dff4 follow-up changes and verify compressed delivery plus mobile-style loading on the public domain.
+- [x] Redeploy the final follow-up changes and verify compressed delivery plus mobile-style loading on the public domain.
