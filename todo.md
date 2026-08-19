@@ -441,3 +441,16 @@
 - [x] Trace `www.inspauto.com` DNS, CNAME/AAAA state, certificate hostname coverage, and Hostinger domain attachment without changing application code, credentials, payment settings, or API links.
 - [x] Apply only a narrowly scoped domain/routing correction if a live stale binding is found; changed only `www` CNAME to `www.inspauto.com.cdn.hstgr.net`.
 - [x] Verify HTTPS behavior across independent resolvers/networks and document the exact cause and result; public resolver/CNAME/SNI checks pass, while actual-phone confirmation remains pending.
+
+## Delayed www route-switch follow-up
+
+- [ ] Record that `www.inspauto.com` loads briefly on the affected phone and may later return to the certificate mismatch.
+- [ ] Compare the canonical `www` IPv4 and IPv6 answers and certificate behavior after the CNAME correction.
+- [ ] Apply only a confirmed IPv4-only DNS correction if the canonical `www` edge introduces the failing path.
+- [ ] Verify repeated delivery after the correction and obtain actual-phone confirmation.
+
+## www-only SSL protocol failure
+
+- [x] Record the affected-phone evidence: `inspauto.com` works while `www.inspauto.com` fails with `ERR_SSL_PROTOCOL_ERROR`.
+- [x] Replace only the failing `www` canonical CNAME route with the confirmed IPv4-only Hostinger target; `www` is now `A → 194.164.64.154` with TTL 300.
+- [x] Verify both apex and www HTTPS delivery after DNS propagation without changing application or credential settings; both return only the Hostinger IPv4 route, valid SAN coverage, and HTTP 200.

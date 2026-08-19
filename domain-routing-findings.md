@@ -70,3 +70,12 @@ The live response still includes `Alt-Svc: h3=":443"`, even though the Express e
 Hostinger hPanel inspection found Lifetime SSL marked Active. DNS history shows repeated zone updates, CDN enable/disable events, and hosting addon removals, but no visible Railway binding. The Redirects panel contained no Railway target in the loaded content. The next domain-only action is to inspect the Hostinger website dashboard for duplicate www attachment or a provider-level HTTP/3/CDN control; do not alter application functionality or secrets.
 
 Hostinger's current support documentation says SSL is attached per hosted domain/subdomain and can be uninstalled/reinstalled from Websites → Dashboard → Security → SSL; it also recommends clearing Hostinger/CDN cache and testing from independent networks when stale routing persists. References: https://www.hostinger.com/support/5613445-how-to-fix-a-failed-lifetime-ssl-installation-in-hostinger/ ; https://www.hostinger.com/support/1583501-how-to-clear-cache-at-hostinger/ ; https://www.hostinger.com/support/1583258-how-to-install-lifetime-ssl-at-hostinger/
+
+
+## www-only protocol failure correction — 2026-08-19
+
+The affected phone screenshot showed `https://inspauto.com/` working while `https://www.inspauto.com/` failed with `ERR_SSL_PROTOCOL_ERROR`. Before correction, `www` used a canonical Hostinger CNAME whose target returned separate IPv4 and IPv6 edges. The apex was IPv4-only. This explains why the apex remained stable while the phone’s `www` path could switch to a failing alternate edge.
+
+With the user’s confirmation, the old `www` CNAME was deleted and replaced by `A www → 194.164.64.154` with TTL 300. Public Google DNS now returns only `194.164.64.154` for `www` and no AAAA answer. The apex also returns only `194.164.64.154`. SNI checks for both names present the same valid Let's Encrypt certificate with SANs for `inspauto.com` and `www.inspauto.com`, and HTTPS requests for both return HTTP 200 from Hostinger LiteSpeed. No application code, credentials, mail records, API links, Whop settings, pricing, or payment links were changed.
+
+Actual-phone repeat testing remains the final validation because this environment cannot reproduce the phone’s prior cached route.
