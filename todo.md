@@ -393,3 +393,20 @@
 - [x] Redeploy commit `9349cfb6` through Hostinger using the unchanged Express, npm, Node 20, and `dist/index.js` settings.
 - [x] Verify `inspauto.com` and `www.inspauto.com` return HTTP 200, Hostinger/LiteSpeed headers, and the INSP AUTO page after redeploy.
 - [x] Confirm the live response contains no WordPress, Railway, Cloudflare, or old-origin markers.
+
+## Persistent mobile failure after redeploy
+
+- [x] Re-audit mobile-facing DNS, IPv4/IPv6 TLS, HSTS, HTTP/2/HTTP/3, and Hostinger security/CDN behavior after the completed production redeploy.
+- [x] Identify and apply the smallest safe correction for the phone-only failure by removing only the apex IPv6 AAAA record, without changing credentials, payments, or application functionality.
+- [x] Verify the corrected live path and provide a clear phone-specific validation step.
+
+## Delayed mobile route switch
+
+- [x] Record that the INSP AUTO page works on a phone for several minutes, then switches to the certificate/Railway error.
+- [x] Inspect the current Hostinger IPv6 and HTTP/3 edge configuration after the first successful mobile visit.
+- [x] Apply the smallest safe edge-path correction and verify repeated mobile-compatible delivery.
+
+## Confirmed IPv6 route removal
+
+- [x] Delete only the apex `AAAA` record for `inspauto.com` in Hostinger DNS.
+- [x] Verify the domain resolves through the working IPv4 Hostinger route and both hostnames retain valid HTTPS and INSP AUTO content.
