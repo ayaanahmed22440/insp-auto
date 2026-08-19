@@ -492,3 +492,9 @@
 - [x] Investigate the affected phone showing a connected but completely blank `inspauto.com` page after the DNS fix.
 - [x] Check production HTML, JavaScript assets, browser/runtime logs, and cache/service-worker behavior for mobile-only failures.
 - [x] Apply only the smallest confirmed production-safe correction and verify the page renders on mobile-style clients; added an `IntersectionObserver` fallback in `client/src/pages/Home.tsx`, with npm build and 9 Vitest tests passing.
+
+## Deployment activation verification
+
+- [x] Verify whether Hostinger live `inspauto.com` serves the new IntersectionObserver fallback bundle from commit `2751b5df`; the live bundle contains the fallback.
+- [x] Confirm whether the connected deployment panel is separate from Hostinger’s live runtime and identify the required redeploy action; the public Hostinger bundle is already updated even though the deployment panel is separate.
+- [x] Report the exact activation state and next deployment step without changing DNS, payments, credentials, or application scope.
