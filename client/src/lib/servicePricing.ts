@@ -1,7 +1,7 @@
 export const SERVICE_TIER_PRICES = {
-  basic: "39.99",
-  standard: "42.99",
-  premium: "52.99",
+  basic: "49.00",
+  standard: "59.00",
+  premium: "79.00",
 } as const;
 
 export const SERVICE_TIER_PRICE_VALUES = [

@@ -120,3 +120,10 @@ Hostinger CDN was explicitly disabled for `inspauto.com`; the Hostinger CDN stat
 ## Final IPv4-only DNS verification — 2026-08-19
 
 The user deleted the residual `AAAA @ → 2a02:4780:2b:1610:0:231c:d006:10` record. The subsequent probe now returns only `194.164.64.154` for both `inspauto.com` and `www.inspauto.com`; no IPv6 answer is returned. Both hostnames present the same valid Let’s Encrypt certificate covering `inspauto.com` and `www.inspauto.com`, return HTTP 200 from Hostinger LiteSpeed, and no longer use the Hostinger CDN (`server: LiteSpeed`, not `server: hcdn`). This is the intended direct IPv4 configuration for mobile stability.
+
+
+## Whop pricing-edit investigation — 2026-08-19
+
+Source: https://whop.com/dashboard/biz_67QnAzoeWI4EUU/
+
+The authenticated Whop dashboard for the `prime inspectors` business displays a red suspension banner: "This business has been suspended. If you believe this is an error, please contact our support team." The dashboard does not expose checkout-link editing controls while suspended. The requested £1 package removal and package price changes therefore cannot be applied from the current Whop account state until Whop restores the business or support provides access.

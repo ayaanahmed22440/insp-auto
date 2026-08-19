@@ -501,8 +501,8 @@
 
 ## Service-card real pricing update
 
-- [ ] Compare the service-page card prices with the existing report pricing and unchanged payment-link definitions.
-- [ ] Update only the displayed service-card prices to the confirmed real values without changing payment links or checkout behavior.
+- [x] Compare the service-page card prices with the existing report pricing and unchanged payment-link definitions.
+- [x] Update only the displayed service-card prices to the confirmed real values without changing payment links or checkout behavior.
 - [x] Run npm build and tests and verify the price display across the service pages.
 
 ## Confirmed all-vehicle service pricing
@@ -516,3 +516,17 @@
 - [x] Locate every remaining old price display across the homepage, main Pricing page, and service pages.
 - [x] Replace all visible old prices with £39.99 Basic, £42.99 Standard, and £52.99 Premium while preserving Whop links and checkout values.
 - [x] Run npm build, tests, and a full pricing consistency verification across all visible sections; no stale price literals remain in client source, and all 10 tests pass.
+
+## Confirmed Whop package pricing correction
+
+- [ ] Remove the £1 Whop package and preserve the three paid package links.
+- [ ] Map the remaining tiers to Standard £49, Middle £59, and Premium £79 and update the actual Whop plan prices after confirmation.
+- [ ] Synchronize every visible website price and checkout amount to £49, £59, and £79.
+- [ ] Run npm build, tests, and verify all three paid plan links remain intact.
+
+## Website-only £49/£59/£79 pricing
+
+- [x] Change website pricing constants and visible cards to Standard £49, Middle £59, and Premium £79.
+- [x] Remove any £1 option from website UI if present, without changing Whop or payment links; no £1 website option exists.
+- [x] Ensure website checkout receives £49, £59, and £79 while existing payment URLs remain unchanged.
+- [x] Run npm build, tests, and verify the website-only pricing update; npm build succeeds and 10 tests pass.
