@@ -454,3 +454,17 @@
 - [x] Record the affected-phone evidence: `inspauto.com` works while `www.inspauto.com` fails with `ERR_SSL_PROTOCOL_ERROR`.
 - [x] Replace only the failing `www` canonical CNAME route with the confirmed IPv4-only Hostinger target; `www` is now `A → 194.164.64.154` with TTL 300.
 - [x] Verify both apex and www HTTPS delivery after DNS propagation without changing application or credential settings; both return only the Hostinger IPv4 route, valid SAN coverage, and HTTP 200.
+
+## Intermittent access investigation
+
+- [x] Investigate reports that the site intermittently fails for some users/devices while working for others.
+- [x] Compare independent DNS, IPv4/IPv6, TLS, and HTTP delivery paths for both apex and www hostnames.
+- [x] Audit Hostinger domain attachment, routing, resource/traffic restrictions, SSL state, and recent runtime logs.
+- [x] Apply only a narrowly scoped infrastructure correction if a live fault is confirmed; no additional live correction was required after the IPv4-only www fix.
+- [x] Verify repeated access and document whether IP restrictions, server limits, DNS, TLS, or hosting policies are involved.
+
+## Confirmed Hostinger inode cleanup
+
+- [x] Run Hostinger's confirmed Reduce inodes cleanup for the shared Business hosting account.
+- [x] Recheck inode usage, inspauto.com running status, runtime logs, DNS/TLS, and repeated HTTPS delivery after cleanup.
+- [x] Document whether inode pressure affected intermittent availability and whether any IP, traffic, view, or hosting restriction remains; inode pressure remains a risk but was not proven as the cause.

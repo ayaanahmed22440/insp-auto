@@ -79,3 +79,19 @@ The affected phone screenshot showed `https://inspauto.com/` working while `http
 With the user’s confirmation, the old `www` CNAME was deleted and replaced by `A www → 194.164.64.154` with TTL 300. Public Google DNS now returns only `194.164.64.154` for `www` and no AAAA answer. The apex also returns only `194.164.64.154`. SNI checks for both names present the same valid Let's Encrypt certificate with SANs for `inspauto.com` and `www.inspauto.com`, and HTTPS requests for both return HTTP 200 from Hostinger LiteSpeed. No application code, credentials, mail records, API links, Whop settings, pricing, or payment links were changed.
 
 Actual-phone repeat testing remains the final validation because this environment cannot reproduce the phone’s prior cached route.
+
+
+## Intermittent-access investigation — 2026-08-19
+
+Repeated public probes across three rounds showed stable delivery for both `inspauto.com` and `www.inspauto.com`: Google Public DNS returned only `194.164.64.154` for A records and no AAAA answers; HTTPS returned HTTP 200 from Hostinger LiteSpeed; and SNI presented the same Let's Encrypt certificate for `inspauto.com` and `www.inspauto.com`. This rules out a currently active split IPv4/IPv6 route, an active Railway DNS target, or a certificate mismatch at the authoritative edge.
+
+Hostinger's authenticated account panel shows the `inspauto.com` Node/Express site is Running, SSL is active, Auto-deployment is active, Malware protection is active, and the latest deployment completed successfully. Site-specific runtime logs show zero issues and zero errors for the last hour. Site resource readings were CPU 6% and memory 506 MB. However, the shared Business hosting account contains 23 websites and reports 530,211 of 600,000 inodes used (88%), with an account-level warning that resources are close to limits. Hostinger states that exhausting inodes can lead to application crashes, server restarts, data loss risk, or scheduled tasks not running. Disk usage is only 16.38 GB of 200 GB, so the concern is file/inode count rather than disk capacity.
+
+Hostinger's page-speed history shows a recent mobile score of 82 and repeated desktop scores of 98–100, indicating performance is measurable but not evidence of an access restriction. No IP block, traffic quota, HTTP error, runtime crash, or current DNS/TLS fault has been observed. The strongest remaining infrastructure risk is shared-account inode pressure. Hostinger offers a `Reduce inodes` action described as automatically cleaning temporary files without damaging websites; this action has not yet been run because it changes account files and requires authorization.
+
+
+## Post-cleanup verification — 2026-08-19
+
+The confirmed Hostinger `Reduce inodes` action completed successfully, followed by Hostinger's `Recalculate usage` action. The displayed account count remained approximately 530,211 of 600,000 inodes (88%), indicating that the automated temporary-file cleanup did not materially lower the shared account's inode count. CPU remained low and memory remained well below its limit.
+
+Post-cleanup public checks still show A-only IPv4 delivery to 194.164.64.154, no AAAA answer, HTTP/2 200 from Hostinger LiteSpeed, and the valid Let's Encrypt certificate with SANs for both hostnames. The cleanup did not create an outage, but because the inode warning persists, shared-account inode pressure remains a risk rather than a proven cause of the intermittent user reports.
