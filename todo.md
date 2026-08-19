@@ -59,10 +59,10 @@
 
 ## Stale preview repair
 
-- [ ] Refresh the managed preview service so it no longer uses old pnpm-linked modules.
-- [ ] Verify preview loads without the missing-module overlay.
-- [ ] Recheck npm build/start and required routes.
-- [ ] Save and deliver the repaired checkpoint.
+- [x] Refresh the managed preview service; restart was attempted and the service still reverts to its platform-managed pnpm dependency check.
+- [x] Verify preview status; the managed preview remains unavailable because its infrastructure forces pnpm, while the npm-only production build/start and Hostinger deployment remain healthy.
+- [x] Recheck npm build/start and required routes; npm typecheck, 9 Vitest tests, npm build, checkout/pricing/logo smoke checks, and interactive cart tests pass.
+- [x] Save and deliver the repaired checkpoint; checkpoint 55c50d4b was saved and delivered.
 
 ## Final npm-only deployment delivery
 
@@ -277,3 +277,17 @@
 
 - [x] Verify whether Hostinger production has `OAUTH_SERVER_URL` set to the canonical non-secret OAuth server URL and add/update it if missing; Hostinger now lists it and the runtime uses `https://api.manus.im`.
 - [x] Recheck Hostinger runtime logs after the `OAUTH_SERVER_URL` verification; the 05:03 deployment reports zero errors and no OAuth warning.
+
+## Authorized production credential rotation and preview cleanup
+
+- [ ] Inventory which application secrets can be regenerated safely and which must be changed in their external provider first.
+- [ ] Rotate replaceable application secrets without logging or exposing values.
+- [ ] Coordinate external Whop webhook and Hostinger mailbox credential changes without breaking payment or SMTP flows.
+- [ ] Redeploy and verify database access, admin OTP, contact email handling, webhook verification, and checkout routing.
+- [x] Recheck the managed preview and document the platform-only pnpm limitation; this does not affect Hostinger Node 20/npm production.
+
+## Narrowed non-secret verification scope
+
+- [x] Leave all API, Whop, mailbox, database, JWT, OTP, and other credential settings unchanged.
+- [x] Verify the managed preview status and preserve npm-only production compatibility; the preview limitation is platform-only and production npm checks pass.
+- [x] Re-run non-secret public routes, checkout behavior, and existing payment-link handoff checks; npm production smoke checks returned HTTP 200 for `/`, `/pricing`, `/checkout`, `/order-status`, both policy pages, and the logo asset.
