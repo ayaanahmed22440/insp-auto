@@ -1,12 +1,39 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { normalizeOtpCode, verifyWhopSignature } from "./adminSecurity";
+import {
+  normalizeOtpCode,
+  sameOriginMatches,
+  setAdminCookie,
+  verifyWhopSignature,
+} from "./adminSecurity";
 
 describe("OTP input normalization", () => {
   it("removes pasted whitespace and preserves leading zeroes", () => {
     expect(normalizeOtpCode(" 0 1 2 0 0 3 ")).toBe("012003");
     expect(normalizeOtpCode("1234567")).toBe("123456");
     expect(normalizeOtpCode(undefined)).toBe("");
+  });
+});
+
+describe("Admin request security helpers", () => {
+  it("requires an exact same-origin match", () => {
+    expect(sameOriginMatches("https://inspauto.com", "https://inspauto.com")).toBe(true);
+    expect(sameOriginMatches("https://evil.example", "https://inspauto.com")).toBe(false);
+    expect(sameOriginMatches("", "https://inspauto.com")).toBe(false);
+  });
+
+  it("sets an HttpOnly Secure SameSite=Lax session cookie", () => {
+    let captured: { name: string; value: string; options: Record<string, unknown> } | undefined;
+    setAdminCookie({
+      cookie(name, value, options) {
+        captured = { name, value, options };
+      },
+    }, "test-token");
+    expect(captured).toMatchObject({
+      name: "__Host-insp_admin",
+      value: "test-token",
+      options: { httpOnly: true, secure: true, sameSite: "lax", path: "/" },
+    });
   });
 });
 

@@ -89,6 +89,15 @@ async function startServer() {
     serveStatic(app);
   }
 
+  app.use((error: unknown, req: Request, res: express.Response, next: express.NextFunction) => {
+    if (res.headersSent) return next(error);
+    console.error(
+      `[HTTP] ${req.method} ${req.path} failed`,
+      error instanceof Error ? error.message : "unknown error"
+    );
+    return res.status(500).json({ ok: false, message: "Internal server error" });
+  });
+
   const preferredPort = parseInt(process.env.PORT || "3000");
   const port = await findAvailablePort(preferredPort);
 

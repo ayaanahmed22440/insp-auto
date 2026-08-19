@@ -156,6 +156,10 @@ export function verifyWhopSignature(
     });
 }
 
+export function sameOriginMatches(origin: string, expectedOrigin: string) {
+  return Boolean(origin) && origin === expectedOrigin;
+}
+
 export function requestId() {
   return randomBytes(12).toString("hex");
 }

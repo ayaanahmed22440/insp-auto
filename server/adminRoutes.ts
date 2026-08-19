@@ -43,6 +43,7 @@ import {
   readCookie,
   requestId,
   safeEqualHex,
+  sameOriginMatches,
   setAdminCookie,
   verifyPassword,
   verifyWhopSignature,
@@ -51,16 +52,22 @@ import {
 const attempts = new Map<string, { count: number; resetAt: number }>();
 const MAX_ATTEMPTS = 8;
 const WINDOW_MS = 15 * 60 * 1000;
+const PUBLIC_MAX_ATTEMPTS = 20;
 
-function rateLimited(key: string) {
+function rateLimited(key: string, limit = MAX_ATTEMPTS) {
   const now = Date.now();
   const current = attempts.get(key);
   if (!current || current.resetAt <= now) {
     attempts.set(key, { count: 1, resetAt: now + WINDOW_MS });
+    if (attempts.size > 10_000) {
+      attempts.forEach((value, storedKey) => {
+        if (value.resetAt <= now) attempts.delete(storedKey);
+      });
+    }
     return false;
   }
   current.count += 1;
-  return current.count > MAX_ATTEMPTS;
+  return current.count > limit;
 }
 
 function safeString(value: unknown, max: number) {
@@ -122,9 +129,15 @@ function requireSameOrigin(req: Request, res: Response, next: NextFunction) {
     req.get("host") ||
     "";
   const expected = `${forwardedProto}://${forwardedHost}`;
-  if (origin !== expected)
+  if (!sameOriginMatches(origin, expected))
     return res.status(403).json({ ok: false, message: "Forbidden" });
   next();
+}
+
+function requireAdminSameOrigin(req: Request, res: Response, next: NextFunction) {
+  if (!req.get("origin"))
+    return res.status(403).json({ ok: false, message: "Forbidden" });
+  return requireSameOrigin(req, res, next);
 }
 
 function isValidContact(body: unknown) {
@@ -143,9 +156,17 @@ function isValidContact(body: unknown) {
 }
 
 export function registerAdminRoutes(app: Express) {
+  app.use("/api/admin", (_req, res, next) => {
+    res.setHeader("Cache-Control", "no-store");
+    next();
+  });
+
   app.post("/api/order-status", requireSameOrigin, async (req, res) => {
+    res.setHeader("Cache-Control", "no-store");
     const email = safeString(req.body?.email, 320).toLowerCase();
     const paymentReference = safeString(req.body?.paymentReference, 180);
+    if (rateLimited(`order-status:${req.ip}`, PUBLIC_MAX_ATTEMPTS))
+      return res.status(429).json({ ok: false, message: "Please try again later." });
     if (!isValidEmail(email) || !paymentReference)
       return res.status(400).json({
         ok: false,
@@ -160,6 +181,9 @@ export function registerAdminRoutes(app: Express) {
   });
 
   app.post("/api/contact", requireSameOrigin, async (req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    if (rateLimited(`contact:${req.ip}`, PUBLIC_MAX_ATTEMPTS))
+      return res.status(429).json({ ok: false, message: "Please try again later." });
     if (!isValidContact(req.body))
       return res
         .status(400)
@@ -210,7 +234,7 @@ export function registerAdminRoutes(app: Express) {
     });
   });
 
-  app.post("/api/admin/login", requireSameOrigin, async (req, res) => {
+  app.post("/api/admin/login", requireAdminSameOrigin, async (req, res) => {
     const email = normalizeAdminEmail(req.body?.email);
     const password = safeString(req.body?.password, 256);
     if (
@@ -315,7 +339,7 @@ export function registerAdminRoutes(app: Express) {
     return res.json({ ok: true, requiresOtp: true });
   });
 
-  app.post("/api/admin/verify-otp", requireSameOrigin, async (req, res) => {
+  app.post("/api/admin/verify-otp", requireAdminSameOrigin, async (req, res) => {
     const email = normalizeAdminEmail(req.body?.email);
     const code = normalizeOtpCode(req.body?.code ?? req.body?.otp);
     if (
@@ -357,7 +381,7 @@ export function registerAdminRoutes(app: Express) {
     return res.json({ ok: true });
   });
 
-  app.post("/api/admin/logout", requireSameOrigin, async (req, res) => {
+  app.post("/api/admin/logout", requireAdminSameOrigin, async (req, res) => {
     const token = readCookie(req.headers.cookie, ADMIN_SESSION_COOKIE);
     if (token) await revokeAdminSession(hashSessionToken(token));
     clearAdminCookie(res);
@@ -376,7 +400,7 @@ export function registerAdminRoutes(app: Express) {
   app.get("/api/admin/contacts", requireAdmin, async (_req, res) =>
     res.json({ ok: true, data: await listContacts() })
   );
-  app.patch("/api/admin/contacts/:id", requireAdmin, async (req, res) => {
+  app.patch("/api/admin/contacts/:id", requireAdminSameOrigin, requireAdmin, async (req, res) => {
     const id = Number(req.params.id);
     const status = [
       "new",
@@ -407,7 +431,7 @@ export function registerAdminRoutes(app: Express) {
     });
     return res.json({ ok: true, data: contact });
   });
-  app.delete("/api/admin/contacts/:id", requireAdmin, async (req, res) => {
+  app.delete("/api/admin/contacts/:id", requireAdminSameOrigin, requireAdmin, async (req, res) => {
     const id = Number(req.params.id);
     if (!Number.isInteger(id) || id <= 0)
       return res.status(400).json({ ok: false, message: "Invalid contact" });
@@ -426,7 +450,7 @@ export function registerAdminRoutes(app: Express) {
   app.get("/api/admin/orders", requireAdmin, async (_req, res) =>
     res.json({ ok: true, data: await listOrders() })
   );
-  app.patch("/api/admin/orders/:id", requireAdmin, async (req, res) => {
+  app.patch("/api/admin/orders/:id", requireAdminSameOrigin, requireAdmin, async (req, res) => {
     const id = Number(req.params.id);
     const status = req.body?.fulfillmentStatus;
     if (

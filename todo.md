@@ -545,3 +545,6 @@
 - [x] Redeploy the final follow-up changes and verify compressed delivery plus mobile-style loading on the public domain.
 - [x] Add accessible skeleton loading animations while API-backed data is being fetched, preserving the existing INSP AUTO design and behavior.
 - [x] Test the loading state, production build, and existing Vitest coverage; save a checkpoint.
+- [x] Perform the requested evidence-based security audit across secrets, admin auth, authorization, database queries, input validation, XSS, CSRF, webhooks, rate limiting, headers, cookies, errors, paths, CORS, and reliability.
+- [x] Fix only confirmed security issues and add regression coverage without changing design, pricing, payment flow, or customer behavior.
+- [x] Run build, tests, runtime smoke checks, unauthorized-access checks, and save a security checkpoint with a findings report.
