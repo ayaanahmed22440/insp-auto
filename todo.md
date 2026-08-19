@@ -305,3 +305,10 @@
 - [x] Inspect the current favicon and document-head asset references.
 - [x] Add a favicon-safe INSP AUTO mark from the supplied logo and update the head reference.
 - [x] Verify the favicon asset is included in the npm production build without changing page or payment behavior.
+
+## Live domain routing correction
+
+- [x] Diagnose why `inspauto.com` serves the default WordPress blog instead of the deployed INSP AUTO application.
+- [x] Inspect the live domain response, DNS/hosting target, and connected deployment configuration without changing application credentials.
+- [x] Route the domain to the INSP AUTO deployment if the authorized configuration is available, or identify the exact Hostinger DNS/domain action still required.
+- [x] Verify `inspauto.com` and its canonical variants after the routing correction.
