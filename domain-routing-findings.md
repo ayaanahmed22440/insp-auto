@@ -45,3 +45,7 @@ The Railway workspace selector shows only `ayaanahmed22440's Projects`; there is
 ## Railway account identity confirmation
 
 The user confirmed the Railway login email is `ayaanahmed22440@gmail.com`, matching the authenticated Railway session. That session has only the `ayaanahmed22440's Projects` workspace and the empty `aware-art` project. No separate workspace or active Railway service is available under that login to detach.
+
+## Deployment-side audit
+
+The GitHub source and built output contain no Railway, Cloudflare, WordPress, or hard-coded domain redirect logic. `npm run check` and `npm run build` complete successfully. Hostinger reports the GitHub-connected `insp-auto` repository, Express framework, Node 20.x, completed deployment `c128f0ce`, and current status Running. Hostinger Runtime Logs show zero issues and zero errors; the server starts normally on `http://localhost:3000/`. The public direct-origin response is HTTP 200 from LiteSpeed with the INSP AUTO title. No confirmed application or Hostinger Node.js defect was found.

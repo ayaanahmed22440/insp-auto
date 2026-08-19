@@ -17,6 +17,13 @@ async function startServer() {
     ? path.resolve(__dirname, "public")
     : path.resolve(__dirname, "..", "dist", "public");
 
+  // Clear any cached HTTP/3 alternative-service route so mobile browsers do not
+  // keep reusing a stale edge association after the domain origin changes.
+  app.use((_req, res, next) => {
+    res.setHeader("Alt-Svc", "clear");
+    next();
+  });
+
   app.use(express.json({ limit: "32kb" }));
   app.use(express.urlencoded({ extended: false, limit: "32kb" }));
 

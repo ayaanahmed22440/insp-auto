@@ -52,6 +52,9 @@ async function startServer() {
         "Strict-Transport-Security",
         "max-age=31536000; includeSubDomains"
       );
+    // Clear cached HTTP/3 alternative-service routes after the domain origin
+    // changed, preventing mobile browsers from reusing a stale edge path.
+    res.setHeader("Alt-Svc", "clear");
     next();
   });
   // Configure body parser with larger size limit and retain raw bytes for webhook verification.

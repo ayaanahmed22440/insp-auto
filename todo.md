@@ -380,3 +380,10 @@
 
 - [x] Permanently delete the Railway account for `ayaanahmed22440@gmail.com` and its empty `aware-art` project after explicit confirmation.
 - [x] Verify `inspauto.com`, `www.inspauto.com`, DNS, SSL, and the Hostinger GitHub deployment after deletion.
+
+## Deployment-side routing investigation
+
+- [x] Inspect GitHub source, Hostinger deployment settings, runtime logs, redirects, and response headers for a deployment-side defect; no unrelated app redirect was found.
+- [x] Compare the deployed Hostinger response with the expected GitHub `insp-auto` application; the live response matches the expected app and Hostinger runtime is error-free.
+- [x] Patch the confirmed deployment-side HTTP/3 stale-route mitigation in the actual production entrypoint without changing credentials, payments, or unrelated DNS.
+- [x] Run npm typecheck and production build successfully; the bundled production server contains the Alt-Svc mitigation for the existing GitHub-to-Hostinger workflow.
