@@ -312,3 +312,16 @@
 - [x] Inspect the live domain response, DNS/hosting target, and connected deployment configuration without changing application credentials.
 - [x] Route the domain to the INSP AUTO deployment if the authorized configuration is available, or identify the exact Hostinger DNS/domain action still required.
 - [x] Verify `inspauto.com` and its canonical variants after the routing correction.
+
+## Persistent domain origin and Whop credential update
+
+- [ ] Recheck `inspauto.com` and `www.inspauto.com` from an independent public request to identify which hostname or edge still serves WordPress.
+- [ ] Inspect Hostinger’s app/domain/cache state without changing unrelated credentials or application settings.
+- [ ] Obtain replacement Whop API and webhook-secret values through a secure input flow; never guess or log secret values.
+- [ ] Apply only the two Whop credential updates and verify domain delivery, webhook configuration, and checkout behavior without completing a payment.
+
+## Domain-only follow-up
+
+- [x] Recheck the persistent WordPress response from independent public requests and distinguish cache, hostname, and origin behavior.
+- [x] Apply only the smallest authorized domain/cache correction; leave all Whop API/webhook and other credentials unchanged.
+- [x] Verify `inspauto.com` and `www.inspauto.com` after the correction.

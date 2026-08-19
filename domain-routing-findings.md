@@ -15,3 +15,7 @@ The authenticated Hostinger account shows `inspauto.com` as a Node.js/Express We
 ## Cache purge verification
 
 After the user-confirmed Hostinger cache purge, both `https://inspauto.com/` and `https://www.inspauto.com/` returned HTTP 200 with the title `Vehicle History Report Pricing | INSP AUTO`. The responses include INSP AUTO markers, no longer include WordPress, `Hello world`, `wp-json`, PHP, or LiteSpeed cache markers, and expose the deployed app security headers. The domain is now serving the Node.js INSP AUTO application publicly on both canonical hostnames.
+
+## Latest domain-only verification
+
+A fresh independent request from the sandbox and a cache-busting request in the connected browser both served `Vehicle History Report Pricing | INSP AUTO` at `https://inspauto.com/`. The connected browser displayed the INSP AUTO navigation, hero, services, pricing, and checkout CTAs. No WordPress markers appeared in the independent response. The earlier screenshot is therefore stale content from the user’s browser/network path; the current public Hostinger edge and connected browser are serving the correct app.
