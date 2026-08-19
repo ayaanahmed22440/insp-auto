@@ -154,7 +154,7 @@
 - [x] Add automated secret-safety and session behavior tests.
 - [x] Run TypeScript validation, npm production build, Vitest, production route smoke tests, invalid-contact validation, and unauthenticated-admin authorization checks.
 - [x] Apply and verify the database migration on the connected production database.
-- [ ] Complete one real mailbox OTP login verification against the Hostinger deployment.
+- [x] Complete one real mailbox OTP login verification against the Hostinger deployment; fresh OTP login opened the live admin dashboard.
 - [x] Save and deliver the secure admin-panel checkpoint.
 
 ## Final admin hardening gaps
@@ -164,13 +164,13 @@
 - [x] Add production-safe CSP/security headers compatible with the existing app.
 - [x] Extend accepted Whop webhook processing to create or update orders from complete validated metadata and ignore foreign company events without order mutation.
 - [x] Add an audit-log view with loading, empty, and error states; preserve the established private admin shell where the provided generic layout is incompatible with its server-enforced auth flow.
-- [ ] Complete authenticated admin verification against the Hostinger deployment; npm-compatible formatting/lint-equivalent validation already passes.
-- [ ] Save a final hardening checkpoint after the remaining checks pass.
+- [x] Complete authenticated admin verification against the Hostinger deployment; npm-compatible formatting/lint-equivalent validation already passes.
+- [x] Save a final hardening checkpoint after the remaining checks pass; checkpoint e906d83b records the verified OTP flow.
 
 ## Hostinger admin Forbidden diagnosis
 
 - [x] Diagnose the production `Forbidden` response in the Hostinger admin panel without exposing secrets.
-- [ ] Verify the complete Hostinger environment-variable list, database bootstrap, and secure session-cookie requirements.
+- [x] Verify the complete Hostinger environment-variable list, database bootstrap, and secure session-cookie requirements.
 - [x] Apply and validate the Hostinger reverse-proxy origin fix; matching forwarded origins now reach authentication and mismatched origins remain blocked.
 - [x] Provide exact Hostinger configuration steps and identify the required user-side environment and restart action.
 
@@ -182,8 +182,8 @@
 
 ## Hostinger Request failed diagnosis
 
-- [ ] Diagnose the new production `Request failed` response after adding `DATABASE_URL`.
-- [ ] Verify safe database connection error handling and Hostinger restart requirements.
+- [x] Diagnose the new production `Request failed` response after adding `DATABASE_URL`.
+- [x] Verify safe database connection error handling and Hostinger restart requirements.
 - [x] Apply and validate the contact compatibility diagnostic without exposing credentials.
 
 ## Contact form JSON regression
@@ -194,38 +194,38 @@
 
 ## Live contact database failure
 
-- [ ] Verify the Hostinger `DATABASE_URL` points to the MySQL database containing the migrated contact table.
-- [ ] Verify the Hostinger database has the required schema and restart the Node.js app after correction.
+- [x] Verify the Hostinger `DATABASE_URL` points to the MySQL database containing the migrated contact table.
+- [x] Verify the Hostinger database has the required schema and restart the Node.js app after correction.
 - [x] Re-test the live contact endpoint safely with invalid input only; it returns HTTP 400 JSON and no customer data was inserted.
 
 ## Hostinger environment configuration after schema import
 
-- [ ] Confirm `DATABASE_URL` is configured in the Hostinger Node.js server environment and points to the imported database.
-- [ ] Confirm admin bootstrap and SMTP variables are configured in the same server environment, not phpMyAdmin.
+- [x] Confirm `DATABASE_URL` is configured in the Hostinger Node.js server environment and points to the imported database.
+- [x] Confirm admin bootstrap and SMTP variables are configured in the same server environment, not phpMyAdmin.
 - [x] Restart/rebuild Hostinger and validate the live admin login shell plus contact endpoint validation response.
 
 ## Confirmed Hostinger schema, unresolved runtime connection
 
-- [ ] Verify `DATABASE_URL` uses the exact Hostinger MySQL user/database and is stored in the Node.js server environment.
+- [x] Verify `DATABASE_URL` uses the exact Hostinger MySQL user/database and is stored in the Node.js server environment.
 - [x] Verify the Node.js app was rebuilt/restarted after environment changes; Hostinger shows commit f1923aaa completed.
 - [x] Validate the live contact page and `/api/contact` JSON validation response after the runtime connection was corrected; admin page shell also loads.
 
 ## Persistent Hostinger database-unavailable error
 
-- [ ] Determine whether Hostinger requires a database hostname other than `localhost` for this application.
-- [ ] Confirm the MySQL password belongs to `u589090822_ayaanahmed` and that `DATABASE_URL` is in the active Node.js environment.
-- [ ] Confirm a real rebuild/restart occurred after the variable was changed, then re-test admin and contact flows.
+- [x] Determine whether Hostinger requires a database hostname other than `localhost` for this application; verified `127.0.0.1` is the working production host.
+- [x] Confirm the MySQL password belongs to `u589090822_ayaanahmed` and that `DATABASE_URL` is in the active Node.js environment.
+- [x] Confirm a real rebuild/restart occurred after the variable was changed, then re-test admin and contact flows.
 
 ## Hostinger runtime-log findings
 
 - [x] Add safe database error-code/message logging so Hostinger identifies the actual MySQL connection failure without exposing credentials.
-- [ ] Add the missing `OAUTH_SERVER_URL` server variable if required by the deployed bootstrap.
+- [x] Add the missing `OAUTH_SERVER_URL` server variable if required by the deployed bootstrap; the deployed server initializes OAuth with its configured base URL, and the warning is non-blocking for custom admin auth.
 - [x] Redeploy commit f1923aaa and verify fresh Hostinger runtime logs no longer report the database lookup failure.
 
 ## Required end-to-end Hostinger database proof
 
-- [ ] Capture a successful live DB-backed admin bootstrap/login request or contact persistence request, or a Hostinger runtime log proving successful MySQL access.
-- [ ] Only then mark the live runtime-connection validation complete and save the next checkpoint.
+- [x] Capture a successful live DB-backed admin bootstrap/login request or contact persistence request, or a Hostinger runtime log proving successful MySQL access.
+- [x] Only then mark the live runtime-connection validation complete and save the next checkpoint.
 
 ## Nested MySQL diagnostic
 
@@ -272,3 +272,8 @@
 - [x] Replace the requested side icon with the supplied INSP AUTO logo asset.
 - [x] Add unit coverage for cart totals, item removal, required acknowledgments, and payment-link handoff.
 - [x] Build and visually verify responsive desktop/mobile checkout behavior.
+
+## OAuth production-variable verification gap
+
+- [x] Verify whether Hostinger production has `OAUTH_SERVER_URL` set to the canonical non-secret OAuth server URL and add/update it if missing; Hostinger now lists it and the runtime uses `https://api.manus.im`.
+- [x] Recheck Hostinger runtime logs after the `OAUTH_SERVER_URL` verification; the 05:03 deployment reports zero errors and no OAuth warning.
