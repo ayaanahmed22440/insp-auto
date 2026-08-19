@@ -95,3 +95,28 @@ Hostinger's page-speed history shows a recent mobile score of 82 and repeated de
 The confirmed Hostinger `Reduce inodes` action completed successfully, followed by Hostinger's `Recalculate usage` action. The displayed account count remained approximately 530,211 of 600,000 inodes (88%), indicating that the automated temporary-file cleanup did not materially lower the shared account's inode count. CPU remained low and memory remained well below its limit.
 
 Post-cleanup public checks still show A-only IPv4 delivery to 194.164.64.154, no AAAA answer, HTTP/2 200 from Hostinger LiteSpeed, and the valid Let's Encrypt certificate with SANs for both hostnames. The cleanup did not create an outage, but because the inode warning persists, shared-account inode pressure remains a risk rather than a proven cause of the intermittent user reports.
+
+
+## Latest inode check — 2026-08-19
+
+Hostinger currently shows the shared Business account with 15 websites, 530,211 / 600,000 inodes used (88%), 16.38 GB / 200 GB disk used, CPU average 1%, memory average 381 MB / 3,072 MB, throughput 117 KB/s / 20,480 KB/s, PHP workers 6 / 60, IOPS 14 / 512, and max processes 39 / 120. The inode figure has not decreased after the authorized temporary-file cleanup, so the inode warning is not resolved. Current live checks still return HTTP 200 from Hostinger LiteSpeed for both apex and www.
+
+
+## Domain mapping for inode-heavy directory — 2026-08-19
+
+Hostinger's website inventory confirms `fdcc.co` is a separate website on the same Business hosting account as `inspauto.com`. The inode report was opened under the account-level `fdcc.co` container, whose `public_html` is a legacy WordPress installation. Within that container, `public_html/wp-content` has 25,080 inodes and `wp-content/plugins` accounts for 21,433 of them. Therefore, the largest identified domain/site contributor is **fdcc.co**, specifically its WordPress `public_html/wp-content/plugins` tree—not the INSP AUTO Node/Express site.
+
+
+## Account-wide domain ranking clarification — 2026-08-19
+
+Hostinger's account-level resource page reports the shared plan total, but it does not display a sortable per-domain inode table. The available `Discover the path` report opens the account's primary File Manager container labeled `fdcc.co`; Hostinger's website inventory confirms `fdcc.co` is one of the 16 sites on the plan and is a separate legacy WordPress site. Its `public_html` contains 25,080 inodes, with 21,433 in `wp-content/plugins`, making `fdcc.co` the largest domain-level contributor directly verified from the available report. No deletion has been performed. A definitive ranking of every isolated website would require opening each site's File Manager or a Hostinger support/account export because the current UI does not expose all domains in one inode table.
+
+
+## CDN disable and residual IPv6 finding — 2026-08-19
+
+Hostinger CDN was explicitly disabled for `inspauto.com`; the Hostinger CDN status changed from Active to Inactive and displayed a success confirmation. After that change, public probing showed both hostnames on direct Hostinger IPv4 delivery with HTTP 200 and the valid Let’s Encrypt certificate, but the local resolver still returned IPv6 addresses. Hostinger DNS records show `@ A → 194.164.64.154`, `www CNAME → inspauto.com`, and a residual `@ AAAA → 2a02:4780:2b:1610:0:231c:d006:10`. The residual AAAA is the remaining mobile-route risk and should be removed while preserving A, CNAME, MX, SPF, DKIM, and DMARC records.
+
+
+## Final IPv4-only DNS verification — 2026-08-19
+
+The user deleted the residual `AAAA @ → 2a02:4780:2b:1610:0:231c:d006:10` record. The subsequent probe now returns only `194.164.64.154` for both `inspauto.com` and `www.inspauto.com`; no IPv6 answer is returned. Both hostnames present the same valid Let’s Encrypt certificate covering `inspauto.com` and `www.inspauto.com`, return HTTP 200 from Hostinger LiteSpeed, and no longer use the Hostinger CDN (`server: LiteSpeed`, not `server: hcdn`). This is the intended direct IPv4 configuration for mobile stability.

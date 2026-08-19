@@ -468,3 +468,21 @@
 - [x] Run Hostinger's confirmed Reduce inodes cleanup for the shared Business hosting account.
 - [x] Recheck inode usage, inspauto.com running status, runtime logs, DNS/TLS, and repeated HTTPS delivery after cleanup.
 - [x] Document whether inode pressure affected intermittent availability and whether any IP, traffic, view, or hosting restriction remains; inode pressure remains a risk but was not proven as the cause.
+
+## Account-wide inode ranking
+
+- [ ] Determine which website across the full Hostinger Business plan uses the most inodes.
+- [ ] Map the highest inode path to the correct domain using Hostinger’s website inventory and File Manager.
+- [ ] Assess deletion risk and report the verified website before any deletion or file removal.
+
+## Authorized inode reduction target
+
+- [ ] Identify disposable directories capable of freeing at least 100,000 inodes without touching inspauto.com or active website files.
+- [ ] Inspect the exact deletion scope and obtain confirmation before any destructive file operation.
+- [ ] Delete only the confirmed disposable files, recalculate usage, and verify the target reduction and INSP AUTO availability.
+
+## Mobile DNS normalization follow-up
+
+- [x] Compare current apex and www DNS, TLS, and HTTP behavior again after the inode issue was resolved.
+- [x] Audit Hostinger SSL, domain attachment, redirects, and address-family routing for mobile-specific failures.
+- [x] Apply only an evidence-based DNS correction after confirmation and verify repeated mobile-style delivery; disabled CDN and removed the residual apex AAAA record.
