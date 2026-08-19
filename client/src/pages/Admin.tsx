@@ -318,7 +318,7 @@ function OverviewPage() {
           {error}
         </div>
       ) : !data ? (
-        <div className="admin-skeleton" aria-label="Loading overview" />
+        <AdminDataSkeleton variant="metrics" label="Loading overview" />
       ) : (
         <div className="admin-metric-grid">
           {cards.map(card => (
@@ -386,7 +386,7 @@ function ContactsPage() {
         </div>
       )}
       {contacts === null ? (
-        <div className="admin-skeleton" />
+        <AdminDataSkeleton variant="table" label="Loading contact submissions" />
       ) : filtered.length === 0 ? (
         <div className="admin-empty">No contact submissions found.</div>
       ) : (
@@ -473,7 +473,7 @@ function AuditLogsPage() {
           {error}
         </div>
       ) : logs === null ? (
-        <div className="admin-skeleton" aria-label="Loading audit log" />
+        <AdminDataSkeleton variant="table" label="Loading audit log" />
       ) : logs.length === 0 ? (
         <div className="admin-empty">
           No administrative activity has been recorded.
@@ -541,7 +541,7 @@ function OrdersPage() {
         </div>
       )}
       {orders === null ? (
-        <div className="admin-skeleton" />
+        <AdminDataSkeleton variant="table" label="Loading orders" />
       ) : orders.length === 0 ? (
         <div className="admin-empty">No payment orders have been received.</div>
       ) : (
@@ -587,6 +587,41 @@ function OrdersPage() {
         </div>
       )}
     </PageFrame>
+  );
+}
+
+function AdminDataSkeleton({
+  variant,
+  label,
+}: {
+  variant: "metrics" | "table";
+  label: string;
+}) {
+  return (
+    <div className={`admin-data-skeleton ${variant}`} role="status" aria-live="polite" aria-label={label}>
+      <span className="sr-only">{label}</span>
+      {variant === "metrics" ? (
+        <div className="admin-metric-grid" aria-hidden="true">
+          {Array.from({ length: 8 }, (_, index) => (
+            <div className="admin-metric-card admin-skeleton-card" key={index}>
+              <span />
+              <strong />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="admin-table-wrap admin-skeleton-table" aria-hidden="true">
+          <div className="admin-skeleton-table-head">
+            {Array.from({ length: 6 }, (_, index) => <span key={index} />)}
+          </div>
+          {Array.from({ length: 5 }, (_, row) => (
+            <div className="admin-skeleton-table-row" key={row}>
+              {Array.from({ length: 6 }, (_, column) => <span key={column} />)}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

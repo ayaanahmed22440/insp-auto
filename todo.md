@@ -543,3 +543,5 @@
 - [x] Add immutable cache headers for Vite-hashed `/assets` while keeping HTML uncached.
 - [x] Validate the final local production server: Brotli asset response, `Vary: Accept-Encoding`, `Cache-Control: public, max-age=31536000, immutable`, `Alt-Svc: clear`, npm build, and 10 passing tests.
 - [x] Redeploy the final follow-up changes and verify compressed delivery plus mobile-style loading on the public domain.
+- [x] Add accessible skeleton loading animations while API-backed data is being fetched, preserving the existing INSP AUTO design and behavior.
+- [x] Test the loading state, production build, and existing Vitest coverage; save a checkpoint.
