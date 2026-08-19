@@ -127,3 +127,10 @@ The user deleted the residual `AAAA @ → 2a02:4780:2b:1610:0:231c:d006:10` reco
 Source: https://whop.com/dashboard/biz_67QnAzoeWI4EUU/
 
 The authenticated Whop dashboard for the `prime inspectors` business displays a red suspension banner: "This business has been suspended. If you believe this is an error, please contact our support team." The dashboard does not expose checkout-link editing controls while suspended. The requested £1 package removal and package price changes therefore cannot be applied from the current Whop account state until Whop restores the business or support provides access.
+
+
+## Production accessibility audit — current evidence
+
+On 2026-08-19, Cloudflare DoH and Google DoH both returned the same IPv4 address `194.164.64.154` for `inspauto.com`; `www.inspauto.com` resolves through `CNAME inspauto.com` to the same A record. Neither hostname has a published AAAA answer. Direct IPv4 TLS succeeds with TLS 1.3 and a Let’s Encrypt certificate whose SAN covers both hostnames; direct IPv6 has no address and is not attempted. HTTP and HTTPS both redirect intentionally to HTTPS and return HTTP 200 with identical HTML body hashes for apex and www.
+
+The live HTML references `/assets/index-NWzmc5CC.js` and `/assets/index-D1HT34VV.css`. The live JavaScript request returned HTTP 200 but took 16–45 seconds from the audit environment; a 20-second request timed out after only 360,408 of 443,395 bytes. The current local clean build produces a different JS hash (`index-BPxvo_LD.js`) and is 715 KB. The live asset is therefore not byte-identical to the current repository build, and slow delivery of the initial JavaScript is a credible cause of mobile black/blank screens. Live response headers still advertise `Alt-Svc: h3` despite the application setting `Alt-Svc: clear`, indicating Hostinger/LiteSpeed is overriding the app header.

@@ -1,4 +1,5 @@
 import "dotenv/config";
+import compression from "compression";
 import express from "express";
 import { createServer } from "http";
 import net from "net";
@@ -35,6 +36,9 @@ async function startServer() {
   const server = createServer(app);
   app.disable("x-powered-by");
   app.set("trust proxy", 1);
+  // Compress static JS/CSS responses so mobile and cellular clients do not
+  // time out while downloading the initial frontend bundle.
+  app.use(compression());
   app.use((req, res, next) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");

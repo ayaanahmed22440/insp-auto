@@ -1,14 +1,15 @@
 // INSP AUTO — reference-led automotive editorial minimalism; Inspection Amber, Carbon/Midnight Navy, evidence-first copy, quiet motion.
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Pricing from "./pages/Pricing";
-import Checkout from "./pages/Checkout";
-import VehicleServicePage from "./pages/VehicleServicePage";
-import AdminApp, { AdminLogin } from "./pages/Admin";
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Checkout = lazy(() => import("./pages/Checkout"));
+const VehicleServicePage = lazy(() => import("./pages/VehicleServicePage"));
+const AdminApp = lazy(() => import("./pages/Admin"));
+const AdminLogin = lazy(() => import("./pages/Admin").then(module => ({ default: module.AdminLogin })));
 
 const services = [
   ["Car History Report", "/services/car-history-report"],
@@ -610,6 +611,10 @@ function ContactPage() {
   );
 }
 
+function RouteFallback() {
+  return <main className="detail-page"><div className="container narrow"><p className="lead">Loading INSP AUTO…</p></div></main>;
+}
+
 function SimplePage({ path }: { path: string }) {
   if (path === "/about")
     return (
@@ -663,14 +668,14 @@ export default function App() {
     return (
       <TooltipProvider>
         <Toaster />
-        <AdminLogin />
+        <Suspense fallback={<RouteFallback />}><AdminLogin /></Suspense>
       </TooltipProvider>
     );
   if (path.startsWith("/admin"))
     return (
       <TooltipProvider>
         <Toaster />
-        <AdminApp />
+        <Suspense fallback={<RouteFallback />}><AdminApp /></Suspense>
       </TooltipProvider>
     );
   let page: ReactNode;
@@ -698,9 +703,11 @@ export default function App() {
   return (
     <TooltipProvider>
       <Toaster />
-      <Header />
-      {page}
-      <Footer />
+      <Suspense fallback={<RouteFallback />}>
+        <Header />
+        {page}
+        <Footer />
+      </Suspense>
     </TooltipProvider>
   );
 }

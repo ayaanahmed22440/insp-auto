@@ -530,3 +530,12 @@
 - [x] Remove any £1 option from website UI if present, without changing Whop or payment links; no £1 website option exists.
 - [x] Ensure website checkout receives £49, £59, and £79 while existing payment URLs remain unchanged.
 - [x] Run npm build, tests, and verify the website-only pricing update; npm build succeeds and 10 tests pass.
+
+## Renewed end-to-end production accessibility incident
+
+- [ ] Treat the attached text as reference only and do not import its prices, content, configuration, or business information.
+- [ ] Audit complete DNS, A/AAAA/CNAME/TXT/nameservers, resolver divergence, domain attachments, old providers, redirects, TLS, CDN, cache, service workers, and duplicate deployments.
+- [ ] Compare working and failing production delivery paths, including live HTML/build hashes, JS/CSS/chunk/API requests, frontend runtime errors, CORS/CSP/auth/cookies, backend logs, environment configuration, and non-destructive database connectivity.
+- [ ] Apply only verified safe fixes, create/verify a backup before destructive infrastructure/database changes, rebuild/redeploy if necessary, purge appropriate caches, and test repeated delivery across network perspectives.
+- [x] Add npm-only HTTP compression for production static assets after confirming the live JS bundle is delivered uncompressed and takes 16–45 seconds.
+- [x] Rebuild and test the compression fix locally; local production responses now return Brotli with `Vary: Accept-Encoding` and `Alt-Svc: clear`. Redeployment and live verification remain pending.
