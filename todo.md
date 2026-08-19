@@ -262,3 +262,13 @@
 - [x] Apply the smallest secure correction to OTP generation, persistence, hashing, expiry, or verification configuration.
 - [x] Run automated tests and redeploy the correction; npm checks, six Vitest tests, npm build, and Hostinger deployment 3c15eb42 completed successfully.
 - [x] Verify invalid OTP rejection and complete one valid OTP login without exposing the code; the live production dashboard opened successfully after the fresh OTP submission.
+
+## Cart and checkout-review flow
+
+- [x] Inspect and preserve all existing report pricing and payment links.
+- [x] Add a pre-payment cart/review step matching the supplied reference layout.
+- [x] Support selecting multiple reports, showing quantities/subtotals, and removing unwanted reports.
+- [x] Add billing details and required payment acknowledgment checkboxes without storing payment card data.
+- [x] Replace the requested side icon with the supplied INSP AUTO logo asset.
+- [x] Add unit coverage for cart totals, item removal, required acknowledgments, and payment-link handoff.
+- [x] Build and visually verify responsive desktop/mobile checkout behavior.

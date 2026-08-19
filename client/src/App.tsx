@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import Pricing from "./pages/Pricing";
+import Checkout from "./pages/Checkout";
 import VehicleServicePage from "./pages/VehicleServicePage";
 import AdminApp, { AdminLogin } from "./pages/Admin";
 
@@ -29,7 +30,7 @@ function Logo() {
     <button className="brand" onClick={() => navigate("/")} aria-label="Home">
       <img
         className="brand-logo"
-        src="/assets/insp-auto-logo-clean.png"
+        src="/assets/insp-auto-logo.jpg"
         alt=""
       />
     </button>
@@ -675,6 +676,7 @@ export default function App() {
   let page: ReactNode;
   if (path === "/") page = <Home initialSection="home" />;
   else if (path === "/pricing") page = <Pricing />;
+  else if (path === "/checkout") page = <Checkout />;
   else if (path === "/order-status") page = <OrderStatusPage />;
   else if (path === "/services") page = <Home initialSection="services" />;
   else if (["/terms", "/refund-policy", "/privacy-policy"].includes(path))

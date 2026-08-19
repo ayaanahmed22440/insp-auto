@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 
-const logo = "/assets/insp-auto-logo-clean.png";
+const logo = "/assets/insp-auto-logo.jpg";
 
 type AdminUser = { email: string };
 type Contact = {
