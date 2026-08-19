@@ -387,3 +387,9 @@
 - [x] Compare the deployed Hostinger response with the expected GitHub `insp-auto` application; the live response matches the expected app and Hostinger runtime is error-free.
 - [x] Patch the confirmed deployment-side HTTP/3 stale-route mitigation in the actual production entrypoint without changing credentials, payments, or unrelated DNS.
 - [x] Run npm typecheck and production build successfully; the bundled production server contains the Alt-Svc mitigation for the existing GitHub-to-Hostinger workflow.
+
+## Completed production redeploy verification
+
+- [x] Redeploy commit `9349cfb6` through Hostinger using the unchanged Express, npm, Node 20, and `dist/index.js` settings.
+- [x] Verify `inspauto.com` and `www.inspauto.com` return HTTP 200, Hostinger/LiteSpeed headers, and the INSP AUTO page after redeploy.
+- [x] Confirm the live response contains no WordPress, Railway, Cloudflare, or old-origin markers.

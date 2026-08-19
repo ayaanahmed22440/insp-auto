@@ -49,3 +49,7 @@ The user confirmed the Railway login email is `ayaanahmed22440@gmail.com`, match
 ## Deployment-side audit
 
 The GitHub source and built output contain no Railway, Cloudflare, WordPress, or hard-coded domain redirect logic. `npm run check` and `npm run build` complete successfully. Hostinger reports the GitHub-connected `insp-auto` repository, Express framework, Node 20.x, completed deployment `c128f0ce`, and current status Running. Hostinger Runtime Logs show zero issues and zero errors; the server starts normally on `http://localhost:3000/`. The public direct-origin response is HTTP 200 from LiteSpeed with the INSP AUTO title. No confirmed application or Hostinger Node.js defect was found.
+
+## Hostinger mitigation redeploy
+
+Hostinger’s first auto-deployment for commit `9349cfb6` was marked Build failed even though `npm run check` and `npm run build` pass locally. Hostinger’s generated analysis said the project build is correct and the deployment process should not require a code change. Using the unchanged Express / npm / Node 20 / `dist/index.js` settings, a manual Save and redeploy was started at 2026-08-19 07:42 and is currently Building. Live `Alt-Svc` headers should be rechecked only after this deployment reaches Completed.
