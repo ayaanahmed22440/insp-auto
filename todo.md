@@ -503,10 +503,16 @@
 
 - [ ] Compare the service-page card prices with the existing report pricing and unchanged payment-link definitions.
 - [ ] Update only the displayed service-card prices to the confirmed real values without changing payment links or checkout behavior.
-- [ ] Run npm build and tests and verify the price display across the service pages.
+- [x] Run npm build and tests and verify the price display across the service pages.
 
 ## Confirmed all-vehicle service pricing
 
 - [x] Apply £39.99 Basic, £42.99 Standard, and £52.99 Premium to car, motorbike, ATV, truck, boat, and RV service pages.
 - [x] Preserve all existing Whop payment URLs and ensure checkout receives the same confirmed prices.
 - [x] Run npm build, tests, and a consistency check across all six service routes; npm build passes and 10 Vitest tests pass.
+
+## All-visible pricing correction
+
+- [x] Locate every remaining old price display across the homepage, main Pricing page, and service pages.
+- [x] Replace all visible old prices with £39.99 Basic, £42.99 Standard, and £52.99 Premium while preserving Whop links and checkout values.
+- [x] Run npm build, tests, and a full pricing consistency verification across all visible sections; no stale price literals remain in client source, and all 10 tests pass.

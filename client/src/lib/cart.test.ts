@@ -4,7 +4,7 @@ import { addCartItem, cartSubtotal, checkoutReady, removeCartItem, setCartItemQu
 const basic: Omit<CartItem, "quantity"> = {
   id: "basic",
   name: "Basic Vehicle Report",
-  price: 56.99,
+  price: 39.99,
   href: "https://whop.com/checkout/plan_lW7djcuM5Y5En",
 };
 
@@ -13,7 +13,7 @@ describe("checkout cart helpers", () => {
     const once = addCartItem([], basic);
     const twice = addCartItem(once, basic);
     expect(twice[0].quantity).toBe(2);
-    expect(cartSubtotal(twice)).toBe(113.98);
+    expect(cartSubtotal(twice)).toBe(79.98);
   });
 
   it("removes an item and removes it when quantity reaches zero", () => {

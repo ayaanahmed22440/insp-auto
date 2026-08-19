@@ -3,13 +3,14 @@ import { useEffect, useState, type ReactNode } from "react";
 import { ArrowUpRight, Check, ChevronDown, FileCheck2, LockKeyhole, MapPin, ScanSearch, ShieldCheck } from "lucide-react";
 import { PAYMENT_LINKS } from "@/lib/paymentLinks";
 import { addCartItem, loadCart, saveCart } from "@/lib/cart";
+import { SERVICE_TIER_PRICES } from "@/lib/servicePricing";
 
 const plans = [
   {
     key: "basic",
     label: "BASIC",
     name: "Basic Vehicle Report",
-    price: "56.99",
+    price: SERVICE_TIER_PRICES.basic,
     description: "Essential vehicle information for a more informed purchase.",
     features: ["Vehicle History Report", "Title Verification", "Safety Recall Status", "Vehicle Specifications", "Accident Information", "24/7 Support"],
     cta: "Get Basic Report",
@@ -20,7 +21,7 @@ const plans = [
     key: "standard",
     label: "STANDARD",
     name: "Standard Vehicle Report",
-    price: "66.99",
+    price: SERVICE_TIER_PRICES.standard,
     description: "More detailed vehicle information for buyers who want additional checks.",
     features: ["Everything in Basic", "Lien & Ownership Check", "Additional Vehicle Records", "Enhanced Vehicle Information", "24/7 Support"],
     cta: "Get Standard Report",
@@ -31,7 +32,7 @@ const plans = [
     key: "premium",
     label: "PREMIUM",
     name: "Premium Vehicle Report",
-    price: "79.99",
+    price: SERVICE_TIER_PRICES.premium,
     description: "Our most comprehensive report option for customers who want the most available information.",
     features: ["Everything in Standard", "Comprehensive Vehicle History", "Extended Ownership Information", "Additional Available Checks", "Priority Support"],
     cta: "Get Premium Report",
