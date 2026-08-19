@@ -25,3 +25,23 @@ The authenticated Railway account is `ayaanahmed22440's Projects` and contains o
 ## Final provider-routing verification
 
 After inspecting Cloudflare and Railway, fresh independent checks show both `https://inspauto.com/` and `https://www.inspauto.com/` return HTTP 200 from `server: hcdn` / `platform: hostinger`, with title `Vehicle History Report Pricing | INSP AUTO` and no WordPress, Railway, or Cloudflare content markers. The served certificate is issued by Let’s Encrypt for `inspauto.com` and includes both `inspauto.com` and `www.inspauto.com` in its SAN list. No provider-level correction or deletion was necessary because the active route is already Hostinger-only.
+
+## Mobile-focused edge audit
+
+A resolver matrix across Cloudflare and Google DNS returned multiple Hostinger CDN IPv4 and IPv6 addresses. Every tested IPv4 address returned the INSP AUTO page and a certificate with common name `inspauto.com`. Qualys SSL Labs completed all four public endpoints—two IPv4 and two IPv6—with grade A+ and no warnings. This rules out an inconsistent Hostinger, Cloudflare, Railway, or IPv6 certificate edge in the public service. Because desktop works and the public IPv4/IPv6 endpoints are valid, the remaining failure is local to the phone’s network, DNS cache, captive-portal path, or saved HSTS/certificate state; removing HSTS or changing the working DNS would be unsafe.
+
+## Hostinger mobile protocol controls
+
+Hostinger’s CDN is active for `inspauto.com`. The CDN controls expose image optimisation, security level, traffic blocking, and TLS settings, but no HTTP/3/QUIC toggle. The “Use only the latest TLS version (TLS 1.3)” control is currently disabled, so TLS 1.2 remains available. The public response advertises HTTP/3 through `alt-svc`, but Hostinger does not expose a setting to disable only that protocol. Disabling the entire CDN would be the only available edge-isolation experiment and would be a live-site change requiring confirmation.
+
+## Railway fallback investigation
+
+The authenticated Railway account’s only project is `aware-art`, with no services. Its project settings expose no custom-domain section or active service to which `inspauto.com` could be attached. A public search for `inspauto.com` and Railway terms found no Railway hostname or indexed Railway deployment; the indexed site is the INSP AUTO homepage. The Railway fallback page therefore appears to be a stale DNS/edge route or an old Railway custom-domain association outside the currently authenticated account, not a live service in the current Railway workspace.
+
+## Railway workspace check
+
+The Railway workspace selector shows only `ayaanahmed22440's Projects`; there is no second workspace available in the authenticated account. That workspace contains only the empty `aware-art` project. The Railway-branded fallback seen on mobile therefore comes from a stale route or an older Railway account/domain association that is not available in the connected session.
+
+## Railway account identity confirmation
+
+The user confirmed the Railway login email is `ayaanahmed22440@gmail.com`, matching the authenticated Railway session. That session has only the `ayaanahmed22440's Projects` workspace and the empty `aware-art` project. No separate workspace or active Railway service is available under that login to detach.

@@ -346,3 +346,37 @@
 - [x] Inspect the connected Cloudflare account and Railway project/domain configuration without deleting resources or changing secrets.
 - [x] No obsolete provider binding was identified, so no destructive removal was performed.
 - [x] Verify the final domain route serves only the active Hostinger GitHub-connected `insp-auto` deployment.
+
+## Complete domain path audit
+
+- [ ] Audit authoritative nameservers, DNS record history, redirects, CNAME/ALIAS targets, and IPv4/IPv6 answers for `inspauto.com` and `www.inspauto.com`.
+- [ ] Audit Hostinger, Cloudflare, Railway, GitHub, and any alternate domain binding for the live domain.
+- [ ] Identify the exact path causing the intermittent HSTS/certificate warning and distinguish server-side configuration from resolver/edge behavior.
+- [ ] Apply only the confirmed safe correction, preserving mail records and the active GitHub `insp-auto` deployment.
+- [ ] Verify every public hostname and protocol after correction.
+
+## Mobile-only HTTPS failure
+
+- [ ] Compare mobile-relevant IPv4/IPv6 DNS answers and TLS certificates against the desktop-working path.
+- [ ] Identify whether a mobile carrier resolver or IPv6 edge serves a different certificate.
+- [ ] Apply only a safe correction that preserves the working desktop route, email DNS, payments, and credentials.
+- [ ] Verify the domain remains correct on desktop and is safe for mobile-compatible paths.
+
+## Multi-network mobile failure
+
+- [ ] Record that the HTTPS warning reproduces on multiple phones and different mobile-data locations while desktop browsers work.
+- [ ] Audit mobile-facing DNS, certificate, HSTS, HTTP/2, and HTTP/3 behavior for the domain.
+- [ ] Identify the network-class inconsistency and apply only a confirmed safe correction.
+- [ ] Verify desktop and mobile-compatible delivery after the correction or document the exact external blocker.
+
+## Railway fallback route evidence
+
+- [ ] Record the Railway “Not Found / The train has not arrived” fallback page shown for `inspauto.com` on mobile.
+- [ ] Trace which DNS, IPv6, HTTP/3, or stale custom-domain path can still reach Railway while desktop reaches Hostinger.
+- [ ] Inspect Railway custom-domain bindings and remove only the stale `inspauto.com` binding after confirmation.
+- [ ] Verify that all public paths serve only the Hostinger GitHub-connected `insp-auto` deployment.
+
+## Confirmed Railway account deletion
+
+- [x] Permanently delete the Railway account for `ayaanahmed22440@gmail.com` and its empty `aware-art` project after explicit confirmation.
+- [x] Verify `inspauto.com`, `www.inspauto.com`, DNS, SSL, and the Hostinger GitHub deployment after deletion.
