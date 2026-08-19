@@ -299,3 +299,9 @@
 - [x] Make the supplied INSP AUTO logo visibly replace the side icon in public and admin navigation; the asset was cropped to remove white margins and is visibly rendered in the local production header/footer.
 - [x] Preserve all existing report prices, payment URLs, and checkout behavior after the routing correction; only the pre-payment route changed and the final Whop handoff remains in Checkout.
 - [x] Add or update tests and verify the complete CTA-to-billing flow without submitting payment; npm typecheck, 9 tests, production build, HTTP 200 asset checks, and local checkout smoke tests pass.
+
+## Browser tab favicon correction
+
+- [x] Inspect the current favicon and document-head asset references.
+- [x] Add a favicon-safe INSP AUTO mark from the supplied logo and update the head reference.
+- [x] Verify the favicon asset is included in the npm production build without changing page or payment behavior.
