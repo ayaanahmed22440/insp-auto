@@ -570,3 +570,9 @@
 - [x] Add the existing public-page XML sitemap and sitemap declaration only because live /sitemap.xml currently returns the site 404 page, blocking the requested Search Console submission.
 - [x] Verify the sitemap in Search Console and request indexing for the homepage and existing public pages.
 - [x] Confirm the Search Console verification, sitemap, and indexing-request statuses.
+
+## Google Search Console site identity logo
+
+- [x] Identify the favicon/site-identity asset currently exposed to Google and compare it with the supplied INSP AUTO logo.
+- [x] Apply only the minimal favicon and identity metadata correction using the supplied INSP AUTO logo.
+- [ ] Build, deploy, and verify the corrected identity asset; Google Search Console reprocessing remains asynchronous.

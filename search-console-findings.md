@@ -20,3 +20,8 @@ Search Console displayed **Sitemap submitted successfully** for `https://inspaut
 The homepage inspection showed **Page is indexed**. A fresh indexing request was attempted, but Search Console displayed a temporary request-processing issue rather than a completed confirmation. The homepage is already indexed, so no indexing-blocking condition was found there.
 
 The existing `/pricing`, `/about`, and `/services` pages each showed **Discovered – currently not indexed**. Search Console confirmed **Indexing requested** for all three pages. These are submitted for crawling, not yet confirmed indexed.
+
+
+## Logo identity inspection
+
+The deployed HTML declares `/favicon.png` and `/favicon.ico`. Both live endpoints currently show only the square IA/car mark, not the supplied full INSP AUTO wordmark image. This is the site-identity source Google can cache for the Search Console property icon. The correction should update only these favicon declarations/assets to use the supplied INSP AUTO branding; Google Search Console may continue showing a cached icon until it reprocesses the site.
