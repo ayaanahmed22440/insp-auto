@@ -25,3 +25,8 @@ The existing `/pricing`, `/about`, and `/services` pages each showed **Discovere
 ## Logo identity inspection
 
 The deployed HTML declares `/favicon.png` and `/favicon.ico`. Both live endpoints currently show only the square IA/car mark, not the supplied full INSP AUTO wordmark image. This is the site-identity source Google can cache for the Search Console property icon. The correction should update only these favicon declarations/assets to use the supplied INSP AUTO branding; Google Search Console may continue showing a cached icon until it reprocesses the site.
+
+
+## Logo correction live verification
+
+The live production HTML now references `/assets/insp-auto-logo-clean.png` for both `rel="icon"` and `rel="apple-touch-icon"`. The asset returns HTTP 200 with `image/png` and immutable caching. The full INSP AUTO header logo is also visible on the live homepage. Google Search Console may still display its previously cached property icon until Google reprocesses the favicon.
