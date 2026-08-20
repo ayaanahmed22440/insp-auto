@@ -30,3 +30,8 @@ The deployed HTML declares `/favicon.png` and `/favicon.ico`. Both live endpoint
 ## Logo correction live verification
 
 The live production HTML now references `/assets/insp-auto-logo-clean.png` for both `rel="icon"` and `rel="apple-touch-icon"`. The asset returns HTTP 200 with `image/png` and immutable caching. The full INSP AUTO header logo is also visible on the live homepage. Google Search Console may still display its previously cached property icon until Google reprocesses the favicon.
+
+
+## Search-result logo correction deployed
+
+Hostinger dashboard confirmed the latest GitHub deployment for commit `3125f807` completed successfully. Hostinger cache was cleared successfully. Live HTTPS verification now confirms `/assets/insp-auto-favicon.png` and `/assets/insp-auto-logo-clean.png` both return HTTP 200 PNG responses; live HTML references the new square favicon, full Open Graph logo, Twitter card, and Organization JSON-LD logo. Google Search and Search Console may still display the previous globe/cached icon until Google recrawls and refreshes its index.

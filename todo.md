@@ -581,4 +581,4 @@
 
 - [x] Confirm the live favicon and Google-facing metadata used for search-result branding.
 - [x] Apply only the required logo metadata correction using the supplied INSP AUTO logo.
-- [ ] Deploy and verify the live favicon and public logo metadata; Google Search result refresh remains asynchronous.
+- [x] Deploy and verify the live favicon and public logo metadata; Google Search result refresh remains asynchronous.
