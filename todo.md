@@ -582,3 +582,10 @@
 - [x] Confirm the live favicon and Google-facing metadata used for search-result branding.
 - [x] Apply only the required logo metadata correction using the supplied INSP AUTO logo.
 - [x] Deploy and verify the live favicon and public logo metadata; Google Search result refresh remains asynchronous.
+
+## Quantity-matched checkout VIN fields
+
+- [x] Inspect the checkout cart quantity model and combined-checkout request contract.
+- [x] Render one VIN/registration field per report quantity and keep values aligned when quantities change.
+- [x] Validate and submit all per-report VIN/registration values through the unified checkout flow.
+- [x] Add regression tests for two, three, and quantity-change scenarios; run typecheck, build, and tests.

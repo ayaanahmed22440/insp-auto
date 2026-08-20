@@ -43,6 +43,16 @@ export function combinedCartTotalPence(lines: TrustedCartLine[]) {
   return lines.reduce((total, line) => total + line.amountPence, 0);
 }
 
+export function combinedCartQuantity(lines: TrustedCartLine[]) {
+  return lines.reduce((total, line) => total + line.quantity, 0);
+}
+
+export function normalizeRegistrations(input: unknown, expectedCount: number): string[] | null {
+  if (!Array.isArray(input) || input.length !== expectedCount || expectedCount < 1 || expectedCount > 50) return null;
+  const registrations = input.map(value => typeof value === "string" ? value.trim().slice(0, 64) : "");
+  return registrations.every(Boolean) ? registrations : null;
+}
+
 export function combinedCartSummary(lines: TrustedCartLine[]) {
   return lines.map(line => `${line.id} x${line.quantity}`).join(", ").slice(0, 900);
 }
@@ -53,6 +63,7 @@ export async function createWhopCombinedCheckout(input: {
   customerName: string;
   deliveryEmail: string;
   vin: string;
+  registrations: string[];
   cartSummary: string;
 }) {
   const apiKey = process.env.WHOP_API_KEY;
@@ -81,6 +92,7 @@ export async function createWhopCombinedCheckout(input: {
         customerName: input.customerName.slice(0, 120),
         deliveryEmail: input.deliveryEmail.slice(0, 320),
         vin: input.vin.slice(0, 64),
+        registrations: input.registrations.join(", ").slice(0, 900),
         amountPence: String(input.totalPence),
         cartSummary: input.cartSummary,
       },

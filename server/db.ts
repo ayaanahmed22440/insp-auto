@@ -7,6 +7,7 @@ import {
   contactSubmissions,
   InsertUser,
   orders,
+  orderVehicles,
   otpChallenges,
   User,
   users,
@@ -393,6 +394,22 @@ export async function createPendingOrder(input: {
     .orderBy(desc(orders.createdAt))
     .limit(1);
   return rows[0];
+}
+
+export async function createOrderVehicles(input: {
+  orderId: number;
+  vehicles: Array<{ lineId: string; vehicleIndex: number; registration: string }>;
+}) {
+  const db = await getDb();
+  if (!db || input.vehicles.length === 0) return;
+  await db.insert(orderVehicles).values(
+    input.vehicles.map(vehicle => ({
+      orderId: input.orderId,
+      lineId: vehicle.lineId,
+      vehicleIndex: vehicle.vehicleIndex,
+      registration: vehicle.registration,
+    }))
+  );
 }
 
 export async function syncOrderFromWebhook(input: {

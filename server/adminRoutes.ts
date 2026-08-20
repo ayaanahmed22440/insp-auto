@@ -6,6 +6,7 @@ import {
   createAdminCredential,
   createAdminSession,
   createPendingOrder,
+  createOrderVehicles,
   createAuditLog,
   createContact,
   createOtpChallenge,
@@ -51,10 +52,12 @@ import {
   verifyWhopSignature,
 } from "./adminSecurity";
 import {
+  combinedCartQuantity,
   combinedCartSummary,
   combinedCartTotalPence,
   createWhopCombinedCheckout,
   normalizeCombinedCart,
+  normalizeRegistrations,
 } from "./combinedCheckout";
 
 const attempts = new Map<string, { count: number; resetAt: number }>();
@@ -199,16 +202,16 @@ export function registerAdminRoutes(app: Express) {
     const customerName = `${firstName} ${lastName}`.trim();
     const deliveryEmail = safeString(req.body?.email, 320).toLowerCase();
     const phone = safeString(req.body?.phone, 40);
-    const vin = safeString(req.body?.registration, 64);
     const lines = normalizeCombinedCart(req.body?.items);
+    const registrations = lines ? normalizeRegistrations(req.body?.registrations, combinedCartQuantity(lines)) : null;
     if (
       !customerName ||
       !phone ||
-      !vin ||
       !isValidEmail(deliveryEmail) ||
-      !lines
+      !lines ||
+      !registrations
     )
-      return res.status(400).json({ ok: false, message: "Please complete the required checkout details." });
+      return res.status(400).json({ ok: false, message: "Please complete the required checkout details for every report." });
 
     const totalPence = combinedCartTotalPence(lines);
     const cartSummary = combinedCartSummary(lines);
@@ -222,23 +225,30 @@ export function registerAdminRoutes(app: Express) {
     checkoutAttempts.delete(requestKey);
 
     const promise = (async () => {
-      const order = await createPendingOrder({
-        customerName,
-        deliveryEmail,
-        selectedPlan: cartSummary.slice(0, 120),
-        amountPence: totalPence,
-        vin,
-        paymentReference: `checkout_${requestKey}`,
-      });
-      if (!order) throw new Error("Order persistence unavailable");
-      const checkout = await createWhopCombinedCheckout({
-        totalPence,
-        orderId: order.id,
-        customerName,
-        deliveryEmail,
-        vin,
-        cartSummary,
-      });
+        const order = await createPendingOrder({
+          customerName,
+          deliveryEmail,
+          selectedPlan: cartSummary.slice(0, 120),
+          amountPence: totalPence,
+          vin: registrations[0],
+          paymentReference: `checkout_${requestKey}`,
+        });
+        if (!order) throw new Error("Order persistence unavailable");
+        const vehicleRows = lines.flatMap(line => Array.from({ length: line.quantity }, (_, vehicleIndex) => ({
+          lineId: line.id,
+          vehicleIndex,
+          registration: registrations.shift()!,
+        })));
+        await createOrderVehicles({ orderId: order.id, vehicles: vehicleRows });
+        const checkout = await createWhopCombinedCheckout({
+          totalPence,
+          orderId: order.id,
+          customerName,
+          deliveryEmail,
+          vin: vehicleRows[0].registration,
+          registrations: vehicleRows.map(vehicle => vehicle.registration),
+          cartSummary,
+        });
       return { checkoutUrl: checkout.checkoutUrl, orderId: order.id, totalPence };
     })();
     checkoutAttempts.set(requestKey, { expiresAt: now + 10 * 60 * 1000, promise });

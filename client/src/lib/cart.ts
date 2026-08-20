@@ -45,8 +45,17 @@ export function loadCart() {
   }
 }
 
-export function checkoutReady(input: { firstName: string; lastName: string; phone: string; email: string; registration: string; acknowledgements: boolean[] }) {
-  return Boolean(input.firstName.trim() && input.lastName.trim() && input.phone.trim() && input.email.trim() && input.registration.trim() && input.acknowledgements.length === 3 && input.acknowledgements.every(Boolean));
+export function checkoutReady(input: { firstName: string; lastName: string; phone: string; email: string; registrations: string[]; acknowledgements: boolean[] }) {
+  return Boolean(
+    input.firstName.trim() &&
+      input.lastName.trim() &&
+      input.phone.trim() &&
+      input.email.trim() &&
+      input.registrations.length > 0 &&
+      input.registrations.every(registration => registration.trim()) &&
+      input.acknowledgements.length === 3 &&
+      input.acknowledgements.every(Boolean)
+  );
 }
 
 export function saveCart(items: CartItem[]) {

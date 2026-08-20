@@ -1,8 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
+  combinedCartQuantity,
   combinedCartTotalPence,
   createWhopCombinedCheckout,
   normalizeCombinedCart,
+  normalizeRegistrations,
 } from "./combinedCheckout";
 
 afterEach(() => vi.restoreAllMocks());
@@ -16,12 +18,20 @@ describe("combined cart pricing", () => {
     ]);
     expect(lines).not.toBeNull();
     expect(combinedCartTotalPence(lines!)).toBe(49_00 + 59_00 + 79_00);
+    expect(combinedCartQuantity(lines!)).toBe(3);
   });
 
   it("ignores browser prices and rejects unknown catalog IDs", () => {
     expect(normalizeCombinedCart([{ id: "basic", quantity: 1, price: 1 }])).not.toBeNull();
     expect(normalizeCombinedCart([{ id: "premium", quantity: 0 }])).toBeNull();
     expect(normalizeCombinedCart([{ id: "admin-price-1", quantity: 1 }])).toBeNull();
+  });
+
+  it("requires exactly one non-empty registration per report unit", () => {
+    const lines = normalizeCombinedCart([{ id: "basic", quantity: 2 }, { id: "standard", quantity: 1 }]);
+    expect(normalizeRegistrations(["AB12CDE", "XY34ZAB", "LM56QRS"], combinedCartQuantity(lines!))).toEqual(["AB12CDE", "XY34ZAB", "LM56QRS"]);
+    expect(normalizeRegistrations(["AB12CDE", "XY34ZAB"], combinedCartQuantity(lines!))).toBeNull();
+    expect(normalizeRegistrations(["AB12CDE", "", "LM56QRS"], combinedCartQuantity(lines!))).toBeNull();
   });
 });
 
@@ -42,6 +52,7 @@ describe("Whop combined checkout request", () => {
       customerName: "Test Customer",
       deliveryEmail: "test@example.com",
       vin: "AB12 CDE",
+      registrations: ["AB12 CDE", "XY34 ZAB", "LM56 QRS"],
       cartSummary: "basic x1, standard x1, premium x1",
     });
 
@@ -53,5 +64,6 @@ describe("Whop combined checkout request", () => {
     expect(body.plan.currency).toBe("gbp");
     expect(body.plan.plan_type).toBe("one_time");
     expect(body.metadata.orderId).toBe("42");
+    expect(body.metadata.registrations).toBe("AB12 CDE, XY34 ZAB, LM56 QRS");
   });
 });

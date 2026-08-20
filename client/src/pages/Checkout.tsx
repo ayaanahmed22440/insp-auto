@@ -15,7 +15,7 @@ export default function Checkout() {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [registration, setRegistration] = useState("");
+  const [registrations, setRegistrations] = useState<string[]>([]);
   const [acknowledgements, setAcknowledgements] = useState([false, false, false]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentError, setPaymentError] = useState("");
@@ -36,7 +36,14 @@ export default function Checkout() {
     if (saveDetails) writeSavedCheckoutDetails({ firstName, lastName, phone, email });
   }, [saveDetails, firstName, lastName, phone, email]);
   const subtotal = useMemo(() => cartSubtotal(items), [items]);
-  const readyForPayment = checkoutReady({ firstName, lastName, phone, email, registration, acknowledgements });
+  const registrationSlots = useMemo(
+    () => items.flatMap(item => Array.from({ length: item.quantity }, (_, unitIndex) => ({ item, unitIndex }))),
+    [items]
+  );
+  useEffect(() => {
+    setRegistrations(current => registrationSlots.map((_, index) => current[index] ?? ""));
+  }, [registrationSlots.length]);
+  const readyForPayment = checkoutReady({ firstName, lastName, phone, email, registrations, acknowledgements });
 
   function updateQuantity(id: string, quantity: number) {
     setItems(current => setCartItemQuantity(current, id, quantity));
@@ -58,7 +65,7 @@ export default function Checkout() {
           lastName,
           phone,
           email,
-          registration,
+          registrations,
           items: items.map(item => ({ id: item.id, quantity: item.quantity })),
         }),
       });
@@ -94,7 +101,16 @@ export default function Checkout() {
             <label>Last name <b>*</b><input required value={lastName} onChange={event => setLastName(event.target.value)} autoComplete="family-name" /></label>
             <label className="checkout-full">Phone <b>*</b><input required value={phone} onChange={event => setPhone(event.target.value)} autoComplete="tel" /></label>
             <label className="checkout-full">Email address <b>*</b><input required type="email" value={email} onChange={event => setEmail(event.target.value)} autoComplete="email" /></label>
-            <label className="checkout-full">Reg/VIN number <b>*</b><input required value={registration} onChange={event => setRegistration(event.target.value)} autoComplete="off" /></label>
+            <div className="checkout-full checkout-vehicle-fields">
+              <span>Reg/VIN numbers <b>*</b></span>
+              <small>Enter one vehicle registration or VIN for each report in your order.</small>
+              {registrationSlots.map((slot, index) => (
+                <label key={`${slot.item.id}-${slot.unitIndex}`}>
+                  {slot.item.name} — Vehicle {slot.unitIndex + 1}
+                  <input required value={registrations[index] ?? ""} onChange={event => setRegistrations(current => current.map((value, itemIndex) => itemIndex === index ? event.target.value : value))} autoComplete="off" aria-label={`${slot.item.name} vehicle ${slot.unitIndex + 1} registration or VIN`} />
+                </label>
+              ))}
+            </div>
           </div>
           <div className="checkout-consents">
             <label className="checkout-consent checkout-save-details"><input type="checkbox" checked={saveDetails} onChange={event => setSaveDetails(event.target.checked)} /><span>Remember my contact details on this device for faster checkout next time. Card and billing-address details are entered and stored only by Whop. <b>(optional)</b></span></label>

@@ -71,6 +71,15 @@ export const orders = mysqlTable("orders", {
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
+export const orderVehicles = mysqlTable("order_vehicles", {
+  id: int("id").autoincrement().primaryKey(),
+  orderId: int("orderId").notNull(),
+  lineId: varchar("lineId", { length: 120 }).notNull(),
+  vehicleIndex: int("vehicleIndex").notNull(),
+  registration: varchar("registration", { length: 64 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
 export const webhookEvents = mysqlTable("webhook_events", {
   id: int("id").autoincrement().primaryKey(),
   eventId: varchar("eventId", { length: 180 }).notNull().unique(),

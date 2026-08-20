@@ -23,8 +23,10 @@ describe("checkout cart helpers", () => {
   });
 
   it("requires every billing field and acknowledgment before payment", () => {
-    const base = { firstName: "Ayaan", lastName: "Ahmed", phone: "+440000000000", email: "buyer@example.com", registration: "AB12CDE", acknowledgements: [true, true, true] };
+    const base = { firstName: "Ayaan", lastName: "Ahmed", phone: "+440000000000", email: "buyer@example.com", registrations: ["AB12CDE"], acknowledgements: [true, true, true] };
     expect(checkoutReady(base)).toBe(true);
+    expect(checkoutReady({ ...base, registrations: ["AB12CDE", "XY34ZAB"] })).toBe(true);
+    expect(checkoutReady({ ...base, registrations: ["AB12CDE", "", "LM56QRS"] })).toBe(false);
     expect(checkoutReady({ ...base, acknowledgements: [true, true, false] })).toBe(false);
     expect(checkoutReady({ ...base, email: "" })).toBe(false);
   });
