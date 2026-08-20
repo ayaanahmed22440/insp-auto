@@ -561,3 +561,12 @@
 - [x] Perform the requested read-only end-to-end audit of live user journeys, APIs, admin boundaries, Whop flow, secrets, headers, mobile behavior, reliability, and source-vs-production differences.
 - [x] Produce the requested CRITICAL/HIGH/MEDIUM/LOW/PASSED report with user-journey, admin, payment, mobile, API, secrets, and overall-score sections.
 - [x] Do not modify code, production configuration, database data, credentials, payments, or deploy changes until the user reviews and approves the audit findings.
+- [ ] Reconfirm the approved live Whop authorization and deployment-freshness blockers.
+- [ ] Apply only the minimum approved remediation and verify the latest checkout-retry build reaches production.
+- [ ] Re-test checkout retries, safe invalid behavior, bundle freshness, and live headers without entering card details.
+
+## Google Search Console submission
+
+- [x] Add the existing public-page XML sitemap and sitemap declaration only because live /sitemap.xml currently returns the site 404 page, blocking the requested Search Console submission.
+- [ ] Verify the sitemap in Search Console and request indexing for the homepage and existing public pages.
+- [ ] Confirm the Search Console verification, sitemap, and indexing-request statuses.
