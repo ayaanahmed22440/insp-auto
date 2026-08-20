@@ -9,3 +9,7 @@
 - A sandbox curl probe was inconclusive because the sandbox TLS connection to `inspauto.com:443` failed with `SSL_ERROR_SYSCALL`; the connected browser verification is the authoritative live result.
 
 Next checks: inspect the Whop checkout page/network state, verify the live Pixel/CSP evidence, and review retry-state behavior without making a payment.
+
+## Quantity-matched checkout deployment verification
+
+Hostinger shows commit `b4a29b15` deployed successfully to `inspauto.com` under Node 20 / Express with auto-deployment enabled. The live Pricing page serves the existing £49, £59, and £79 report cards and their actions; a controlled browser test is being used to confirm quantity-two checkout fields without submitting payment.
