@@ -568,5 +568,5 @@
 ## Google Search Console submission
 
 - [x] Add the existing public-page XML sitemap and sitemap declaration only because live /sitemap.xml currently returns the site 404 page, blocking the requested Search Console submission.
-- [ ] Verify the sitemap in Search Console and request indexing for the homepage and existing public pages.
-- [ ] Confirm the Search Console verification, sitemap, and indexing-request statuses.
+- [x] Verify the sitemap in Search Console and request indexing for the homepage and existing public pages.
+- [x] Confirm the Search Console verification, sitemap, and indexing-request statuses.
