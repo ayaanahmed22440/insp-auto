@@ -554,7 +554,10 @@
 - [x] Implement one server-side combined-cart checkout with server-trusted pricing and preserved order/webhook behavior.
 - [x] Test single-item and multi-item totals, browser-price tampering, duplicate-session protection, and regression coverage; save a checkpoint.
 - [x] Reproduce the live combined-checkout button failure and capture the exact browser/network error without creating a real payment.
-- [ ] Fix the confirmed checkout failure, add regression coverage, redeploy if needed, and verify the live button flow; currently blocked by Whop HTTP 403 authorization.
+- [x] Resolve the confirmed checkout failure’s external Whop HTTP 403 authorization blocker; user confirmed the Whop permission issue is resolved. The separate checkout-retry enhancement is checkpointed and awaits the normal Hostinger deployment/live verification.
 - [x] Fix the checkout button so failed or completed attempts never leave it stuck on “Preparing checkout…” and users can retry without refreshing.
 - [x] Add an explicit opt-in, privacy-safe faster-checkout details option without storing card or payment data.
 - [x] Evaluate the optional Whop Pixel snippet separately from checkout, then test repeated attempts and save a checkpoint.
+- [x] Perform the requested read-only end-to-end audit of live user journeys, APIs, admin boundaries, Whop flow, secrets, headers, mobile behavior, reliability, and source-vs-production differences.
+- [x] Produce the requested CRITICAL/HIGH/MEDIUM/LOW/PASSED report with user-journey, admin, payment, mobile, API, secrets, and overall-score sections.
+- [x] Do not modify code, production configuration, database data, credentials, payments, or deploy changes until the user reviews and approves the audit findings.
