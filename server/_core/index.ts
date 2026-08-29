@@ -36,78 +36,32 @@ async function startServer() {
   const server = createServer(app);
   app.disable("x-powered-by");
   app.set("trust proxy", 1);
-  // Compress static JS/CSS responses so mobile and cellular clients do not
-  // time out while downloading the initial frontend bundle.
   app.use(compression());
   app.use((req, res, next) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
-    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-    res.setHeader(
-      "Permissions-Policy",
-      "camera=(), microphone=(), geolocation=()"
-    );
+    res.setHeader("Referrer-Policy", "no-referrer");
+    res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
     res.setHeader("X-Frame-Options", "DENY");
-    res.setHeader(
-      "Content-Security-Policy",
-      "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self' https://t.whop.tw; connect-src 'self' https://t.whop.tw; form-action 'self'"
-    );
-    if (process.env.NODE_ENV === "production")
-      res.setHeader(
-        "Strict-Transport-Security",
-        "max-age=31536000; includeSubDomains"
-      );
-    // Clear cached HTTP/3 alternative-service routes after the domain origin
-    // changed, preventing mobile browsers from reusing a stale edge path.
+    res.setHeader("Content-Security-Policy", "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; script-src 'self' https://t.whop.tw; connect-src 'self' https://t.whop.tw; form-action 'self'");
+    if (process.env.NODE_ENV === "production") res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
     res.setHeader("Alt-Svc", "clear");
     next();
   });
-  // Configure body parser with larger size limit and retain raw bytes for webhook verification.
-  app.use(
-    express.json({
-      limit: "1mb",
-      verify: (req, _res, buffer) => {
-        (req as Request & { rawBody?: Buffer }).rawBody = Buffer.from(buffer);
-      },
-    })
-  );
+  app.use(express.json({ limit: "1mb", verify: (req, _res, buffer) => { (req as Request & { rawBody?: Buffer }).rawBody = Buffer.from(buffer); } }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   registerAdminRoutes(app);
-  // tRPC API
-  app.use(
-    "/api/trpc",
-    createExpressMiddleware({
-      router: appRouter,
-      createContext,
-    })
-  );
-  // development mode uses Vite, production mode uses static files
-  if (process.env.NODE_ENV === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
-
+  app.use("/api/trpc", createExpressMiddleware({ router: appRouter, createContext }));
+  if (process.env.NODE_ENV === "development") await setupVite(app, server); else serveStatic(app);
   app.use((error: unknown, req: Request, res: express.Response, next: express.NextFunction) => {
     if (res.headersSent) return next(error);
-    console.error(
-      `[HTTP] ${req.method} ${req.path} failed`,
-      error instanceof Error ? error.message : "unknown error"
-    );
+    console.error(`[HTTP] ${req.method} ${req.path} failed`, error instanceof Error ? error.message : "unknown error");
     return res.status(500).json({ ok: false, message: "Internal server error" });
   });
-
   const preferredPort = parseInt(process.env.PORT || "3000");
   const port = await findAvailablePort(preferredPort);
-
-  if (port !== preferredPort) {
-    console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
-  }
-
-  server.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}/`);
-  });
+  if (port !== preferredPort) console.log(`Port ${preferredPort} is busy, using port ${port} instead`);
+  server.listen(port, () => console.log(`Server running on http://localhost:${port}/`));
 }
-
 startServer().catch(console.error);
