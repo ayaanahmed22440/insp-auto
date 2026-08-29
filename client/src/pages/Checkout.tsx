@@ -89,7 +89,7 @@ export default function Checkout() {
         <div className="checkout-added" role="status">
           <span className="checkout-check"><Check size={13} /></span>
           <button className="checkout-view-cart" onClick={() => document.getElementById("checkout-order")?.scrollIntoView({ behavior: "smooth" })}>View cart</button>
-          <span>{registrationSlots.length ? `Your selection includes ${registrationSlots.length} report${registrationSlots.length === 1 ? "" : "s"}.` : "Your cart is ready for a report."}</span>
+          <span>{items.length ? `Your selection includes ${items.length} report${items.length === 1 ? "" : "s"}.` : "Your cart is ready for a report."}</span>
         </div>
 
         <section className="checkout-section">

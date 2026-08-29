@@ -589,5 +589,3 @@
 - [x] Render one VIN/registration field per report quantity and keep values aligned when quantities change.
 - [x] Validate and submit all per-report VIN/registration values through the unified checkout flow.
 - [x] Add regression tests for two, three, and quantity-change scenarios; run typecheck, build, and tests.
-
-- [x] Correct the checkout selection summary to show total report quantity, matching the repeated VIN fields and order quantity.
