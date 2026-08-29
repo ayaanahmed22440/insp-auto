@@ -1,14 +1,15 @@
 import { FormEvent, useMemo, useState } from "react";
 import { ArrowLeft, CheckCircle2, LockKeyhole, ShieldCheck } from "lucide-react";
-import { PAYMENT_LINKS } from "@/lib/paymentLinks";
+import { Checkout, CheckoutElement, WhopElements } from "@whop/elements-react";
+import { loadWhop } from "@whop/elements";
 import { SERVICE_TIER_PRICES } from "@/lib/servicePricing";
 
 type PlanKey = "basic" | "standard" | "premium";
 
-const PLANS: Record<PlanKey, { name: string; price: string; href: string }> = {
-  basic: { name: "Basic Vehicle Report", price: SERVICE_TIER_PRICES.basic, href: PAYMENT_LINKS.basic },
-  standard: { name: "Standard Vehicle Report", price: SERVICE_TIER_PRICES.standard, href: PAYMENT_LINKS.standard },
-  premium: { name: "Premium Vehicle Report", price: SERVICE_TIER_PRICES.premium, href: PAYMENT_LINKS.premium },
+const PLANS: Record<PlanKey, { name: string; price: string; planId: string }> = {
+  basic: { name: "Basic Vehicle Report", price: SERVICE_TIER_PRICES.basic, planId: "plan_p08Pyk4wSiUbY" },
+  standard: { name: "Standard Vehicle Report", price: SERVICE_TIER_PRICES.standard, planId: "plan_clM1h361Efwqv" },
+  premium: { name: "Premium Vehicle Report", price: SERVICE_TIER_PRICES.premium, planId: "plan_fld4UJ3sIoZpF" },
 };
 
 function getPlan(): PlanKey {
@@ -34,17 +35,18 @@ export default function CheckoutDetails() {
   const [consentTwo, setConsentTwo] = useState(false);
   const [consentThree, setConsentThree] = useState(false);
   const [error, setError] = useState("");
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const ready = Boolean(firstName.trim() && lastName.trim() && phone.trim() && email.trim() && vin.trim() && consentOne && consentTwo && consentThree);
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
     setError("");
-    if (!ready) return;
-
-    // Direct browser navigation to the exact immutable Whop URL.
-    // No API request, no generated checkout session, no URL reconstruction.
-    window.location.href = plan.href;
+    if (!ready) {
+      setError("Please complete all required fields and confirmations before continuing.");
+      return;
+    }
+    setShowCheckout(true);
   };
 
   return (
@@ -67,6 +69,7 @@ export default function CheckoutDetails() {
         .checkout-actions{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:0 10px 12px}.checkout-back{border:0;background:none;color:#163b94;font-size:12px;cursor:pointer;padding:8px 0}
         .checkout-submit{border:0;background:#062e8f;color:#fff;border-radius:2px;padding:11px 17px;font-weight:700;font-size:12px;cursor:pointer}.checkout-submit:disabled{opacity:.45;cursor:not-allowed}
         .checkout-error{margin:10px 0 0;padding:10px 12px;border:1px solid #e3262e;background:#fff5f5;color:#a3151b;font-size:12px;line-height:1.5}.checkout-security-note{display:flex;gap:7px;align-items:center;margin-top:12px;font-size:11px;color:#64708a}.checkout-security-note svg{color:#163b94}
+        .whop-checkout-wrap{margin-top:20px;border:1px solid #d9dbe4;border-radius:6px;background:#fff;overflow:hidden}.whop-checkout-title{padding:14px 16px;font-weight:700;font-size:14px;color:#17213a;border-bottom:1px solid #e4e5eb}
         @media(max-width:640px){.checkout-details-page{padding-top:16px}.checkout-grid{grid-template-columns:1fr;gap:0}.checkout-field.full{grid-column:auto}.checkout-notice{flex-wrap:wrap}.checkout-notice strong{margin-left:0}.checkout-order-table{font-size:11px}.checkout-order-table th:last-child,.checkout-order-table td:last-child{width:31%}.checkout-actions{align-items:stretch;flex-direction:column}.checkout-submit{width:100%}}
       `}</style>
       <div className="checkout-details-wrap">
@@ -85,9 +88,22 @@ export default function CheckoutDetails() {
           <div className="checkout-checkbox"><input id="consent-three" type="checkbox" checked={consentThree} onChange={(e)=>setConsentThree(e.target.checked)} required /><label htmlFor="consent-three">I understand that if I need a refund or have an issue with my order, I should contact INSP AUTO at <a href="mailto:support@inspauto.com">support@inspauto.com</a> and submit my request in accordance with the Refund Policy. <span className="checkout-required">*</span></label></div>
           <h2 className="checkout-order-title">Your order</h2>
           <table className="checkout-order-table"><thead><tr><th>Product</th><th>Subtotal</th></tr></thead><tbody><tr><td>{plan.name} × 1</td><td>£{plan.price}</td></tr><tr><td><strong>Subtotal</strong></td><td><strong>£{plan.price}</strong></td></tr><tr className="total-row"><td>Total</td><td>£{plan.price}</td></tr></tbody></table>
-          <div className="checkout-payment"><div className="checkout-payment-head">Secure payment</div><div className="checkout-payment-body"><LockKeyhole size={15} /><span>You'll be securely redirected to Whop to complete this one-report purchase.</span></div><div className="checkout-actions"><button type="button" className="checkout-back" onClick={()=>go("/pricing")}><ArrowLeft size={13} style={{verticalAlign:"-2px"}} /> Back to report options</button><button className="checkout-submit" type="submit" disabled={!ready}>Proceed to payment</button></div></div>
-          {error && <p className="checkout-error" role="alert">{error}</p>}<div className="checkout-security-note"><ShieldCheck size={14} /> Your details are collected for order/support purposes before payment is opened.</div>
+          {!showCheckout && <div className="checkout-payment"><div className="checkout-payment-head">Secure payment</div><div className="checkout-payment-body"><LockKeyhole size={15} /><span>Continue below to open Whop's secure embedded checkout.</span></div><div className="checkout-actions"><button type="button" className="checkout-back" onClick={()=>go("/pricing")}><ArrowLeft size={13} style={{verticalAlign:"-2px"}} /> Back to report options</button><button className="checkout-submit" type="submit" disabled={!ready}>Proceed to payment</button></div></div>}
+          {error && <p className="checkout-error" role="alert">{error}</p>}
         </form>
+
+        {showCheckout && (
+          <section className="whop-checkout-wrap" aria-label="Whop secure checkout">
+            <div className="whop-checkout-title">Secure payment — {plan.name}</div>
+            <WhopElements elements={loadWhop()}>
+              <Checkout plan={plan.planId}>
+                <CheckoutElement />
+              </Checkout>
+            </WhopElements>
+          </section>
+        )}
+
+        <div className="checkout-security-note"><ShieldCheck size={14} /> Your payment is handled securely by Whop. INSP AUTO does not receive your card details.</div>
       </div>
     </main>
   );
