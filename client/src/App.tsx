@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 const Home = lazy(() => import("./pages/Home"));
 import NotFound from "./pages/NotFound";
 const Pricing = lazy(() => import("./pages/Pricing"));
-const Checkout = lazy(() => import("./pages/Checkout"));
 const VehicleServicePage = lazy(() => import("./pages/VehicleServicePage"));
 const AdminApp = lazy(() => import("./pages/Admin"));
 const AdminLogin = lazy(() => import("./pages/Admin").then(module => ({ default: module.AdminLogin })));
@@ -264,30 +263,12 @@ function PolicyPage({
       intro:
         "These general website terms describe how INSP AUTO presents and fulfils vehicle history reports. They should be reviewed by a qualified UK legal professional before being relied upon as final legal terms.",
       sections: [
-        [
-          "Service description",
-          "INSP AUTO provides vehicle history report products for buyers and other customers who want supporting information before a vehicle purchase.",
-        ],
-        [
-          "Report information",
-          "A selected report may include vehicle specifications, title information, recalls, accident information, ownership indicators, finance or lien information, and other available records. Coverage depends on the selected product and the data available to the report provider.",
-        ],
-        [
-          "Accuracy and third-party data",
-          "Reports may use information supplied by third-party sources. We do not promise that every record is complete, current, or error-free, and a report is not a substitute for an independent inspection or professional advice.",
-        ],
-        [
-          "Customer responsibilities",
-          "Customers are responsible for entering a correct VIN or registration and for checking that the returned vehicle details correspond to the vehicle they are considering.",
-        ],
-        [
-          "Payment and delivery",
-          "Payment is completed through the checkout provider shown on the website. Report processing and delivery follow the fulfilment process applicable to the selected product; no instant delivery promise is made unless stated for that product.",
-        ],
-        [
-          "Liability and governing law",
-          "To the extent permitted by law, INSP AUTO is not responsible for decisions made solely from a report. These terms are intended for a UK service and are subject to applicable law in England and Wales.",
-        ],
+        ["Service description","INSP AUTO provides vehicle history report products for buyers and other customers who want supporting information before a vehicle purchase."],
+        ["Report information","A selected report may include vehicle specifications, title information, recalls, accident information, ownership indicators, finance or lien information, and other available records. Coverage depends on the selected product and the data available to the report provider."],
+        ["Accuracy and third-party data","Reports may use information supplied by third-party sources. We do not promise that every record is complete, current, or error-free, and a report is not a substitute for an independent inspection or professional advice."],
+        ["Customer responsibilities","Customers are responsible for entering a correct VIN or registration and for checking that the returned vehicle details correspond to the vehicle they are considering."],
+        ["Payment and delivery","Payment is completed through the checkout provider shown on the website. Report processing and delivery follow the fulfilment process applicable to the selected product; no instant delivery promise is made unless stated for that product."],
+        ["Liability and governing law","To the extent permitted by law, INSP AUTO is not responsible for decisions made solely from a report. These terms are intended for a UK service and are subject to applicable law in England and Wales."],
       ],
     },
     "refund-policy": {
@@ -295,26 +276,11 @@ function PolicyPage({
       intro:
         "This policy explains the circumstances in which a customer may contact INSP AUTO about a payment or report order. It is general website information and should be reviewed professionally before final publication.",
       sections: [
-        [
-          "Payment and processing",
-          "Payments are handled by the selected checkout provider. An order enters processing after payment confirmation is received by the fulfilment process.",
-        ],
-        [
-          "Incorrect vehicle details",
-          "Please check the VIN or registration before checkout. A report may not be refundable where the customer supplied incorrect or incomplete vehicle details, subject to applicable consumer rights.",
-        ],
-        [
-          "Failed fulfilment",
-          "If INSP AUTO cannot fulfil a paid report, contact support@inspauto.com with the order details so the issue can be reviewed and an appropriate remedy considered.",
-        ],
-        [
-          "Duplicate purchases",
-          "If the same product was purchased more than once by mistake, contact support promptly. Duplicate order requests are assessed using the available payment and fulfilment records.",
-        ],
-        [
-          "Contacting support",
-          "Refund questions should include the order number, email used at checkout, and a brief description of the issue. Any approved refund is returned through the original payment route where possible.",
-        ],
+        ["Payment and processing","Payments are handled by the selected checkout provider. An order enters processing after payment confirmation is received by the fulfilment process."],
+        ["Incorrect vehicle details","Please check the VIN or registration before checkout. A report may not be refundable where the customer supplied incorrect or incomplete vehicle details, subject to applicable consumer rights."],
+        ["Failed fulfilment","If INSP AUTO cannot fulfil a paid report, contact support@inspauto.com with the order details so the issue can be reviewed and an appropriate remedy considered."],
+        ["Duplicate purchases","If the same product was purchased more than once by mistake, contact support promptly. Duplicate order requests are assessed using the available payment and fulfilment records."],
+        ["Contacting support","Refund questions should include the order number, email used at checkout, and a brief description of the issue. Any approved refund is returned through the original payment route where possible."],
       ],
     },
     "privacy-policy": {
@@ -322,26 +288,11 @@ function PolicyPage({
       intro:
         "This GDPR-conscious outline explains the information INSP AUTO may process when you use the website. A qualified UK privacy professional should review it before it is adopted as the final policy.",
       sections: [
-        [
-          "Information collected",
-          "We may receive your name, email address, VIN or registration, order details, support correspondence, and information needed to investigate a report request.",
-        ],
-        [
-          "Payments and third parties",
-          "Payment information is handled by the checkout provider. INSP AUTO does not ask customers to send full card details by email. Third-party providers may process information under their own privacy notices.",
-        ],
-        [
-          "Cookies and analytics",
-          "The website may use essential cookies or similar technologies for basic operation. Any analytics should be configured transparently and limited to the purposes described at the point of collection.",
-        ],
-        [
-          "Retention and security",
-          "Information is retained only for as long as reasonably needed for fulfilment, support, legal, accounting, or fraud-prevention purposes, with appropriate organisational and technical safeguards.",
-        ],
-        [
-          "Your rights",
-          "Subject to applicable law, you may ask about access, correction, deletion, restriction, portability, or objection. Contact support@inspauto.com for an initial request.",
-        ],
+        ["Information collected","We may receive your name, email address, VIN or registration, order details, support correspondence, and information needed to investigate a report request."],
+        ["Payments and third parties","Payment information is handled by the checkout provider. INSP AUTO does not ask customers to send full card details by email. Third-party providers may process information under their own privacy notices."],
+        ["Cookies and analytics","The website may use essential cookies or similar technologies for basic operation. Any analytics should be configured transparently and limited to the purposes described at the point of collection."],
+        ["Retention and security","Information is retained only for as long as reasonably needed for fulfilment, support, legal, accounting, or fraud-prevention purposes, with appropriate organisational and technical safeguards."],
+        ["Your rights","Subject to applicable law, you may ask about access, correction, deletion, restriction, portability, or objection. Contact support@inspauto.com for an initial request."],
       ],
     },
   }[kind];
@@ -373,29 +324,10 @@ function ServicePage({ label }: { label: string }) {
       <div className="container narrow">
         <span className="eyebrow">INSP AUTO / SERVICE</span>
         <h1>{label}</h1>
-        <p className="lead">
-          Useful vehicle information for the decision in front of you.
-        </p>
-        <p>
-          Choose the report that matches the vehicle you are considering.
-          Information available in your selected report may include vehicle
-          specifications, title information, safety recalls, accident
-          information, ownership indicators, finance or lien information, and
-          other available records.
-        </p>
-        <div className="detail-callout">
-          <span className="stamp">INSP</span>
-          <div>
-            <strong>Keep the evidence close.</strong>
-            <p>
-              Reports are designed to be clear, practical, and easy to discuss
-              with a seller or support team.
-            </p>
-          </div>
-        </div>
-        <button className="button" onClick={() => navigate("/pricing")}>
-          View report options <span>↗</span>
-        </button>
+        <p className="lead">Useful vehicle information for the decision in front of you.</p>
+        <p>Choose the report that matches the vehicle you are considering. Information available in your selected report may include vehicle specifications, title information, safety recalls, accident information, ownership indicators, finance or lien information, and other available records.</p>
+        <div className="detail-callout"><span className="stamp">INSP</span><div><strong>Keep the evidence close.</strong><p>Reports are designed to be clear, practical, and easy to discuss with a seller or support team.</p></div></div>
+        <button className="button" onClick={() => navigate("/pricing")}>View report options <span>↗</span></button>
       </div>
     </main>
   );
@@ -406,39 +338,10 @@ function PricingPage() {
     <main className="detail-page pricing-detail">
       <div className="container narrow">
         <span className="eyebrow">INSP AUTO / REPORT OPTIONS</span>
-        <h1>
-          Compare the detail before you <em>commit.</em>
-        </h1>
-        <p className="lead">
-          Three clear report levels for UK buyers who want more context around
-          the vehicle in front of them.
-        </p>
-        <div className="detail-callout">
-          <span className="stamp">£</span>
-          <div>
-            <strong>Choose the depth that matches the decision.</strong>
-            <p>
-              Checkout is handled by the selected payment provider. We do not
-              imitate payment or report delivery on this page.
-            </p>
-          </div>
-        </div>
-        <button
-          className="button"
-          onClick={() => {
-            window.history.pushState({}, "", "/");
-            window.dispatchEvent(new PopStateEvent("popstate"));
-            setTimeout(
-              () =>
-                document
-                  .getElementById("pricing")
-                  ?.scrollIntoView({ behavior: "smooth" }),
-              10
-            );
-          }}
-        >
-          View pricing cards <span>↗</span>
-        </button>
+        <h1>Compare the detail before you <em>commit.</em></h1>
+        <p className="lead">Three clear report levels for UK buyers who want more context around the vehicle in front of them.</p>
+        <div className="detail-callout"><span className="stamp">£</span><div><strong>Choose the depth that matches the decision.</strong><p>Checkout is handled by the selected payment provider. We do not imitate payment or report delivery on this page.</p></div></div>
+        <button className="button" onClick={() => { window.history.pushState({}, "", "/"); window.dispatchEvent(new PopStateEvent("popstate")); setTimeout(() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" }), 10); }}>View pricing cards <span>↗</span></button>
       </div>
     </main>
   );
@@ -447,267 +350,30 @@ function PricingPage() {
 function OrderStatusPage() {
   const [email, setEmail] = useState("");
   const [paymentReference, setPaymentReference] = useState("");
-  const [status, setStatus] = useState<{
-    selectedPlan: string;
-    paymentStatus: string;
-    fulfillmentStatus: string;
-  } | null>(null);
-  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setLoading(true);
-    setMessage("");
-    setStatus(null);
-    try {
-      const response = await fetch("/api/order-status", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, paymentReference }),
-      });
-      const result = await response.json();
-      if (!response.ok)
-        throw new Error(result.message || "No matching order was found.");
-      setStatus(result.data);
-    } catch (error) {
-      setMessage(
-        error instanceof Error ? error.message : "Unable to check the order."
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-  return (
-    <main className="detail-page">
-      <div className="container narrow">
-        <span className="eyebrow">INSP AUTO / ORDER STATUS</span>
-        <h1>
-          Check your report <em>progress.</em>
-        </h1>
-        <p className="lead">
-          Use the email entered at checkout and your payment reference. Only
-          matching order status is returned.
-        </p>
-        <form className="contact-form" onSubmit={submit}>
-          <label>
-            Email used at checkout
-            <input
-              required
-              type="email"
-              value={email}
-              onChange={event => setEmail(event.target.value)}
-            />
-          </label>
-          <label>
-            Payment reference
-            <input
-              required
-              value={paymentReference}
-              onChange={event => setPaymentReference(event.target.value)}
-            />
-          </label>
-          <button className="button" type="submit" disabled={loading}>
-            {loading ? "Checking…" : "Check status ↗"}
-          </button>
-        </form>
-        {message && (
-          <p className="contact-status" role="alert">
-            {message}
-          </p>
-        )}
-        {status && (
-          <div className="detail-callout" role="status">
-            <div>
-              <strong>{status.selectedPlan}</strong>
-              <p>
-                Payment: {status.paymentStatus}. Fulfillment:{" "}
-                {status.fulfillmentStatus}.
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </main>
-  );
-}
-
-function ContactPage() {
-  const [status, setStatus] = useState("");
-  const [sending, setSending] = useState(false);
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    setSending(true);
-    setStatus("");
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(formData.entries())),
-      });
-      const result = await response.json();
-      if (!response.ok)
-        throw new Error(result.message || "Unable to send message.");
-      setStatus(result.message);
-      form.reset();
-    } catch (error) {
-      setStatus(
-        error instanceof Error
-          ? error.message
-          : "We could not send your message right now. Please email support directly."
-      );
-    } finally {
-      setSending(false);
-    }
+  const submit = async (event: FormEvent) => {
+    event.preventDefault(); setLoading(true); setStatus(null);
+    try { const response = await fetch("/api/order-status", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, paymentReference }) }); const payload = await response.json(); if (!response.ok || !payload?.ok) throw new Error(payload?.message || "Unable to find the order."); const order = payload.data; setStatus(`Order ${order.id}: ${order.status}`); } catch (error) { setStatus(error instanceof Error ? error.message : "Unable to find the order."); } finally { setLoading(false); }
   };
-  return (
-    <main className="detail-page">
-      <div className="container narrow">
-        <span className="eyebrow">INSP AUTO / SUPPORT DESK</span>
-        <h1>
-          Keep the next step <em>clear.</em>
-        </h1>
-        <p className="lead">
-          Email support@inspauto.com with your question, VIN or registration,
-          and order number if relevant.
-        </p>
-        <form className="contact-form" onSubmit={submit}>
-          <label>
-            Name
-            <input required name="name" />
-          </label>
-          <label>
-            Email
-            <input required type="email" name="email" />
-          </label>
-          <label>
-            VIN / Registration
-            <input name="vehicle" />
-          </label>
-          <label>
-            Order Number
-            <input name="order" />
-          </label>
-          <label>
-            Subject
-            <input required name="subject" />
-          </label>
-          <label>
-            Message
-            <textarea required name="message" rows={6} />
-          </label>
-          <button className="button" type="submit" disabled={sending}>
-            {sending ? "Sending…" : "Send Message ↗"}
-          </button>
-          {status && (
-            <p className="contact-status" role="status">
-              {status}
-            </p>
-          )}
-        </form>
-      </div>
-    </main>
-  );
-}
-
-function RouteFallback() {
-  return <main className="detail-page"><div className="container narrow"><p className="lead">Loading INSP AUTO…</p></div></main>;
-}
-
-function SimplePage({ path }: { path: string }) {
-  if (path === "/about")
-    return (
-      <main className="detail-page">
-        <div className="container narrow">
-          <span className="eyebrow">INSP AUTO / ABOUT</span>
-          <h1>
-            Read the evidence before you <em>commit.</em>
-          </h1>
-          <p className="lead">
-            We help UK vehicle buyers look beyond the sales pitch.
-          </p>
-          <p>
-            INSP AUTO presents vehicle history information in a format that is
-            easier to understand before you buy. Our service is built around
-            clear reporting, careful language, and practical customer
-            support—not inflated promises.
-          </p>
-          <div className="detail-grid">
-            <div>
-              <strong>01</strong>
-              <span>Buyer-first reporting</span>
-            </div>
-            <div>
-              <strong>02</strong>
-              <span>Plain-language evidence</span>
-            </div>
-            <div>
-              <strong>03</strong>
-              <span>Support when you need it</span>
-            </div>
-          </div>
-          <button className="button" onClick={() => navigate("/services")}>
-            Explore services <span>↗</span>
-          </button>
-        </div>
-      </main>
-    );
-  if (path === "/contact") return <ContactPage />;
-  return <NotFound />;
+  return (<main className="detail-page"><div className="container narrow"><span className="eyebrow">INSP AUTO / ORDER STATUS</span><h1>Check your order.</h1><p className="lead">Enter the email used at checkout and your payment reference.</p><form onSubmit={submit} className="order-status-form"><label>Email<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required /></label><label>Payment reference<input value={paymentReference} onChange={(event) => setPaymentReference(event.target.value)} required /></label><button className="button" type="submit" disabled={loading}>{loading ? "Checking…" : "Check status"}</button>{status && <p role="status">{status}</p>}</form></div></main>);
 }
 
 export default function App() {
   const [path, setPath] = useState(window.location.pathname);
-  useEffect(() => {
-    const update = () => setPath(window.location.pathname);
-    window.addEventListener("popstate", update);
-    return () => window.removeEventListener("popstate", update);
-  }, []);
-  if (path === "/admin/login")
-    return (
-      <TooltipProvider>
-        <Toaster />
-        <Suspense fallback={<RouteFallback />}><AdminLogin /></Suspense>
-      </TooltipProvider>
-    );
-  if (path.startsWith("/admin"))
-    return (
-      <TooltipProvider>
-        <Toaster />
-        <Suspense fallback={<RouteFallback />}><AdminApp /></Suspense>
-      </TooltipProvider>
-    );
+  useEffect(() => { const onPopState = () => setPath(window.location.pathname); window.addEventListener("popstate", onPopState); return () => window.removeEventListener("popstate", onPopState); }, []);
+  const service = services.find(([, href]) => href === path);
   let page: ReactNode;
-  if (path === "/") page = <Home initialSection="home" />;
+  if (path === "/") page = <Home />;
   else if (path === "/pricing") page = <Pricing />;
-  else if (path === "/checkout") page = <Checkout />;
-  else if (path === "/order-status") page = <OrderStatusPage />;
+  else if (path === "/about") page = <ServicePage label="About INSP AUTO" />;
   else if (path === "/services") page = <Home initialSection="services" />;
-  else if (["/terms", "/refund-policy", "/privacy-policy"].includes(path))
-    page = (
-      <PolicyPage
-        kind={path.slice(1) as "terms" | "refund-policy" | "privacy-policy"}
-      />
-    );
-  else if (path.startsWith("/services/"))
-    page = (
-      <VehicleServicePage
-        label={
-          services.find(([, href]) => href === path)?.[0] ||
-          "Vehicle History Report"
-        }
-      />
-    );
-  else page = <SimplePage path={path} />;
-  return (
-    <TooltipProvider>
-      <Toaster />
-      <Suspense fallback={<RouteFallback />}>
-        <Header />
-        {page}
-        <Footer />
-      </Suspense>
-    </TooltipProvider>
-  );
+  else if (path === "/contact") page = <ServicePage label="Contact INSP AUTO" />;
+  else if (path === "/terms") page = <PolicyPage kind="terms" />;
+  else if (path === "/refund-policy") page = <PolicyPage kind="refund-policy" />;
+  else if (path === "/privacy-policy") page = <PolicyPage kind="privacy-policy" />;
+  else if (path === "/order-status") page = <OrderStatusPage />;
+  else if (service) page = <VehicleServicePage label={service[0]} />;
+  else page = <NotFound />;
+  return <><Header />{page}<Footer /><Toaster /></>;
 }
