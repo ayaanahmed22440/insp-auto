@@ -3,6 +3,7 @@ import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 import nodemailer from "nodemailer";
+import { registerAdminRoutes } from "./adminRoutes";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -69,6 +70,8 @@ async function startServer() {
       res.status(502).json({ ok: false, message: "We could not send your message right now. Please email support directly." });
     }
   });
+
+  registerAdminRoutes(app);
 
   app.use(express.static(staticPath));
   app.get("*", (_req, res) => {
