@@ -70,10 +70,34 @@ async function startServer() {
     }
   });
 
-  app.use(express.static(staticPath));
+  // Vite assets are content-hashed and safe to cache for a long time. This
+  // reduces repeated asset requests during rapid navigation and avoids asking
+  // the hosting layer to serve the same immutable files over and over.
+  app.use("/assets", express.static(path.join(staticPath, "assets"), {
+    maxAge: "1y",
+    immutable: true,
+    fallthrough: false,
+  }));
+
+  app.use(express.static(staticPath, {
+    maxAge: "1h",
+  }));
+
+  // Never return index.html for a missing JavaScript/CSS asset. A missing
+  // hashed asset should be a real 404 rather than an HTML response that the
+  // browser then reports as a failed dynamic module import.
+  app.use("/assets", (_req, res) => {
+    res.status(404).end();
+  });
+
   app.get("*", (_req, res) => {
     res.sendFile(path.join(staticPath, "index.html"));
   });
+
+  // Keep idle connections available for short bursts of normal browsing so
+  // rapid clicks do not unnecessarily create new TCP connections.
+  server.keepAliveTimeout = 65000;
+  server.headersTimeout = 66000;
 
   const port = process.env.PORT || 3000;
   server.listen(port, () => {
@@ -81,4 +105,7 @@ async function startServer() {
   });
 }
 
-startServer().catch(console.error);
+startServer().catch((error) => {
+  console.error("Server failed to start:", error);
+  process.exitCode = 1;
+});
