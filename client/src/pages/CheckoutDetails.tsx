@@ -36,17 +36,56 @@ export default function CheckoutDetails() {
   const [consentThree, setConsentThree] = useState(false);
   const [error, setError] = useState("");
   const [showCheckout, setShowCheckout] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const ready = Boolean(firstName.trim() && lastName.trim() && phone.trim() && email.trim() && vin.trim() && consentOne && consentTwo && consentThree);
 
-  const submit = (event: FormEvent) => {
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
     setError("");
     if (!ready) {
       setError("Please complete all required fields and confirmations before continuing.");
       return;
     }
-    setShowCheckout(true);
+
+    setSending(true);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: `${firstName.trim()} ${lastName.trim()}`,
+          email: email.trim(),
+          vehicle: vin.trim(),
+          subject: "Checkout started — payment not completed yet",
+          message: [
+            "CHECKOUT STATUS: PAYMENT NOT CONFIRMED",
+            "The customer completed the billing information and clicked Proceed to Payment, but has not completed the payment yet.",
+            "",
+            `First name: ${firstName.trim()}`,
+            `Last name: ${lastName.trim()}`,
+            `Phone: ${phone.trim()}`,
+            `Email: ${email.trim()}`,
+            `VIN / Registration / HIN: ${vin.trim()}`,
+            `Plan: ${plan.name}`,
+            `Price: £${plan.price}`,
+            "",
+            "Required confirmations: all three were accepted.",
+            `Submitted at: ${new Date().toISOString()}`,
+          ].join("\n"),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Could not send checkout notification");
+      }
+
+      setShowCheckout(true);
+    } catch {
+      setError("We could not save your checkout details right now. Please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -88,7 +127,7 @@ export default function CheckoutDetails() {
           <div className="checkout-checkbox"><input id="consent-three" type="checkbox" checked={consentThree} onChange={(e)=>setConsentThree(e.target.checked)} required /><label htmlFor="consent-three">I understand that if I need a refund or have an issue with my order, I should contact INSP AUTO at <a href="mailto:support@inspauto.com">support@inspauto.com</a> and submit my request in accordance with the Refund Policy. <span className="checkout-required">*</span></label></div>
           <h2 className="checkout-order-title">Your order</h2>
           <table className="checkout-order-table"><thead><tr><th>Product</th><th>Subtotal</th></tr></thead><tbody><tr><td>{plan.name} × 1</td><td>£{plan.price}</td></tr><tr><td><strong>Subtotal</strong></td><td><strong>£{plan.price}</strong></td></tr><tr className="total-row"><td>Total</td><td>£{plan.price}</td></tr></tbody></table>
-          {!showCheckout && <div className="checkout-payment"><div className="checkout-payment-head">Secure payment</div><div className="checkout-payment-body"><LockKeyhole size={15} /><span>Continue below to open Whop's secure embedded checkout.</span></div><div className="checkout-actions"><button type="button" className="checkout-back" onClick={()=>go("/pricing")}><ArrowLeft size={13} style={{verticalAlign:"-2px"}} /> Back to report options</button><button className="checkout-submit" type="submit" disabled={!ready}>Proceed to payment</button></div></div>}
+          {!showCheckout && <div className="checkout-payment"><div className="checkout-payment-head">Secure payment</div><div className="checkout-payment-body"><LockKeyhole size={15} /><span>Continue below to open Whop's secure embedded checkout.</span></div><div className="checkout-actions"><button type="button" className="checkout-back" onClick={()=>go("/pricing")}><ArrowLeft size={13} style={{verticalAlign:"-2px"}} /> Back to report options</button><button className="checkout-submit" type="submit" disabled={!ready || sending}>{sending ? "Saving..." : "Proceed to payment"}</button></div></div>}
           {error && <p className="checkout-error" role="alert">{error}</p>}
         </form>
 
