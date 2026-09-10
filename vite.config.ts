@@ -164,7 +164,9 @@ export default defineConfig({
   publicDir: path.resolve(import.meta.dirname, "client", "public"),
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
-    emptyOutDir: true,
+    // Keep previously generated hashed chunks so users with an older open tab
+    // can still load its dynamic imports after a deployment.
+    emptyOutDir: false,
   },
   server: {
     host: true,
