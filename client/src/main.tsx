@@ -9,6 +9,43 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { startLogin } from "./const";
 import "./index.css";
 
+// Recover once from a stale Vite chunk after a deployment. This handles the
+// brief window where an already-open page still references an asset that the
+// new deployment has replaced, without changing application or payment logic.
+const CHUNK_RETRY_KEY = "insp-auto-chunk-retry-at";
+const isDynamicImportError = (error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error ?? "");
+  return /failed to fetch dynamically imported module|importing a module script failed|dynamically imported module/i.test(message);
+};
+
+const recoverFromStaleChunk = (error: unknown) => {
+  if (typeof window === "undefined" || !isDynamicImportError(error)) return;
+
+  try {
+    const now = Date.now();
+    const previousAttempt = Number(sessionStorage.getItem(CHUNK_RETRY_KEY) || "0");
+    // Allow one cache-busting reload per 30 seconds, preventing an infinite loop
+    // if the asset is genuinely unavailable.
+    if (previousAttempt && now - previousAttempt < 30_000) return;
+    sessionStorage.setItem(CHUNK_RETRY_KEY, String(now));
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("chunk-retry", String(now));
+    window.location.replace(url.toString());
+  } catch {
+    // If sessionStorage or URL handling is unavailable, leave the normal error
+    // boundary in control rather than interfering with the application.
+  }
+};
+
+window.addEventListener("unhandledrejection", event => {
+  recoverFromStaleChunk(event.reason);
+});
+
+window.addEventListener("error", event => {
+  recoverFromStaleChunk(event.error || event.message);
+});
+
 const queryClient = new QueryClient();
 
 const redirectToLoginIfUnauthorized = (error: unknown) => {
