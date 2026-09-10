@@ -62,7 +62,15 @@ export function serveStatic(app: Express) {
     res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
     next();
   });
-  app.use(express.static(distPath));
+  app.use(
+    express.static(distPath, {
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith(".html")) {
+          res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        }
+      },
+    })
+  );
 
   // HTML must not be cached across deployments because it references hashed chunks.
   app.use("*", (_req, res) => {
