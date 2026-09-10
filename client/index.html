@@ -31,6 +31,19 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      // Vite emits this event when a cached page tries to load a chunk from an older deployment.
+      // Reload once so the browser receives the current HTML/chunk manifest.
+      window.addEventListener("vite:preloadError", function (event) {
+        event.preventDefault();
+        var key = "insp-auto-vite-preload-retry";
+        try {
+          if (sessionStorage.getItem(key)) return;
+          sessionStorage.setItem(key, "1");
+        } catch (_) {}
+        window.location.reload();
+      });
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 
