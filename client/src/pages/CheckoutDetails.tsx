@@ -7,9 +7,9 @@ import { SERVICE_TIER_PRICES } from "@/lib/servicePricing";
 type PlanKey = "basic" | "standard" | "premium";
 
 const PLANS: Record<PlanKey, { name: string; price: string; planId: string }> = {
-  basic: { name: "Basic Vehicle Report", price: SERVICE_TIER_PRICES.basic, planId: "plan_p08Pyk4wSiUbY" },
-  standard: { name: "Standard Vehicle Report", price: SERVICE_TIER_PRICES.standard, planId: "plan_clM1h361Efwqv" },
-  premium: { name: "Premium Vehicle Report", price: SERVICE_TIER_PRICES.premium, planId: "plan_fld4UJ3sIoZpF" },
+  basic: { name: "Basic Vehicle Report", price: SERVICE_TIER_PRICES.basic, planId: "plan_J0Wne6V4pGeNm" },
+  standard: { name: "Standard Vehicle Report", price: SERVICE_TIER_PRICES.standard, planId: "plan_Kga6HPHtCD0uV" },
+  premium: { name: "Premium Vehicle Report", price: SERVICE_TIER_PRICES.premium, planId: "plan_0G1jNOpJCDPFC" },
 };
 
 function getPlan(): PlanKey {
